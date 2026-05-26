@@ -11,3 +11,26 @@
 
 ## Idea 2, cyberdeck:
 - Lots of versatility but may be too complex or expensive
+
+## Idea 3, extend functionality of my radio, give it a timer on the screen, games, link it with calendar, etc.
+- Similar to Amazon Echo or Google Home
+
+## Idea 4, MP3 player
+- Could be a fun little project
+- Might be too easy
+- A good starting place for someone inexperienced
+- Lots of opportunity to extend functionality, give it Wi-Fi etc.
+- Could add buttons for a tactile experience
+- Could have it link to another device via Bluetooth to show what's playing and provide controls for it
+    - Rather than having it be its own MP3 player
+- Local storage too
+- Could even have journal functionality on this, link with an app
+- 2 form factor options:
+    - Old iPod:
+    ![iPod prototype](./ipod%20mp3%20player.jpeg)
+    - Full screen:
+    ![Full screen prototype](./mp3%20player%20full-screen.jpeg)
+
+## Idea 5, carplay but for a desk
+- Similar to the MP3 player idea but not portable
+- Not really a good idea because I could just make a stand for the MP3 player that can "convert" it to this
