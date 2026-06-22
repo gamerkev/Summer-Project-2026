@@ -94,3 +94,34 @@ I've already done a bit of this inadvertently in the divergent thinking section,
 At the moment I can't think of any other viable ideas. I think the iPod form factor is a clear loser, having more buttons than necessary is quite silly and having used a Motorola in the past, what I miss the most about it is the ability to hold pressed on the volume buttons to skip tracks so this would be a nice homage to that. Additionally, the smaller screen on the iPod form factor is uncessary, if the buttons below it are unnecessary, either there should be no space below the screen, or there should be a bigger screen so that it takes up the whole body.
 
 Deciding between the stick and the full-screen options, it's really quite difficult. As the designer of this, I think that it would be quite elegant to have the slim, stick form factor as it doesn't use more space than is necessary. Although, it could be nice to have the larger screen of the full-screen prototype so that there's a lot of space for adding extra functionality. Overall, I will attempt to take the stick prototype further since it has the added factor that it's quite unique and cool, but if I can't fit all of the components inside of that form factor, I'll be forced to go with the full-screen prototype. I won't really look at buying a screen until I've decided on all of the internal components and worked out what features I want to have, and then analysed whether I need the larger screen or if the smaller form factor will suffice.
+
+***
+
+## Deciding on components
+For this part, I'm going to be experimenting with different boards on [Wokwi](https://wokwi.com/), the simulations will be found in ./simulations
+
+After messing around with Wokwi, I've decided to experiment with an ESP32-S2 board (linked [here](https://www.aliexpress.com/item/1005009711874009.html?spm=a2g0o.order_list.order_list_main.5.2b641802aIwZAe)) and a breadboard kit (linked [here](https://www.aliexpress.com/item/1005006152882281.html?spm=a2g0o.order_list.order_list_main.17.2b641802aIwZAe)) from AliExpress. I was trying to create a pushbutton-activated LED circuit using the ESP32 simulation on Wokwi but nothing that I tried worked although my code looks right to me. I decided to purchase a cheap ESP32 board and breadboard kit so that I can't blame the simulation software for not working anymore, my last attempt at making it work is in ./esp32-s2/src/main.cpp.
+
+I've managed to make a basic program that will switch an LED on and off (./testPrograms/ledOnOff.ino). My next goal is to make a program that works with an RGB LED to make it change colour. This will be done in ./testPrograms/rgbLed.ino.
+
+The program doesn't work for the RGB LED that came with the kit, however it does work if I connect a red LED to pin 2, green to pin 3, and blue to pin 4. I believe it's either because the RGB LED is faulty or due to the fact that I can't tell if it's common anode or common cathode. I'm going to try for BlueTooth connectivity now.
+
+It turns out that the board I ordered doesn't have Bluetooth connectivity, only WiFi connectivity. So I can't use it for the project that I want. However, that's no reason that I can't still use it for something. I will make a small shooting game using some LEDs and 3 buttons.
+
+***
+
+## Change of plan!!
+
+The game will look like this:
+
+![Game prototype](./gameDiagram.jpeg)
+
+As you can see, I will need 6 buttons, 6 green LEDS, 5 red LEDs, 5 yellow LEDs, and 5 blue LEDs. All of which came with the breadboard kit that I previously ordered.
+
+The middle button will be the button for shooting. For example, if the blue player is in the middle and presses the middle button, the middle yellow LED will light up, and if the red player is standing in the middle as well, they will lose a life - represented by the green LEDs in the red end. The other two buttons will be used for moving left and right.
+
+This game will be in ./testPrograms/shootingGame.ino
+
+At this point I think my game is done, however I don't have enough female to male connectors to fully test it so I'll have to wait to get my hands on some more of those before being able to say for sure that it's done. I'm also not sure if the delay that I've put for shooting will block the players from moving, again it's something that I'll test when I have more connectors. Although if it does block player movement, I've been researching asynchronicity in c++ and Arduino. I found [this article](https://medium.com/@m.valizadeh/async-programming-in-arduino-unleashing-the-power-of-non-blocking-code-45205a691938) which may be of use.
+
+I started looking at using WiFi on the ESP32 that I originally bought too, however I can't seem to figure out how to create a webpage would be able to run anything resembling a game or something interesting to interact with because it seems like the only way to send that webpage data to a client is by printing lines of HTML to each NetworkClient.
