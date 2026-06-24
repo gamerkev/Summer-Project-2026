@@ -129,3 +129,13 @@ I started looking at using WiFi on the ESP32 that I originally bought too, howev
 I've now ordered a [new ESP32](https://www.aliexpress.com/item/1005010676427148.html?spm=a2g0o.order_list.order_list_main.10.44901802PRF54w), this time the C3 SuperMini variant as I've double checked that it has both WiFi and Bluetooth capabilities and it's very small, as required by my project. Along with that, I've also ordered a [1.8 inch display module](https://www.aliexpress.com/item/1005012439751456.html?spm=a2g0o.order_list.order_list_main.5.44901802PRF54w). I saw someone that has similar requirements to my project with also a similar screen and the ESP32 C3 SuperMini, so I'm hoping [their question](https://forum.arduino.cc/t/how-to-connect-st7789-display-to-esp32-c3-supermini/1298551) on the Arduino forum will be able to help me with my project as well. A Redditor also asked a [similar question](https://www.reddit.com/r/esp32/comments/1l130hk/esp32_c3_supermini_ga9a01_display_128_240x240/) on r/esp32 which may be of help when connecting the display as well. Some more female to male connectors have also been ordered so that I can finish off testing the game that I made on the ESP32-S2.
 
 The display is estimated to arrive on the 2nd July and the ESP32 C3 SuperMini is estimated to arrive on the 6th July
+
+I've been spending some time trying to figure out the wiring that I'll need to do for the display and ESP32, I think I've finally got it figured out:
+
+![Raw wiring diagram](./esp32%20display%20wiring%20raw.jpeg)
+
+Cleaner diagram below:
+
+![Clean wiring diagram](./esp32%20display%20wiring%20clean.jpeg)
+
+Hopefully this works, I went through a few YouTube videos and many obscure forum posts for this, I also found [a video](https://www.youtube.com/watch?v=A0fm15ydH4o) that will help me learn to use the display once it arrives as well. Still waiting on both the chip and display to be delivered.
