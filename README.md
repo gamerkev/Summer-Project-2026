@@ -145,3 +145,5 @@ Both have been delivered! I've tested the screen and the new ESP32 and both work
 I had a small issue with this library but it was fixed using [this thread](https://github.com/T-vK/ESP32-BLE-Keyboard/issues/313). Now everything works smoothly.
 
 The BLE Keyboard library was a flop, trying to send media key presses to any device would cause a seg fault in the ESP32. I have a theory this may be because the device has so little memory since it doesn't seem to be able to send strings longer than 7 characters via bluetooth using that library either. So I'm going to try to proceed with [EDP-IDF](https://github.com/espressif/esp-idf/tree/master), which is the Expressif IoT Development Framework. This may be more difficult to code as it seems to be lower-level, however I don't wish to order any more ESP's, I'm already 2 in...
+
+I'm havin difficulty finding the OpenOCD file for the ESP32 C3 SuperMini so I'm going to read over the Bluetooth examples in Arduino IDE and try to make sense of them, that may allow me to send media control signals to devices.
