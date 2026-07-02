@@ -139,3 +139,9 @@ Cleaner diagram below:
 ![Clean wiring diagram](./esp32%20display%20wiring%20clean.jpeg)
 
 Hopefully this works, I went through a few YouTube videos and many obscure forum posts for this, I also found [a video](https://www.youtube.com/watch?v=A0fm15ydH4o) that will help me learn to use the display once it arrives as well. Still waiting on both the chip and display to be delivered.
+
+Both have been delivered! I've tested the screen and the new ESP32 and both work perfectly, I'm taking a look at libraries that I could use to control media on my phone and I think I've found a promising one [here](https://github.com/T-vK/ESP32-BLE-Keyboard). I'm going to test it out now!
+
+I had a small issue with this library but it was fixed using [this thread](https://github.com/T-vK/ESP32-BLE-Keyboard/issues/313). Now everything works smoothly.
+
+The BLE Keyboard library was a flop, trying to send media key presses to any device would cause a seg fault in the ESP32. I have a theory this may be because the device has so little memory since it doesn't seem to be able to send strings longer than 7 characters via bluetooth using that library either. So I'm going to try to proceed with [EDP-IDF](https://github.com/espressif/esp-idf/tree/master), which is the Expressif IoT Development Framework. This may be more difficult to code as it seems to be lower-level, however I don't wish to order any more ESP's, I'm already 2 in...
