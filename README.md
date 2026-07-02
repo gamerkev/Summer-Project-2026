@@ -149,3 +149,5 @@ The BLE Keyboard library was a flop, trying to send media key presses to any dev
 I'm havin difficulty finding the OpenOCD file for the ESP32 C3 SuperMini so I'm going to read over the Bluetooth examples in Arduino IDE and try to make sense of them, that may allow me to send media control signals to devices.
 
 In trying to figure out how ArduinoBLE works, I took some notes and then wanted to try to create a program that will just connect my ESP32 to a device and print to serial that it worked. So I had to install the ArduinoBLE library, when doing this, I also took a look at any library that came up when I searched "ble". I found a library that I have now tested pausing media with, and it works perfectly! [Hijel_BLEKeyboard](https://github.com/HijelHub/HijelHID_BLEKeyboard). I no longer need to work with ArduinoBLE, however it was interesting to find out some things about it.
+
+This new library is exactly what was needed, all media controls that I would like work. I can pause, play, skip a track, go back a track, and change the volume via Bluetooth!
