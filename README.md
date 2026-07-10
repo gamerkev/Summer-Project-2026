@@ -157,3 +157,5 @@ Reading [online forums](https://forum.arduino.cc/t/need-help-with-song-metadata-
 I need to work with BLE on a lower level, so I've read all of the [Arduino docs on ArduinoBLE](https://docs.arduino.cc/libraries/arduinoble/#BLE%20class) and made extensive notes. I have some sort of an idea of how I'll be able to send media metadata to the ESP32 now, but I may need to create a mobile app to do some BLE things for this, which is something that I wanted to avoid. However, it seems unavoidable due to the lack of BLE audio on the ESP32 that was purchased.
 
 I'm going to draw a flow diagram to help myself picture what the role of both the ESP32 and the connected device will be and how they will work together.
+
+The flow diagram has ended up being more a bit of pseudocode sketch that details the setup of BLE on the ESP32, as a flow diagram feels largely useless, it's now a PDF at root called 'flow diagram.pdf'
