@@ -18,6 +18,7 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include "secret.h"
+// #include <string>
 
 const char *ssid = SSID;      //This stuff is set in secret.h
 const char *password = PASS;
@@ -44,15 +45,43 @@ void setup() {
   Serial.println(WiFi.localIP());
 }
 
+void jsonOutput(String response){
+  int commaLocation = response.indexOf(",");
+  while (commaLocation != -1){
+    Serial.println(response.substring(0, commaLocation));
+    response = response.substring(commaLocation+1);
+    commaLocation = response.indexOf(",");
+  }
+}
+
 void loop() {
   if(WiFi.status() == WL_CONNECTED){
     HTTPClient http;  //Start a HTTP client to be able to send http requests
-    http.begin("https://meowfacts.herokuapp.com/"); //The request that will be sent
+    // http.begin("https://meowfacts.herokuapp.com/"); //The request that will be sent
+    http.begin("https://api.ebird.org/v2/data/obs/KZ/recent");
+    // THIS WILL BE DIFFERENT THINGS TO TRY ONCE I GET TRADING212 API STUFF
+    // http.addHeader(@"Basic", <username>:<password>);
+    // http.addHeader("Authorization", <API key>);
+    // http.addHeader("Authorization", )
+    // http.setAuthorization("<API key>");
+    // http.setAuthorization("<username>:<password>");
+
+    ///////////////////////////MOST LIKELY THIS ONE///////////////////////////////
+    // http.begin("https://live.trading212.com/api/v0/equity/history/orders");  //
+    // http.setAuthorizationType("Basic");                                      //
+    // http.setAuthorization("<username>", "<password>");                       //
+    // http.addHeader("Authorization", "<API key>");                            //
+    //////////////////////////////////////////////////////////////////////////////
+
+    http.addHeader("X-eBirdApiToken", BIRD_API_TOKEN);
     int httpCode = http.GET();  //Send it as a get request
     if(httpCode > 0){
       String payload = http.getString();  //Get the response
-      Serial.println(httpCode);           //Print the response code as well as the body
-      Serial.println(payload);
+      Serial.println(httpCode);           //Print the response code
+      // Serial.println(payload);         //Print the response body
+      int firstItemEnd = payload.indexOf("}");
+      payload = payload.substring(2, firstItemEnd);
+      jsonOutput(payload);
     } else {
       Serial.println("Error on HTTP request");
     }
