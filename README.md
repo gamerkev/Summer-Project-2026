@@ -158,4 +158,12 @@ I need to work with BLE on a lower level, so I've read all of the [Arduino docs 
 
 I'm going to draw a flow diagram to help myself picture what the role of both the ESP32 and the connected device will be and how they will work together.
 
-The flow diagram has ended up being more a bit of pseudocode sketch that details the setup of BLE on the ESP32, as a flow diagram feels largely useless, it's now a PDF at root called 'flow diagram.pdf'
+The flow diagram has ended up being more a bit of pseudocode sketch that details the setup of BLE on the ESP32, as a flow diagram feels largely useless, it's now a PDF at root called 'flow diagram.pdf'. I'm going to start coding and seeing if the ESP32 will even connect.
+
+Using the Arduino BLE library keeps making my ESP32 bootloop with a guru meditation error, so I don't think that this project will be possible with the ESP32 that I've bought, yet again. I think it's time to change the project entirely.
+
+## New project, stocks checker
+
+I give up on BLE. I'm going to make something that uses the WiFi chip on one of my boards instead, currently I'm considering making a device that will allow you to check on how purchased stocks are doing at a glance. I don't think that I have enough time left in this summer to go through the convergent and divergent thinking that I was previously able to do for the previous project attempt. It's been around a month since my first ESP32 arrived and I still have no working software. So I'll just get started and deal with errors as they come up, I already have a screen and 2 ESP32s with integrated WiFi chips so I have all of the hardware that I'll need to begin.
+
+I've managed to send HTTP requests successfully now, the code is in basicHttpRequest. The next step is researching the HTTP client library more to understand how I'll be using API keys etc. for the final project.

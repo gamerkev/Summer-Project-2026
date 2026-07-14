@@ -6,5 +6,6 @@
     "--background-index",
     "--query-driver=**",
     "--compile-commands-dir=/home/guido/Desktop/Summer-Project-2026/build"
-  ]
+  ],
+  "idf.flashType": "JTAG"
 }
