@@ -169,3 +169,5 @@ I give up on BLE. I'm going to make something that uses the WiFi chip on one of 
 I've managed to send HTTP requests successfully now, the code is in basicHttpRequest. The next step is researching the HTTP client library more to understand how I'll be using API keys etc. for the final project.
 
 I've managed to connect to another API using a token in the header now, and I'm currently working on parsing the returned json response from the server as I don't have a verified trading212 account yet, so the only productive thing that I can do is work on what I will do when I do have a verified account.
+
+I've managed to print the json response on the ST7735 screen that I originally bought for the second ESP32, it works perfectly as intended, each field of the response is printed on a separate line and swipes across the screen. For the future, I'm considering adding the function to wipe the text as a method of the ST7735 object.

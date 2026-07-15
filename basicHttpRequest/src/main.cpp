@@ -18,14 +18,36 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include "secret.h"
-// #include <string>
+#include <Adafruit_ST7735.h>
+#include <Adafruit_GFX.h>
+#include <math.h>
+
+#define TFT_CS 12
+#define TFT_RST 3
+#define TFT_DC 2
+#define TFT_MOSI 11
+#define TFT_SCLK 7
+
+Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
 const char *ssid = SSID;      //This stuff is set in secret.h
 const char *password = PASS;
 
+
+// Function declarations
+void jsonOutput(String);
+void movingText(String, int, Adafruit_ST7735*);
+void showBirdDetails(String, Adafruit_ST7735*);
+
 void setup() {
   Serial.begin(115200);
-  delay(5000);  //Delay so that we have time to open the serial monitor
+  delay(1000);  //Delay so that we have time to open the serial monitor
+  tft.initR(INITR_BLACKTAB);
+  tft.setRotation(2);
+  tft.fillScreen(ST77XX_BLACK);
+  tft.setTextWrap(false);
+  // tft.setSPISpeed(40000000); // This doesn't make it any faster
+  tft.drawRect(0, 0, 128, 160, ST77XX_YELLOW);
 
   Serial.println();
   Serial.println("******************************************************");
@@ -43,15 +65,8 @@ void setup() {
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
-}
-
-void jsonOutput(String response){
-  int commaLocation = response.indexOf(",");
-  while (commaLocation != -1){
-    Serial.println(response.substring(0, commaLocation));
-    response = response.substring(commaLocation+1);
-    commaLocation = response.indexOf(",");
-  }
+  tft.setCursor(10, 10);
+  tft.println("Connected!!");
 }
 
 void loop() {
@@ -79,13 +94,51 @@ void loop() {
       String payload = http.getString();  //Get the response
       Serial.println(httpCode);           //Print the response code
       // Serial.println(payload);         //Print the response body
-      int firstItemEnd = payload.indexOf("}");
-      payload = payload.substring(2, firstItemEnd);
-      jsonOutput(payload);
+      payload = payload.substring(payload.indexOf("{")+1);
+      payload = payload.substring(0, payload.indexOf("}"));
+      showBirdDetails(payload, &tft);
     } else {
       Serial.println("Error on HTTP request");
     }
     http.end(); //Free the resources
   }
   delay(10000);
+}
+
+void jsonOutput(String response){
+  int commaLocation = response.indexOf(",");
+  while (commaLocation != -1){
+    Serial.println(response.substring(0, commaLocation));
+    response = response.substring(commaLocation+1);
+    commaLocation = response.indexOf(",");
+  }
+}
+
+void movingText(String toWrite, int y, Adafruit_ST7735* tft){
+  int pixelLength = toWrite.length() * 6;                       // 6 pixels width each character
+  int extraPixels = (ceil((pixelLength - 108)/6) * 6)+1;
+  (*tft).fillRect(1, y, 126, 8, ST7735_BLACK);                  // black out the line where the text will be
+  (*tft).setCursor(10, y);
+  (*tft).print(toWrite);
+  (*tft).fillRect(1, y, 10, 8, ST7735_BLACK);                   // black out the edges of the text
+  (*tft).fillRect(117, y, 10, 8, ST7735_BLACK);
+  delay(3000);                                                  // time to read the first part of the text
+  for(int i = 9; i > -extraPixels; i--){
+    (*tft).fillRect(1, y, 128, 8, ST7735_BLACK);
+    (*tft).setCursor(i, y);                                     // move 1 pixel to the left
+    (*tft).print(toWrite);
+    (*tft).fillRect(1, y, 10, 8, ST7735_BLACK);
+    (*tft).fillRect(117, y, 10, 8, ST7735_BLACK);
+    (*tft).drawRect(0, 0, 128, 160, ST77XX_YELLOW);
+    delay(100);
+  }
+}
+
+void showBirdDetails(String response, Adafruit_ST7735* tft){
+  int commaLocation = response.indexOf(",");
+  for (int i = 1; i < 13; i++){
+    movingText(response.substring(0, commaLocation), 20 + (i*9), tft);
+    response = response.substring(commaLocation+1);
+    commaLocation = response.indexOf(",");
+  }
 }
