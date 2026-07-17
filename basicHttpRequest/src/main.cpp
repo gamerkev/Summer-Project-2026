@@ -29,31 +29,36 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
       fillRect(1, y, 9, 8, ST7735_BLACK);                   // black out the edges of the text
       fillRect(118, y, 9, 8, ST7735_BLACK);
       delay(3000);                                                  // time to read the first part of the text
-      for(int i = 9; i > 3-extraPixels; i=i-6){
+      for(int i = 9; i > 3-extraPixels; i=i-2){
         fillRect(1, y, 128, 8, ST7735_BLACK);
         setCursor(i, y);                                     // move 1 pixel to the left
         print(toWrite);
         fillRect(1, y, 9, 8, ST7735_BLACK);
         fillRect(118, y, 9, 8, ST7735_BLACK);
         drawRect(0, 0, 128, 160, ST77XX_YELLOW);
-        delay(100);
+        delay(50);
       }
     }
 
     void logo(){
-      fillRect(1, 1, 128, 160, ST7735_BLACK);
-      fillTriangle(24, 119, 47, 119, 64, 71, 0x053b);
+      fillScreen(ST7735_BLACK);
+      fillTriangle(24, 109, 47, 109, 64, 61, 0x053b);
       delay(200);
-      fillTriangle(65, 71, 82, 119, 105, 119, 0x053b);
+      fillTriangle(65, 61, 82, 109, 105, 109, 0x053b);
       delay(200);
-      fillTriangle(105, 119, 75, 37, 65, 71, 0x053b);
+      fillTriangle(105, 109, 75, 27, 65, 61, 0x053b);
       delay(200);
-      fillTriangle(24, 119, 64, 71, 54, 37, 0x053b);
+      fillTriangle(24, 109, 64, 61, 54, 27, 0x053b);
       delay(200);
-      fillTriangle(54, 37, 64, 71, 75, 37, 0x053b);
+      fillTriangle(54, 27, 64, 61, 75, 27, 0x053b);
       delay(200);
-      fillTriangle(75, 37, 65, 71, 54, 37, 0x053b);
-      delay(2000);
+      fillTriangle(75, 27, 65, 61, 54, 27, 0x053b);
+      delay(200);
+      setTextSize(2);
+      setCursor(4, 125);
+      println("Trading212");
+      setTextSize(1);
+      delay(3000);
     }
 };
 
