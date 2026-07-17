@@ -21,6 +21,9 @@
 #include <Adafruit_ST7735.h>
 #include <Adafruit_GFX.h>
 #include <math.h>
+#include <base64.hpp>
+#include <string.h>
+#include "base64.hpp"
 
 #define TFT_CS 12
 #define TFT_RST 3
@@ -33,11 +36,12 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RS
 const char *ssid = SSID;      //This stuff is set in secret.h
 const char *password = PASS;
 
-
 // Function declarations
 void jsonOutput(String);
 void movingText(String, int, Adafruit_ST7735*);
 void showBirdDetails(String, Adafruit_ST7735*);
+String createHeader(unsigned char*);
+
 
 void setup() {
   Serial.begin(115200);
@@ -65,15 +69,17 @@ void setup() {
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
-  tft.setCursor(10, 10);
-  tft.println("Connected!!");
+  // tft.setCursor(10, 10);
+  // tft.println("Connected!!");
 }
 
 void loop() {
   if(WiFi.status() == WL_CONNECTED){
     HTTPClient http;  //Start a HTTP client to be able to send http requests
     // http.begin("https://meowfacts.herokuapp.com/"); //The request that will be sent
-    http.begin("https://api.ebird.org/v2/data/obs/KZ/recent");
+    // http.begin("https://api.ebird.org/v2/data/obs/KZ/recent");
+    // http.addHeader("X-eBirdApiToken", BIRD_API_TOKEN);
+    http.begin("https://live.trading212.com/api/v0/equity/account/summary");
     // THIS WILL BE DIFFERENT THINGS TO TRY ONCE I GET TRADING212 API STUFF
     // http.addHeader(@"Basic", <username>:<password>);
     // http.addHeader("Authorization", <API key>);
@@ -87,16 +93,22 @@ void loop() {
     // http.setAuthorization("<username>", "<password>");                       //
     // http.addHeader("Authorization", "<API key>");                            //
     //////////////////////////////////////////////////////////////////////////////
-
-    http.addHeader("X-eBirdApiToken", BIRD_API_TOKEN);
+    
+    // http.setAuthorizationType("Basic");
+    // http.setAuthorization(ID, SECRET);
+    // http.addHeader("Authorization", SECRET);
+  
+    http.addHeader("Authorization", "Basic " + String((char *) encoded));
+    
     int httpCode = http.GET();  //Send it as a get request
     if(httpCode > 0){
       String payload = http.getString();  //Get the response
       Serial.println(httpCode);           //Print the response code
-      // Serial.println(payload);         //Print the response body
-      payload = payload.substring(payload.indexOf("{")+1);
-      payload = payload.substring(0, payload.indexOf("}"));
-      showBirdDetails(payload, &tft);
+      Serial.println(payload);         //Print the response body
+      // payload = payload.substring(payload.indexOf("{")+1);
+      // payload = payload.substring(0, payload.indexOf("}"));
+      // showBirdDetails(payload, &tft);
+      movingText((String)httpCode, 30, &tft);
     } else {
       Serial.println("Error on HTTP request");
     }

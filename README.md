@@ -171,3 +171,7 @@ I've managed to send HTTP requests successfully now, the code is in basicHttpReq
 I've managed to connect to another API using a token in the header now, and I'm currently working on parsing the returned json response from the server as I don't have a verified trading212 account yet, so the only productive thing that I can do is work on what I will do when I do have a verified account.
 
 I've managed to print the json response on the ST7735 screen that I originally bought for the second ESP32, it works perfectly as intended, each field of the response is printed on a separate line and swipes across the screen. For the future, I'm considering adding the function to wipe the text as a method of the ST7735 object.
+
+Having now opened a trading212 account, I'm trying to access my details with [the API](https://docs.trading212.com/api/section/general-information/quickstart), although I'm having a lot of trouble at the moment.
+
+Update, I've fixed the authorisation header! The problem was where with the way that I was concatenating my encoded API key and API ID with 'Basic '. I was doing it using a loop because I kept on getting errors when trying to concatenate with a +. I then just used casting since I realised it was replacing 'Basic ' with random numbers, I'm still unclear why, and now it works! 
