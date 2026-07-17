@@ -16,9 +16,9 @@
 #define TFT_MOSI 11
 #define TFT_SCLK 7
 
-class Adafruit_ST7735Ext : public Adafruit_ST7735{
+class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display library to be able to cleanly add functionality
   public:
-    Adafruit_ST7735Ext (int8_t cs, int8_t dc, int8_t mosi, int8_t sclk, int8_t rst) :Adafruit_ST7735(cs, dc, mosi, sclk, rst){}
+    Adafruit_ST7735Ext (int8_t cs, int8_t dc, int8_t mosi, int8_t sclk, int8_t rst) : Adafruit_ST7735(cs, dc, mosi, sclk, rst){}  // Same constructor as the class it's extending
 
     void movingText(String toWrite, int y){
       int pixelLength = toWrite.length() * 6;                       // 6 pixels width each character
@@ -39,6 +39,56 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{
         delay(100);
       }
     }
+};
+
+class ProfileDetails{
+  public:
+    ProfileDetails(const char *value){
+      profile = cJSON_Parse(value);
+    }
+
+    int getId(){
+      return profile->child->valueint;
+    }
+
+    String getCurrency(){
+      return profile->child->next->valuestring;
+    }
+
+    float getTotalValue(){
+      return profile->child->next->next->valuedouble;
+    }
+
+    float getCashAvailableToTrade(){
+      return profile->child->next->next->next->child->valuedouble;
+    }
+
+    float getCashReservedForOrders(){
+      return profile->child->next->next->next->child->next->valuedouble;
+    }
+
+    float getCashInPies(){
+      return profile->child->next->next->next->child->next->next->valuedouble;
+    }
+
+    float getInvestmentsCurrentValue(){
+      return profile->child->next->next->next->next->child->valuedouble;
+    }
+
+    float getInvestmentsTotalCost(){
+      return profile->child->next->next->next->next->child->next->valuedouble;
+    }
+
+    float getInvestmentsRealisedProfitLoss(){
+      return profile->child->next->next->next->next->child->next->next->valuedouble;
+    }
+
+    float getInvestMentsUnrealisedProfitLoss(){
+      return profile->child->next->next->next->next->child->next->next->next->valuedouble;
+    }
+  
+  private:
+    cJSON* profile;
 };
 
 Adafruit_ST7735Ext tft = Adafruit_ST7735Ext(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
@@ -89,23 +139,13 @@ void loop() {
       String payload = http.getString();  //Get the response
       Serial.println(httpCode);           //Print the response code
       Serial.println(payload);         //Print the response body
-      // movingText((String)httpCode, 30, &tft);
-      Serial.println("hello");
-      tft.movingText(payload, 30); 
+      ProfileDetails parsed = ProfileDetails(payload.c_str());
+      // Serial.println(parsed.getId());
+      tft.movingText("Id: "+(String)parsed.getId(), 30);
     } else {
       Serial.println("Error on HTTP request");
     }
     http.end(); //Free the resources
   }
   delay(10000);
-}
-
-void jsonOutput(String response){                             // This will likely be replaced by an actual json parsing library
-  int commaLocation = response.indexOf(",");
-  while (commaLocation != -1){
-    Serial.println(response.substring(0, commaLocation));
-    response = response.substring(commaLocation+1);
-    commaLocation = response.indexOf(",");
-  }
-}
 }
