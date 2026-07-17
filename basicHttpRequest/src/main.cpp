@@ -22,22 +22,38 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
 
     void movingText(String toWrite, int y){
       int pixelLength = toWrite.length() * 6;                       // 6 pixels width each character
-      int extraPixels = (ceil((pixelLength - 108)/6) * 6)+1;
+      int extraPixels = (ceil((pixelLength - 114)/6) * 6);    // chose the numbers from this line through trial and error
       fillRect(1, y, 126, 8, ST7735_BLACK);                  // black out the line where the text will be
       setCursor(10, y);
       print(toWrite);
-      fillRect(1, y, 10, 8, ST7735_BLACK);                   // black out the edges of the text
-      fillRect(117, y, 10, 8, ST7735_BLACK);
+      fillRect(1, y, 9, 8, ST7735_BLACK);                   // black out the edges of the text
+      fillRect(118, y, 9, 8, ST7735_BLACK);
       delay(3000);                                                  // time to read the first part of the text
-      for(int i = 9; i > -extraPixels; i--){
+      for(int i = 9; i > 3-extraPixels; i=i-6){
         fillRect(1, y, 128, 8, ST7735_BLACK);
         setCursor(i, y);                                     // move 1 pixel to the left
         print(toWrite);
-        fillRect(1, y, 10, 8, ST7735_BLACK);
-        fillRect(117, y, 10, 8, ST7735_BLACK);
+        fillRect(1, y, 9, 8, ST7735_BLACK);
+        fillRect(118, y, 9, 8, ST7735_BLACK);
         drawRect(0, 0, 128, 160, ST77XX_YELLOW);
         delay(100);
       }
+    }
+
+    void logo(){
+      fillRect(1, 1, 128, 160, ST7735_BLACK);
+      fillTriangle(24, 119, 47, 119, 64, 71, 0x053b);
+      delay(200);
+      fillTriangle(65, 71, 82, 119, 105, 119, 0x053b);
+      delay(200);
+      fillTriangle(105, 119, 75, 37, 65, 71, 0x053b);
+      delay(200);
+      fillTriangle(24, 119, 64, 71, 54, 37, 0x053b);
+      delay(200);
+      fillTriangle(54, 37, 64, 71, 75, 37, 0x053b);
+      delay(200);
+      fillTriangle(75, 37, 65, 71, 54, 37, 0x053b);
+      delay(2000);
     }
 };
 
@@ -106,9 +122,6 @@ void setup() {
   tft.setRotation(2);             // The screen is portrait
   tft.fillScreen(ST77XX_BLACK);   // Black out the screen
   tft.setTextWrap(false);         // This is so that we can use the moving text
-                                  // although I may make it so that it's set to false at the beginning
-                                  // of that function and reset to true at the end
-  tft.drawRect(0, 0, 128, 160, ST77XX_YELLOW);  // I like to do this to be able to tell if edge pixels would change
 
   Serial.println();
   Serial.println("******************************************************");
@@ -120,6 +133,7 @@ void setup() {
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
+    tft.logo();
     Serial.print(".");
   }
   Serial.println("");
@@ -129,6 +143,8 @@ void setup() {
 }
 
 void loop() {
+  tft.fillScreen(ST7735_BLACK);
+  tft.drawRect(0, 0, 128, 160, ST7735_YELLOW);
   if(WiFi.status() == WL_CONNECTED){
     HTTPClient http;  //Start a HTTP client to be able to send http requests
     http.begin("https://live.trading212.com/api/v0/equity/account/summary");  // Trading212 api
@@ -138,14 +154,22 @@ void loop() {
     if(httpCode > 0){
       String payload = http.getString();  //Get the response
       Serial.println(httpCode);           //Print the response code
-      Serial.println(payload);         //Print the response body
       ProfileDetails parsed = ProfileDetails(payload.c_str());
       // Serial.println(parsed.getId());
-      tft.movingText("Id: "+(String)parsed.getId(), 30);
+      tft.movingText("Hello id"+(String)parsed.getId(), 10);
+      tft.movingText("Currency: " + (String)parsed.getCurrency(), 18);
+      tft.movingText("Total value: " + (String)parsed.getTotalValue(), 26);
+      tft.movingText("Cash available to trade: " + (String)parsed.getCashAvailableToTrade(), 34);
+      tft.movingText("Cash reserved for orders: " + (String)parsed.getCashReservedForOrders(), 42);
+      tft.movingText("Cash in pies: " + (String)parsed.getCashInPies(), 50);
+      tft.movingText("Current value of investments: " + (String)parsed.getInvestmentsCurrentValue(), 58);
+      tft.movingText("Total cost of investments: " + (String)parsed.getInvestmentsTotalCost(), 66);
+      tft.movingText("Realised profit loss: " + (String)parsed.getInvestmentsRealisedProfitLoss(), 74);
+      tft.movingText("Unrealised profit loss: " + (String)parsed.getInvestMentsUnrealisedProfitLoss(), 82);
     } else {
       Serial.println("Error on HTTP request");
     }
     http.end(); //Free the resources
   }
-  delay(10000);
+  delay(20000);
 }
