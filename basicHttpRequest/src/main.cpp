@@ -8,6 +8,7 @@
 #include <base64.hpp>
 #include <string.h>
 #include "base64.hpp"
+#include <cJSON.h>
 
 #define TFT_CS 12   // Pins for the SPI interface
 #define TFT_RST 3
@@ -15,14 +16,38 @@
 #define TFT_MOSI 11
 #define TFT_SCLK 7
 
-Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
+class Adafruit_ST7735Ext : public Adafruit_ST7735{
+  public:
+    Adafruit_ST7735Ext (int8_t cs, int8_t dc, int8_t mosi, int8_t sclk, int8_t rst) :Adafruit_ST7735(cs, dc, mosi, sclk, rst){}
+
+    void movingText(String toWrite, int y){
+      int pixelLength = toWrite.length() * 6;                       // 6 pixels width each character
+      int extraPixels = (ceil((pixelLength - 108)/6) * 6)+1;
+      fillRect(1, y, 126, 8, ST7735_BLACK);                  // black out the line where the text will be
+      setCursor(10, y);
+      print(toWrite);
+      fillRect(1, y, 10, 8, ST7735_BLACK);                   // black out the edges of the text
+      fillRect(117, y, 10, 8, ST7735_BLACK);
+      delay(3000);                                                  // time to read the first part of the text
+      for(int i = 9; i > -extraPixels; i--){
+        fillRect(1, y, 128, 8, ST7735_BLACK);
+        setCursor(i, y);                                     // move 1 pixel to the left
+        print(toWrite);
+        fillRect(1, y, 10, 8, ST7735_BLACK);
+        fillRect(117, y, 10, 8, ST7735_BLACK);
+        drawRect(0, 0, 128, 160, ST77XX_YELLOW);
+        delay(100);
+      }
+    }
+};
+
+Adafruit_ST7735Ext tft = Adafruit_ST7735Ext(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
 const char *ssid = SSID;      // This stuff is set in secret.h
 const char *password = PASS;
 
 // Function declarations
 void jsonOutput(String);
-void movingText(String, int, Adafruit_ST7735*);
 
 void setup() {
   Serial.begin(115200);
@@ -64,7 +89,9 @@ void loop() {
       String payload = http.getString();  //Get the response
       Serial.println(httpCode);           //Print the response code
       Serial.println(payload);         //Print the response body
-      movingText((String)httpCode, 30, &tft);
+      // movingText((String)httpCode, 30, &tft);
+      Serial.println("hello");
+      tft.movingText(payload, 30); 
     } else {
       Serial.println("Error on HTTP request");
     }
@@ -81,23 +108,4 @@ void jsonOutput(String response){                             // This will likel
     commaLocation = response.indexOf(",");
   }
 }
-
-void movingText(String toWrite, int y, Adafruit_ST7735* tft){
-  int pixelLength = toWrite.length() * 6;                       // 6 pixels width each character
-  int extraPixels = (ceil((pixelLength - 108)/6) * 6)+1;
-  (*tft).fillRect(1, y, 126, 8, ST7735_BLACK);                  // black out the line where the text will be
-  (*tft).setCursor(10, y);
-  (*tft).print(toWrite);
-  (*tft).fillRect(1, y, 10, 8, ST7735_BLACK);                   // black out the edges of the text
-  (*tft).fillRect(117, y, 10, 8, ST7735_BLACK);
-  delay(3000);                                                  // time to read the first part of the text
-  for(int i = 9; i > -extraPixels; i--){
-    (*tft).fillRect(1, y, 128, 8, ST7735_BLACK);
-    (*tft).setCursor(i, y);                                     // move 1 pixel to the left
-    (*tft).print(toWrite);
-    (*tft).fillRect(1, y, 10, 8, ST7735_BLACK);
-    (*tft).fillRect(117, y, 10, 8, ST7735_BLACK);
-    (*tft).drawRect(0, 0, 128, 160, ST77XX_YELLOW);
-    delay(100);
-  }
 }
