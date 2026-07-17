@@ -1,19 +1,3 @@
-// /*
-//     Go to thingspeak.com and create an account if you don't have one already.
-//     After logging in, click on the "New Channel" button to create a new channel for your data. This is where your data will be stored and displayed.
-//     Fill in the Name, Description, and other fields for your channel as desired, then click the "Save Channel" button.
-//     Take note of the "Write API Key" located in the "API keys" tab, this is the key you will use to send data to your channel.
-//     Replace the channelID from tab "Channel Settings" and privateKey with "Read API Keys" from "API Keys" tab.
-//     Replace the host variable with the thingspeak server hostname "api.thingspeak.com"
-//     Upload the sketch to your ESP32 board and make sure that the board is connected to the internet. The ESP32 should now send data to your Thingspeak channel at the intervals specified by the loop function.
-//     Go to the channel view page on thingspeak and check the "Field1" for the new incoming data.
-//     You can use the data visualization and analysis tools provided by Thingspeak to display and process your data in various ways.
-//     Please note, that Thingspeak accepts only integer values.
-
-//     You can later check the values at https://thingspeak.com/channels/2005329
-//     Please note that this public channel can be accessed by anyone and it is possible that more people will write their values.
-//  */
-
 #include <Arduino.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -25,7 +9,7 @@
 #include <string.h>
 #include "base64.hpp"
 
-#define TFT_CS 12
+#define TFT_CS 12   // Pins for the SPI interface
 #define TFT_RST 3
 #define TFT_DC 2
 #define TFT_MOSI 11
@@ -33,25 +17,23 @@
 
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
-const char *ssid = SSID;      //This stuff is set in secret.h
+const char *ssid = SSID;      // This stuff is set in secret.h
 const char *password = PASS;
 
 // Function declarations
 void jsonOutput(String);
 void movingText(String, int, Adafruit_ST7735*);
-void showBirdDetails(String, Adafruit_ST7735*);
-String createHeader(unsigned char*);
-
 
 void setup() {
   Serial.begin(115200);
   delay(1000);  //Delay so that we have time to open the serial monitor
-  tft.initR(INITR_BLACKTAB);
-  tft.setRotation(2);
-  tft.fillScreen(ST77XX_BLACK);
-  tft.setTextWrap(false);
-  // tft.setSPISpeed(40000000); // This doesn't make it any faster
-  tft.drawRect(0, 0, 128, 160, ST77XX_YELLOW);
+  tft.initR(INITR_BLACKTAB);      // Initialise the displayo object
+  tft.setRotation(2);             // The screen is portrait
+  tft.fillScreen(ST77XX_BLACK);   // Black out the screen
+  tft.setTextWrap(false);         // This is so that we can use the moving text
+                                  // although I may make it so that it's set to false at the beginning
+                                  // of that function and reset to true at the end
+  tft.drawRect(0, 0, 128, 160, ST77XX_YELLOW);  // I like to do this to be able to tell if edge pixels would change
 
   Serial.println();
   Serial.println("******************************************************");
@@ -69,45 +51,19 @@ void setup() {
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
-  // tft.setCursor(10, 10);
-  // tft.println("Connected!!");
 }
 
 void loop() {
   if(WiFi.status() == WL_CONNECTED){
     HTTPClient http;  //Start a HTTP client to be able to send http requests
-    // http.begin("https://meowfacts.herokuapp.com/"); //The request that will be sent
-    // http.begin("https://api.ebird.org/v2/data/obs/KZ/recent");
-    // http.addHeader("X-eBirdApiToken", BIRD_API_TOKEN);
-    http.begin("https://live.trading212.com/api/v0/equity/account/summary");
-    // THIS WILL BE DIFFERENT THINGS TO TRY ONCE I GET TRADING212 API STUFF
-    // http.addHeader(@"Basic", <username>:<password>);
-    // http.addHeader("Authorization", <API key>);
-    // http.addHeader("Authorization", )
-    // http.setAuthorization("<API key>");
-    // http.setAuthorization("<username>:<password>");
-
-    ///////////////////////////MOST LIKELY THIS ONE///////////////////////////////
-    // http.begin("https://live.trading212.com/api/v0/equity/history/orders");  //
-    // http.setAuthorizationType("Basic");                                      //
-    // http.setAuthorization("<username>", "<password>");                       //
-    // http.addHeader("Authorization", "<API key>");                            //
-    //////////////////////////////////////////////////////////////////////////////
+    http.begin("https://live.trading212.com/api/v0/equity/account/summary");  // Trading212 api
+    http.addHeader("Authorization", "Basic " + String((char *) encoded));     // Authorisation header
     
-    // http.setAuthorizationType("Basic");
-    // http.setAuthorization(ID, SECRET);
-    // http.addHeader("Authorization", SECRET);
-  
-    http.addHeader("Authorization", "Basic " + String((char *) encoded));
-    
-    int httpCode = http.GET();  //Send it as a get request
+    int httpCode = http.GET();  //Send get request
     if(httpCode > 0){
       String payload = http.getString();  //Get the response
       Serial.println(httpCode);           //Print the response code
       Serial.println(payload);         //Print the response body
-      // payload = payload.substring(payload.indexOf("{")+1);
-      // payload = payload.substring(0, payload.indexOf("}"));
-      // showBirdDetails(payload, &tft);
       movingText((String)httpCode, 30, &tft);
     } else {
       Serial.println("Error on HTTP request");
@@ -117,7 +73,7 @@ void loop() {
   delay(10000);
 }
 
-void jsonOutput(String response){
+void jsonOutput(String response){                             // This will likely be replaced by an actual json parsing library
   int commaLocation = response.indexOf(",");
   while (commaLocation != -1){
     Serial.println(response.substring(0, commaLocation));
@@ -143,14 +99,5 @@ void movingText(String toWrite, int y, Adafruit_ST7735* tft){
     (*tft).fillRect(117, y, 10, 8, ST7735_BLACK);
     (*tft).drawRect(0, 0, 128, 160, ST77XX_YELLOW);
     delay(100);
-  }
-}
-
-void showBirdDetails(String response, Adafruit_ST7735* tft){
-  int commaLocation = response.indexOf(",");
-  for (int i = 1; i < 13; i++){
-    movingText(response.substring(0, commaLocation), 20 + (i*9), tft);
-    response = response.substring(commaLocation+1);
-    commaLocation = response.indexOf(",");
   }
 }
