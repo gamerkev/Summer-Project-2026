@@ -175,3 +175,5 @@ I've managed to print the json response on the ST7735 screen that I originally b
 Having now opened a trading212 account, I'm trying to access my details with [the API](https://docs.trading212.com/api/section/general-information/quickstart), although I'm having a lot of trouble at the moment.
 
 Update, I've fixed the authorisation header! The problem was where with the way that I was concatenating my encoded API key and API ID with 'Basic '. I was doing it using a loop because I kept on getting errors when trying to concatenate with a +. I then just used casting since I realised it was replacing 'Basic ' with random numbers, I'm still unclear why, and now it works! 
+
+Everything is going very well at the moment, the API works as intended so now I can focus on coding something resembling an OS. First I'll look through the API docs to identify anything I might want to be able to do, after that I'll sketch some menus on paper and start coding.
