@@ -45,29 +45,26 @@ void loop() {
   tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
   if(WiFi.status() == WL_CONNECTED){
     HTTPClient http;  //Start a HTTP client to be able to send http requests
-    http.begin("https://live.trading212.com/api/v0/equity/account/summary");  // Trading212 api
+    // http.begin("https://live.trading212.com/api/v0/equity/account/summary");  // Access account data
+    http.begin("https://live.trading212.com/api/v0/equity/metadata/instruments?limit=1"); //Get all available instruments
     http.addHeader("Authorization", "Basic " + String((char *) encoded));     // Authorisation header
     
     int httpCode = http.GET();  //Send get request
     if(httpCode > 0){
       String payload = http.getString();  //Get the response
       Serial.println(httpCode);           //Print the response code
-      ProfileDetails parsed = ProfileDetails(payload.c_str());
-      // Serial.println(parsed.getId());
-      tft.movingText("Hello id"+(String)parsed.getId(), 10);
-      tft.movingText("Currency: " + (String)parsed.getCurrency(), 18);
-      tft.movingText("Total value: " + (String)parsed.getTotalValue(), 26);
-      tft.movingText("Cash available to trade: " + (String)parsed.getCashAvailableToTrade(), 34);
-      tft.movingText("Cash reserved for orders: " + (String)parsed.getCashReservedForOrders(), 42);
-      tft.movingText("Cash in pies: " + (String)parsed.getCashInPies(), 50);
-      tft.movingText("Current value of investments: " + (String)parsed.getInvestmentsCurrentValue(), 58);
-      tft.movingText("Total cost of investments: " + (String)parsed.getInvestmentsTotalCost(), 66);
-      tft.movingText("Realised profit loss: " + (String)parsed.getInvestmentsRealisedProfitLoss(), 74);
-      tft.movingText("Unrealised profit loss: " + (String)parsed.getInvestMentsUnrealisedProfitLoss(), 82);
+      http.end();
+      // payload = payload + "]";
+      // ProfileDetails parsed = ProfileDetails(payload.c_str());
+      Serial.println(payload);
+      // Serial.println(cJSON_Print(cJSON_Parse(payload.c_str())));
+
+      // Serial.println(cJSON_Print(cJSON_GetArrayItem(cJSON_Parse(payload.c_str()), 0)));
+      tft.movingText("Check serial", 50);
     } else {
       Serial.println("Error on HTTP request");
+      http.end();
     }
-    http.end(); //Free the resources
   }
   delay(20000);
 }
