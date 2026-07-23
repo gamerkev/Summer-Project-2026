@@ -179,3 +179,6 @@ Update, I've fixed the authorisation header! The problem was where with the way 
 Everything is going very well at the moment, the API works as intended so now I can focus on coding something resembling an OS. First I'll look through the API docs to identify anything I might want to be able to do, after that I'll sketch some menus on paper and start coding.
 
 I've been trying to access the [Get all available instruments API endpoint](https://docs.trading212.com/api/instruments/instruments), although I don't think that my ESP32 has enough memeory to handle the request response. The request response is supposed to be a list of json objects, however the list doesn't have a closing square bracket which would signify its ending. I believe that this is also why the cJSON library can't parse the response, it returns an empty cJSON object. Clearly, cJSON can't parse json that doesn't have closing brackets, so I'll have to create my own minimal cJSON parsing library which will do the bare minimum for my project.
+
+I'm going to not create a json parser now, listing instruments that the user doesn't even own seems a little out of scope at the moment. If I manage to list all owned positions and have functionality to sell off stocks that should be enough, and I can add further functionality if necessary in the future.
+
