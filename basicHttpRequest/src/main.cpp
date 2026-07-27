@@ -46,7 +46,7 @@ void loop() {
   if(WiFi.status() == WL_CONNECTED){
     HTTPClient http;  //Start a HTTP client to be able to send http requests
     // http.begin("https://live.trading212.com/api/v0/equity/account/summary");  // Access account data
-    http.begin("https://live.trading212.com/api/v0/equity/metadata/instruments?limit=1"); //Get all available instruments
+    http.begin("https://live.trading212.com/api/v0/equity/positions"); //Get all available instruments
     http.addHeader("Authorization", "Basic " + String((char *) encoded));     // Authorisation header
     
     int httpCode = http.GET();  //Send get request
@@ -56,7 +56,7 @@ void loop() {
       http.end();
       // payload = payload + "]";
       // ProfileDetails parsed = ProfileDetails(payload.c_str());
-      Serial.println(payload);
+      Serial.println(cJSON_Print(cJSON_Parse(payload.c_str())));
       // Serial.println(cJSON_Print(cJSON_Parse(payload.c_str())));
 
       // Serial.println(cJSON_Print(cJSON_GetArrayItem(cJSON_Parse(payload.c_str()), 0)));
