@@ -16,7 +16,7 @@ Adafruit_ST7735Ext tft = Adafruit_ST7735Ext(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, 
 void setup() {
   Serial.begin(115200);
   delay(1000);  //Delay so that we have time to open the serial monitor
-  tft.initR(INITR_BLACKTAB);      // Initialise the displayo object
+  tft.initR(INITR_BLACKTAB);      // Initialise the display object
   tft.setRotation(2);             // The screen is portrait
   tft.fillScreen(ST77XX_BLACK);   // Black out the screen
   tft.setTextWrap(false);         // This is so that we can use the moving text
