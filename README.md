@@ -182,3 +182,13 @@ I've been trying to access the [Get all available instruments API endpoint](http
 
 I'm going to not create a json parser now, listing instruments that the user doesn't even own seems a little out of scope at the moment. If I manage to list all owned positions and have functionality to sell off stocks that should be enough, and I can add further functionality if necessary in the future.
 
+I need to figure out whether I'm going to use one of the Adafruit GFX built-in fonts for my project, or whether I'll have to design my own. I already found out that the built-in fonts lack the **£** symbol, so I know that I'll have to at least create a glyph for that. However, as I don't trade much, I'm not too clear on what a user would like to be able to do and see on a device such as the one I'm creating. So I've created a Google form (shown below) that I will share with people that I know trade more regularly.
+
+![Google form screenshot 0](./form0.png)
+![Google form screenshot 1](./form1.png)
+![Google form screenshot 2](./form2.png)
+![Google form screenshot 3](./form3.png)
+![Google form screenshot 4](./form4.png)
+![Google form screenshot 5](./form5.png)
+![Google form screenshot 6](./form6.png)
+![Google form screenshot 7](./form7.png)
