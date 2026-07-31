@@ -192,3 +192,30 @@ I need to figure out whether I'm going to use one of the Adafruit GFX built-in f
 ![Google form screenshot 5](./form5.png)
 ![Google form screenshot 6](./form6.png)
 ![Google form screenshot 7](./form7.png)
+
+While I wait for responses to the form, I can fill in the form myself as an amateur and begin to think about possible font sizes. I want to try to fit every menu on one screen and not have any scrolling, as the screen flickers due to having to set black pixels before I can put the next frame on. If I can't fit things on one screen, I'd much rather use pages to flick through in order to minimise movements on the display.
+
+These are my responses:
+
+![My Response 0](./myResponse0.png)
+![My Response 1](./myResponse1.png)
+![My Response 2](./myResponse2.png)
+![My Response 3](./myResponse3.png)
+![My Response 4](./myResponse4.png)
+
+I divided my form into 4 sections: summary, open positions, orders, and history. It would make sense to organise menus on the device in a tree format.
+
+![Menu tree diagram](./menuTreeDiagram.jpeg)
+
+You can see pending orders and create new orders are crossed out which are coming off of pending orders. Originally the current pending orders was just "Orders", however I realised that having "Create a new order" and "Pending orders" coming off of that made no sense as fetching available instruments doesn't work (at least for now) so I crossed out "Create a new order" and then drew "Create a new order" off of open positions, past orders, and orders. And changed orders to become pending orders. I did this because the data that will be fetched for open positions, pending orders, and past orders includes the ticker string for an instrument, which is required to place an order. So it would only really make sense to place an order based off of positions/orders shown in those menus.
+
+I can now start to sketch menus, I'll start from the root of the tree (Boot-up), as the leaves and children of the root are the most likely to change. Doing these sketches will also help me get an idea of how I want to design the interface of the device. At the moment I have two ideas, I'll create multiple sketches for each menu that are based off of different hardware interfaces.
+
+Here are my boot-up menu sketches:
+
+![Boot up menu sketch](./bootUpMenu.jpeg)
+
+I've used a rounded-off button for the power button to differentiate it from the other buttons. In the sketch on the left-hand side, I use 4 buttons (excludng the power button) as the hardware interface for the device. In the boot-up menu ,each button is linked to one of the children of the root in the tree diagram. However, I forsee some problems with this, namely that if there is too much data to fit on one page, or if the user is trying to select a position or order in a different menu, navigating using those 4 buttons and selecting orders may feel unnatural. But I will still keep this as an option in case I figure out a way around it in the future as I quite like it for the boot-up menu. For the sketch on the right-hand side, I've used 3 buttons (excluding the power button). This makes things like scrolling much more natural, as you can use the top and bottom buttons to move up/down items and the middle button as a select button. If an item on the bottom or top of the screen is reached, the device can just go to the next page. However, this is boring and not a unique design. Writing about both designs, I realise that each screen design could be used with either setups of buttons. The left-hand screen could scroll through the menu in the same way that we read, left-to-right then top-to-bottom. The right-hand screen could still link one button to each option, which highlights when pressed, options could then be selected by holding its corresponding button down.
+
+This makes my choice of the buttons much more difficult, so I will have to continue sketching with both setups.
+
