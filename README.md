@@ -270,3 +270,6 @@ Alterations done, it's time to test again. My new font looks much cleaner, shown
 
 Although, I made a few more alterations than originally planned. I made the numbers larger and slimmed down the space that every character took up by 2 pixels, but to do this I also had to alter A, M, N, T, O, Q, V, X, Y, Z, m, q, w, and x. Even still, I can spot 2 remaining mistakes, x and w are 1 pixel too high. After fixing this, I get my final keyboard font:
 
+![Final font](./pictures/keyboardFontIteration3.jpeg)
+
+I had forgotten to add the character for space, I've done that now and my font is complete.
