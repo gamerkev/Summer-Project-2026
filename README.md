@@ -1,7 +1,7 @@
 # Summer-Project-2026
 ## Divergent thinking
 ### Idea 1, e-ink planner:
-![E-ink planner paper prototype 1](./e-ink%20planner%20paper.jpg)
+![E-ink planner paper prototype 1](./pictures/e-ink%20planner%20paper.jpg)
 - Possible to have some minigames with buttons on the side
 - Need to figure out the form factor for typing
     - Pull out keyboard?
@@ -28,9 +28,9 @@
 - Could even have journal functionality on this, link with an app
 - 2 form factor options:
     - Old iPod:
-    ![iPod prototype](./ipod%20mp3%20player.jpeg)
+    ![iPod prototype](./pictures/ipod%20mp3%20player.jpeg)
     - Full screen:
-    ![Full screen prototype](./mp3%20player%20full-screen.jpeg)
+    ![Full screen prototype](./pictures/mp3%20player%20full-screen.jpeg)
 
 ### Idea 5, carplay but for a desk
 - Similar to the MP3 player idea but not portable
@@ -45,7 +45,7 @@ I'm going with the MP3 idea because it's something simple to start with, but it 
 I've already done a bit of this inadvertently in the divergent thinking section, looking at different form factors for the device so let's begin by looking at those again.
 
 ### Old iPod
-![iPod prototype](./ipod%20mp3%20player.jpeg)
+![iPod prototype](./pictures/ipod%20mp3%20player.jpeg)
 - Boxy looking screen at the top
 - Pause/unpause button in the centre below the screen
 - Skip backwards track is to the left of the pause/unpause button
@@ -59,7 +59,7 @@ I've already done a bit of this inadvertently in the divergent thinking section,
     - Small screeen
 
 ### Full-screen
-![Full-screen prototype](./mp3%20player%20full-screen.jpeg)
+![Full-screen prototype](./pictures/mp3%20player%20full-screen.jpeg)
 - No buttons on the same face as the screen
 - No designated skip track buttons, just hold pressed on the volume buttons to skip track
 - Likely haptic feedback to tell you when you've skipped
@@ -79,7 +79,7 @@ I've already done a bit of this inadvertently in the divergent thinking section,
     - Less buttons means less functionality can be added in the future
 
 ### Stick
-![Stick prototype](./stick%20mp3%20player.jpeg)
+![Stick prototype](./pictures/stick%20mp3%20player.jpeg)
 - Similar to the full screen prototype but the device is a lot more narrow
 - Might not actually have the screen be the whole length of the device if things don't fit nicely
 - Benefits:
@@ -114,7 +114,7 @@ It turns out that the board I ordered doesn't have Bluetooth connectivity, only 
 
 The game will look like this:
 
-![Game prototype](./gameDiagram.jpeg)
+![Game prototype](./pictures/gameDiagram.jpeg)
 
 As you can see, I will need 6 buttons, 6 green LEDS, 5 red LEDs, 5 yellow LEDs, and 5 blue LEDs. All of which came with the breadboard kit that I previously ordered.
 
@@ -132,11 +132,11 @@ The display is estimated to arrive on the 2nd July and the ESP32 C3 SuperMini is
 
 I've been spending some time trying to figure out the wiring that I'll need to do for the display and ESP32, I think I've finally got it figured out:
 
-![Raw wiring diagram](./esp32%20display%20wiring%20raw.jpeg)
+![Raw wiring diagram](./pictures/esp32%20display%20wiring%20raw.jpeg)
 
 Cleaner diagram below:
 
-![Clean wiring diagram](./esp32%20display%20wiring%20clean.jpeg)
+![Clean wiring diagram](./pictures/esp32%20display%20wiring%20clean.jpeg)
 
 Hopefully this works, I went through a few YouTube videos and many obscure forum posts for this, I also found [a video](https://www.youtube.com/watch?v=A0fm15ydH4o) that will help me learn to use the display once it arrives as well. Still waiting on both the chip and display to be delivered.
 
@@ -184,28 +184,28 @@ I'm going to not create a json parser now, listing instruments that the user doe
 
 I need to figure out whether I'm going to use one of the Adafruit GFX built-in fonts for my project, or whether I'll have to design my own. I already found out that the built-in fonts lack the **£** symbol, so I know that I'll have to at least create a glyph for that. However, as I don't trade much, I'm not too clear on what a user would like to be able to do and see on a device such as the one I'm creating. So I've created a Google form (shown below) that I will share with people that I know trade more regularly.
 
-![Google form screenshot 0](./form0.png)
-![Google form screenshot 1](./form1.png)
-![Google form screenshot 2](./form2.png)
-![Google form screenshot 3](./form3.png)
-![Google form screenshot 4](./form4.png)
-![Google form screenshot 5](./form5.png)
-![Google form screenshot 6](./form6.png)
-![Google form screenshot 7](./form7.png)
+![Google form screenshot 0](./pictures/form0.png)
+![Google form screenshot 1](./pictures/form1.png)
+![Google form screenshot 2](./pictures/form2.png)
+![Google form screenshot 3](./pictures/form3.png)
+![Google form screenshot 4](./pictures/form4.png)
+![Google form screenshot 5](./pictures/form5.png)
+![Google form screenshot 6](./pictures/form6.png)
+![Google form screenshot 7](./pictures/form7.png)
 
 While I wait for responses to the form, I can fill in the form myself as an amateur and begin to think about possible font sizes. I want to try to fit every menu on one screen and not have any scrolling, as the screen flickers due to having to set black pixels before I can put the next frame on. If I can't fit things on one screen, I'd much rather use pages to flick through in order to minimise movements on the display.
 
 These are my responses:
 
-![My Response 0](./myResponse0.png)
-![My Response 1](./myResponse1.png)
-![My Response 2](./myResponse2.png)
-![My Response 3](./myResponse3.png)
-![My Response 4](./myResponse4.png)
+![My Response 0](./pictures/myResponse0.png)
+![My Response 1](./pictures/myResponse1.png)
+![My Response 2](./pictures/myResponse2.png)
+![My Response 3](./pictures/myResponse3.png)
+![My Response 4](./pictures/myResponse4.png)
 
 I divided my form into 4 sections: summary, open positions, orders, and history. It would make sense to organise menus on the device in a tree format.
 
-![Menu tree diagram](./menuTreeDiagram.jpeg)
+![Menu tree diagram](./pictures/menuTreeDiagram.jpeg)
 
 You can see pending orders and create new orders are crossed out which are coming off of pending orders. Originally the current pending orders was just "Orders", however I realised that having "Create a new order" and "Pending orders" coming off of that made no sense as fetching available instruments doesn't work (at least for now) so I crossed out "Create a new order" and then drew "Create a new order" off of open positions, past orders, and orders. And changed orders to become pending orders. I did this because the data that will be fetched for open positions, pending orders, and past orders includes the ticker string for an instrument, which is required to place an order. So it would only really make sense to place an order based off of positions/orders shown in those menus.
 
@@ -213,9 +213,30 @@ I can now start to sketch menus, I'll start from the root of the tree (Boot-up),
 
 Here are my boot-up menu sketches:
 
-![Boot up menu sketch](./bootUpMenu.jpeg)
+![Boot up menu sketch](./pictures/bootUpMenu.jpeg)
 
 I've used a rounded-off button for the power button to differentiate it from the other buttons. In the sketch on the left-hand side, I use 4 buttons (excludng the power button) as the hardware interface for the device. In the boot-up menu ,each button is linked to one of the children of the root in the tree diagram. However, I forsee some problems with this, namely that if there is too much data to fit on one page, or if the user is trying to select a position or order in a different menu, navigating using those 4 buttons and selecting orders may feel unnatural. But I will still keep this as an option in case I figure out a way around it in the future as I quite like it for the boot-up menu. For the sketch on the right-hand side, I've used 3 buttons (excluding the power button). This makes things like scrolling much more natural, as you can use the top and bottom buttons to move up/down items and the middle button as a select button. If an item on the bottom or top of the screen is reached, the device can just go to the next page. However, this is boring and not a unique design. Writing about both designs, I realise that each screen design could be used with either setups of buttons. The left-hand screen could scroll through the menu in the same way that we read, left-to-right then top-to-bottom. The right-hand screen could still link one button to each option, which highlights when pressed, options could then be selected by holding its corresponding button down.
 
 This makes my choice of the buttons much more difficult, so I will have to continue sketching with both setups.
 
+I believe that a lot of the menus will be lists, namely the open positions, pending orders, past orders, past transactions, paid out dividends menus. So it will be necessary to scroll, however I believe I have a solution for the previously mentioned scrolling dilema for the 4-button setup (referring to the buttons on the left-hand side of the boot-up menu sketch). I was trying to figure out what would be the most natural way to scroll using that setup, but this may differ from person-to-person. In my opinion, the clearest way to do it would be to use the top and bottom-right buttons to scroll and then the top-left button to select. On the other hand, I would personally use the top-left and bottom-right buttons to scroll and the bottom-left button to select since those buttons have fingers on them if the device is resting in the palm of the user. This is shown **very** roughly in the below sketch:
+
+![4-button menu boot-up screen held in hand](./pictures/handBootUpMenu.jpeg)
+
+It may be difficult to see this, but I envision the pink-finger or ring-finger on the bottom-left button, index finger on the top-left button, and thumb on the bottom-left button. Because there are so many different ways to configure these buttons, I would like to leave it up to the user in a much-needed settings menu.
+
+Although, this is yet another difficult design decision, how can someone enter a settings menu? We have many examples to consider, a popular option is to have a gear symbol in any corner of the display which will take you directly to the settings menu, another option is to have to push certain buttons during boot-up (in the way that BIOS settings are accessed), we could also have the user hold certain buttons pushed down in the boot-up menu - or even a combination of buttons. In order to make in informed decision, I will have to consider how often the settings menu will need to be accessed. If it doesn't need to be accessed much, I can go for the BIOS-like choice as it will be a cleaner look if the classic settings gear isn't present on any menu. On the other hand, if users will be accessing settings often, the gear may be more practical than restarting the device every time you want to make a small settings change.
+
+So I will need to consider what options may be within the settings menu.
+
+The device needs an internet connection to pull data from the Trading212 API, so it will need an SSID and a password before it can do anything. Anyone with half a brain wouldn't give someone their WiFi SSID and password just because they'll give them a device that interfaces with their stocks app. Furthermore, people move around, portability is one of my own requirements for this device; so the devices must store multiple SSIDs and passwords. This gives us our first option in the setting menu, *WiFi networks*.
+
+Something else that the user will have to set up is the API ID/key pair. This is definitely going to be a hassle for the user as API keys are around 100 characters and made up of a mixture of numbers, uppercase letters, and lowercase letters. Evidently *API key* will have to be another option in the settings menu.
+
+Moreover, this raises another key issue, the keyboard. The display is 128 pixels wide, my keyboard will likely be 11 characters wide at its widest due to having to house 11 keys in the top row (every number and the dash as API key pairs can sometimes contain dashes). However, I could make it 10 characters wide as QWERTY keyboard rows are 10, then 9, then 7 charcters wide, so I could have numbers as the top row, followed by the usual QWERTY keyboard, and then put dashes or any other special charcter in the final, 7-charcter row. Since my longest row is 10 characters wide, I will pad the keyboard horizontally by 4 pixels either side. This leaves 12 pixels width per character, including the spacing between each character. I will likely space each character by 1 pixel either side as that's enough to be able to differentiate each one and gives me room to draw a 1-pixel width box around the selected character. This leaves me 10 pixels for the width of each character, excluding padding.
+
+There will be 4 rows for the keyboard, and characters are usually taller than they are wide, the default Adafruit GFX font is 6 pixels width per character with 7 pixels of height. So if my characters are 10 pixels wide, I'll make them 12 pixels tall. Accounting for 2 pixels between each row, I get a height of 50 for my keyboard. So my keyboard will be 120 * 50 pixels size, and each character will be 10 * 12 pixels. This is a font that I can create. I'll go for a nice monospace vibe since the screen gives a very hacker-y vibe. I'll type out every character into this file in vscode since it has a monospace font already.
+
+1234567890-qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM
+
+I had forgotten that I'll need a shift key as well, this can also go in the bottom row of the keyboard, or could even be the purpose of one of the buttons on the 4-button setup. I'll start sketching characters now in [pixlart](https://www.pixilart.com/draw?ref=home-page), using a screenshot of the characters in vscode as my reference on the website.
