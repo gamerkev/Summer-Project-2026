@@ -10,6 +10,7 @@
 #include <cJSON.h>
 #include <Adafruit_ST7735Ext.h>
 #include <jsonGetters.h>
+#include "keyboardFont.h"
 
 Adafruit_ST7735Ext tft = Adafruit_ST7735Ext(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
@@ -60,7 +61,8 @@ void loop() {
       // Serial.println(cJSON_Print(cJSON_Parse(payload.c_str())));
 
       // Serial.println(cJSON_Print(cJSON_GetArrayItem(cJSON_Parse(payload.c_str()), 0)));
-      tft.movingText("Check serial", 50);
+      tft.setFont(&Keyboard);
+      tft.movingText("check serial", 50);
     } else {
       Serial.println("Error on HTTP request");
       http.end();

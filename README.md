@@ -240,3 +240,9 @@ There will be 4 rows for the keyboard, and characters are usually taller than th
 1234567890-qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM
 
 I had forgotten that I'll need a shift key as well, this can also go in the bottom row of the keyboard, or could even be the purpose of one of the buttons on the 4-button setup. I'll start sketching characters now in [pixlart](https://www.pixilart.com/draw?ref=home-page), using a screenshot of the characters in vscode as my reference on the website.
+
+I had started sketching out characters for my font but I quickly realised that there are some things that I should know before trying to design a font, which I don't know. Font isn't too important to me, although a horrible one can ruin the look of the entire project, so it's essential to be able to design a passable one. I've taken some very basic notes which should help me design an "ok" font from [this page](https://m2.material.io/design/typography/understanding-typography.html) as shown below:
+
+![Font notes](./pictures/fontNotes.jpeg)
+
+The biggest issue that I noticed was that I was unsure where to start and end letters vertically, having made my numbers take up the entire 10*12 pixel grid, but then realising that certain letters like "y" need to have the appearance of going below an invisible line that is at the base of all other characters that don't descend, including numbers. Having done some research now, I'm better equipped to design a font.
