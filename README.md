@@ -263,3 +263,10 @@ Apart from these things, I think that I should also make the font not as wide, 1
 ![First font iteration](./pictures/keyboardFontIteration1.jpeg)
 
 I'll make the previously mentioned alterations and test again. I won't be altering the pixilart file anymore since the changes are fairly straightforward.
+
+Alterations done, it's time to test again. My new font looks much cleaner, shown below:
+
+![Second font iteration](./pictures/keyboardFontIteration2.jpeg)
+
+Although, I made a few more alterations than originally planned. I made the numbers larger and slimmed down the space that every character took up by 2 pixels, but to do this I also had to alter A, M, N, T, O, Q, V, X, Y, Z, m, q, w, and x. Even still, I can spot 2 remaining mistakes, x and w are 1 pixel too high. After fixing this, I get my final keyboard font:
+
