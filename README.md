@@ -246,3 +246,5 @@ I had started sketching out characters for my font but I quickly realised that t
 ![Font notes](./pictures/fontNotes.jpeg)
 
 The biggest issue that I noticed was that I was unsure where to start and end letters vertically, having made my numbers take up the entire 10*12 pixel grid, but then realising that certain letters like "y" need to have the appearance of going below an invisible line that is at the base of all other characters that don't descend, including numbers. Having done some research now, I'm better equipped to design a font.
+
+So far, my font is all numbers from 0-9, the dash symbol, and all of the lowercase letters. I've tested how it looks on my display and all that I can see at the moment is that I may have put too great of spacing by making every character 10 pixels wide. This wouldn't matter if I was only going to use this font for the keyboard, however it's quite a nice size and is coming out nicely, so I may end up using it throughout this project. Before narrowing the space that each character takes up, I'll add all of the capital letters too, just to see if they need to take up the entire 10 pixels width.
