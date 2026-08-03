@@ -62,7 +62,13 @@ void loop() {
 
       // Serial.println(cJSON_Print(cJSON_GetArrayItem(cJSON_Parse(payload.c_str()), 0)));
       tft.setFont(&Keyboard);
-      tft.movingText("check serial", 50);
+      tft.setCursor(0,20);
+      tft.println("1234567890qw");
+      tft.println("ertyuiopasdf");
+      tft.println("ghjklzxcvbnm");
+      tft.println("-QWERTYUIOPA");
+      tft.println("SDFGHJKLZXCV");
+      tft.println("BNM");
     } else {
       Serial.println("Error on HTTP request");
       http.end();

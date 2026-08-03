@@ -239,7 +239,7 @@ There will be 4 rows for the keyboard, and characters are usually taller than th
 
 1234567890-qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM
 
-I had forgotten that I'll need a shift key as well, this can also go in the bottom row of the keyboard, or could even be the purpose of one of the buttons on the 4-button setup. I'll start sketching characters now in [pixlart](https://www.pixilart.com/draw?ref=home-page), using a screenshot of the characters in vscode as my reference on the website.
+I had forgotten that I'll need a shift key as well, this can also go in the bottom row of the keyboard, or could even be the purpose of one of the buttons on the 4-button setup. I'll start sketching characters now in [pixilart](https://www.pixilart.com/draw?ref=home-page), using a screenshot of the characters in vscode as my reference on the website.
 
 I had started sketching out characters for my font but I quickly realised that there are some things that I should know before trying to design a font, which I don't know. Font isn't too important to me, although a horrible one can ruin the look of the entire project, so it's essential to be able to design a passable one. I've taken some very basic notes which should help me design an "ok" font from [this page](https://m2.material.io/design/typography/understanding-typography.html) as shown below:
 
@@ -248,3 +248,18 @@ I had started sketching out characters for my font but I quickly realised that t
 The biggest issue that I noticed was that I was unsure where to start and end letters vertically, having made my numbers take up the entire 10*12 pixel grid, but then realising that certain letters like "y" need to have the appearance of going below an invisible line that is at the base of all other characters that don't descend, including numbers. Having done some research now, I'm better equipped to design a font.
 
 So far, my font is all numbers from 0-9, the dash symbol, and all of the lowercase letters. I've tested how it looks on my display and all that I can see at the moment is that I may have put too great of spacing by making every character 10 pixels wide. This wouldn't matter if I was only going to use this font for the keyboard, however it's quite a nice size and is coming out nicely, so I may end up using it throughout this project. Before narrowing the space that each character takes up, I'll add all of the capital letters too, just to see if they need to take up the entire 10 pixels width.
+
+I've finished sketching all of my characters and turned them into a font, the sketches are available in the keyboardFont.pixil file, which can be opened in [pixilart](https://www.pixilart.com/draw?ref=home-page#).
+
+After testing my font, designing a font seems quite iterative, after my first iteration I can see a few issues:
+ - My "A" is too low
+ - My "Z" is too high
+ - My "W" is too low
+ - My "K" doesn't really look like a capital letter
+ - And my numbers seem too small in my opinion
+
+Apart from these things, I think that I should also make the font not as wide, 10 pixels seems much too much. However in order to do this, I should also narrow "W" a little. My first iteration can be seen below:
+
+![First font iteration](./pictures/keyboardFontIteration1.jpeg)
+
+I'll make the previously mentioned alterations and test again. I won't be altering the pixilart file anymore since the changes are fairly straightforward.
