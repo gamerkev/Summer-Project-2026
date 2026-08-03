@@ -14,6 +14,8 @@
 
 Adafruit_ST7735Ext tft = Adafruit_ST7735Ext(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
+String in;
+
 void setup() {
   Serial.begin(115200);
   delay(1000);  //Delay so that we have time to open the serial monitor
@@ -44,7 +46,6 @@ void setup() {
 void loop() {
   tft.fillScreen(ST7735_BLACK);
   tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
-  Serial.
   if(WiFi.status() == WL_CONNECTED){
     HTTPClient http;  //Start a HTTP client to be able to send http requests
     // http.begin("https://live.trading212.com/api/v0/equity/account/summary");  // Access account data
@@ -56,20 +57,10 @@ void loop() {
       String payload = http.getString();  //Get the response
       Serial.println(httpCode);           //Print the response code
       http.end();
-      // payload = payload + "]";
-      // ProfileDetails parsed = ProfileDetails(payload.c_str());
-      Serial.println(payload);
-      // Serial.println(cJSON_Print(cJSON_Parse(payload.c_str())));
 
-      // Serial.println(cJSON_Print(cJSON_GetArrayItem(cJSON_Parse(payload.c_str()), 0)));
       tft.setFont(&Keyboard);
-      tft.setCursor(0,20);
-      tft.println("1234567890qw");
-      tft.println("ertyuiopasdf");
-      tft.println("ghjklzxcvbnm");
-      tft.println("-QWERTYUIOPA");
-      tft.println("SDFGHJKLZXCV");
-      tft.println("BNM");
+
+      tft.putKeyboard();
     } else {
       Serial.println("Error on HTTP request");
       http.end();

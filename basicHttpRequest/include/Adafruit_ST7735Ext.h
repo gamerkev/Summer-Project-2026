@@ -60,4 +60,90 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
       setTextSize(1);
       delay(3000);
     }
+
+    void putKeyboard(){
+      //Top row
+      setCursor(9, 100);
+      print("1");
+      setCursor(19, 100);
+      print("2");
+      setCursor(29, 100);
+      print("3");
+      setCursor(39, 100);
+      print("4");
+      setCursor(49, 100);
+      print("5");
+      setCursor(59, 100);
+      print("6");
+      setCursor(69, 100);
+      print("7");
+      setCursor(79, 100);
+      print("8");
+      setCursor(89, 100);
+      print("9");
+      setCursor(99, 100);
+      print("0");
+      setCursor(109, 100);
+      print("-");
+      //Second row
+      setCursor(14, 112);
+      print("q");
+      setCursor(24, 112);
+      print("w");
+      setCursor(34, 112);
+      print("e");
+      setCursor(44, 112);
+      print("r");
+      setCursor(54, 112);
+      print("t");
+      setCursor(64, 112);
+      print("y");
+      setCursor(74, 112);
+      print("u");
+      setCursor(84, 112);
+      print("i");
+      setCursor(94, 112);
+      print("o");
+      setCursor(104, 112);
+      print("p");
+      //Third row
+      setCursor(19, 124);
+      print("a");
+      setCursor(29, 124);
+      print("s");
+      setCursor(39, 124);
+      print("d");
+      setCursor(49, 124);
+      print("f");
+      setCursor(59, 124);
+      print("g");
+      setCursor(69, 124);
+      print("h");
+      setCursor(79, 124);
+      print("j");
+      setCursor(89, 124);
+      print("k");
+      setCursor(99, 124);
+      print("l");
+      //final row
+      setCursor(29, 136);
+      print("z");
+      setCursor(39, 136);
+      print("x");
+      setCursor(49, 136);
+      print("c");
+      setCursor(59, 136);
+      print("v");
+      setCursor(69, 136);
+      print("b");
+      setCursor(79, 136);
+      print("n");
+      setCursor(89, 136);
+      print("m");
+      //spacebar
+      drawLine(39, 143, 84, 143, ST7735_WHITE);
+    }
+    void putCapitalKeyboard(){
+
+    }
 };
