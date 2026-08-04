@@ -2,15 +2,12 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include "secret.h"
-#include <Adafruit_ST7735.h>
-#include <Adafruit_GFX.h>
 #include <math.h>
 #include <base64.hpp>
 #include <string.h>
 #include <cJSON.h>
 #include <Adafruit_ST7735Ext.h>
 #include <jsonGetters.h>
-#include "keyboardFont.h"
 
 Adafruit_ST7735Ext tft = Adafruit_ST7735Ext(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
@@ -46,8 +43,9 @@ void setup() {
 void loop() {
   tft.fillScreen(ST7735_BLACK);
   tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
-  tft.setFont(&Keyboard);
-  tft.putKeyboard(110);
+  tft.putKeyboard(111, true);
+  tft.selectKey(' ');
+  tft.selectKey('/');
   // if(WiFi.status() == WL_CONNECTED){
   //   HTTPClient http;  //Start a HTTP client to be able to send http requests
   //   // http.begin("https://live.trading212.com/api/v0/equity/account/summary");  // Access account data

@@ -287,3 +287,7 @@ I think that the keyboard looks slightly skewed to the right and needs to be low
 I've moved the whole keyboard down and moved every character to the right by a couple of pixels, I also placed the spacebar slightly closer to the bottom row. As a final change, I made my code more modular by passing in a height variable to say where to place the keyboard. Although, if I end up placing the keyboard at the same height constantly, I'll remove this. Here's the final keyboard:
 
 ![Final keyboard](./pictures/keyboardFinal.jpeg)
+
+My next step is to make a capital keyboard too, and add a shift key, I'll do this by passing in another argument to the function.
+
+I've created the capital keyboard, and shift key, and also a function that will circle a button on the keyboard. The next step is to make it functional.
