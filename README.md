@@ -277,3 +277,7 @@ I had forgotten to add the character for space, I've done that now and my font i
 Now that the keyboard font is complete, I could begin to design the screen for inputting a network SSID and password, but I can't really do that yet as I'd need to take inputs from the pins of the ESP32 to move the cursor on the on-screen keyboard to enter anything. In order to do that I either need to connect buttons to the ESP32 (by soldering or using the breadboard), or simulating inputs virtually, perhaps through the serial monitor. I'd much rather go for option 2, the serial port, because conencting the 8 pins for the display any time I want to test anything is annoying enough already. I'm not sure how serial inputs work, so I'll have to do some research now.
 
 Serial input seems fairly straightforward, I managed to test it in serialInputTest, I can go ahead with creating an interface for WiFi details.
+
+This is how the on-screen keyboard currently looks, using a function, putKeyboard, that was defined in Adafruit_ST7735Ext.h:
+
+![Keyboard first iteration](./pictures/keyboardFirstIteration.jpeg)

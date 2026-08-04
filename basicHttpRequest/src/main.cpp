@@ -24,47 +24,46 @@ void setup() {
   tft.fillScreen(ST77XX_BLACK);   // Black out the screen
   tft.setTextWrap(false);         // This is so that we can use the moving text
 
-  Serial.println();
-  Serial.println("******************************************************");
-  Serial.println("Connecting to ");
-  Serial.println(SSID);
-  WiFi.setHostname("MyEsp32");  //This is visible on the network that you connect to
+  // Serial.println();
+  // Serial.println("******************************************************");
+  // Serial.println("Connecting to ");
+  // Serial.println(SSID);
+  // WiFi.setHostname("MyEsp32");  //This is visible on the network that you connect to
 
-  WiFi.begin(SSID, PASS);
+  // WiFi.begin(SSID, PASS);
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    tft.logo();
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
+  // while (WiFi.status() != WL_CONNECTED) {
+  //   delay(500);
+  //   tft.logo();
+  //   Serial.print(".");
+  // }
+  // Serial.println("");
+  // Serial.println("WiFi connected");
+  // Serial.println("IP address: ");
+  // Serial.println(WiFi.localIP());
 }
 
 void loop() {
   tft.fillScreen(ST7735_BLACK);
   tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
-  if(WiFi.status() == WL_CONNECTED){
-    HTTPClient http;  //Start a HTTP client to be able to send http requests
-    // http.begin("https://live.trading212.com/api/v0/equity/account/summary");  // Access account data
-    http.begin("https://live.trading212.com/api/v0/equity/metadata/instruments?limit=1"); //Get all available instruments
-    http.addHeader("Authorization", "Basic " + String((char *) encoded));     // Authorisation header
+  tft.setFont(&Keyboard);
+  tft.putKeyboard();
+  // if(WiFi.status() == WL_CONNECTED){
+  //   HTTPClient http;  //Start a HTTP client to be able to send http requests
+  //   // http.begin("https://live.trading212.com/api/v0/equity/account/summary");  // Access account data
+  //   http.begin("https://live.trading212.com/api/v0/equity/metadata/instruments?limit=1"); //Get all available instruments
+  //   http.addHeader("Authorization", "Basic " + String((char *) encoded));     // Authorisation header
     
-    int httpCode = http.GET();  //Send get request
-    if(httpCode > 0){
-      String payload = http.getString();  //Get the response
-      Serial.println(httpCode);           //Print the response code
-      http.end();
+  //   int httpCode = http.GET();  //Send get request
+  //   if(httpCode > 0){
+  //     String payload = http.getString();  //Get the response
+  //     Serial.println(httpCode);           //Print the response code
+  //     http.end();
+  //   } else {
+  //     Serial.println("Error on HTTP request");
+  //     http.end();
+  //   }
+  // }
 
-      tft.setFont(&Keyboard);
-
-      tft.putKeyboard();
-    } else {
-      Serial.println("Error on HTTP request");
-      http.end();
-    }
-  }
   delay(20000);
 }
