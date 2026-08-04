@@ -220,6 +220,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
       print("shift");
       //spacebar
       drawLine(39, keyBoardHeight+41, 84, keyBoardHeight+41, ST7735_WHITE);
+      selectKey(currentLetter);
       setFont(oldFont);
       setTextColor(oldColour);
     }
@@ -551,7 +552,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
           print("shift");
           break;
         case ' ': //space key
-          drawLine(39, keyBoardHeight+41, 84, keyBoardHeight+41, TRADING21BLUE);
+          drawLine(39, keyBoardHeight+41, 84, keyBoardHeight+41, ST7735_WHITE);
           break;
         setFont(oldFont);
         setTextColor(oldColour);
@@ -567,7 +568,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '-';
               break;
             case UP:
-              currentLetter = '/';
+              currentLetter = ' ';
               break;
             case RIGHT:
               currentLetter = '2';
@@ -583,7 +584,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '1';
               break;
             case UP:
-              currentLetter = 'z';
+              currentLetter = ' ';
               break;
             case RIGHT:
               currentLetter = '3';
@@ -599,7 +600,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '2';
               break;
             case UP:
-              currentLetter = 'z';
+              currentLetter = ' ';
               break;
             case RIGHT:
               currentLetter = '4';
@@ -615,7 +616,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '3';
               break;
             case UP:
-              currentLetter = 'x';
+              currentLetter = ' ';
               break;
             case RIGHT:
               currentLetter = '5';
@@ -631,7 +632,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '4';
               break;
             case UP:
-              currentLetter = 'c';
+              currentLetter = ' ';
               break;
             case RIGHT:
               currentLetter = '6';
@@ -647,7 +648,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '5';
               break;
             case UP:
-              currentLetter = 'v';
+              currentLetter = ' ';
               break;
             case RIGHT:
               currentLetter = '7';
@@ -663,7 +664,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '6';
               break;
             case UP:
-              currentLetter = 'b';
+              currentLetter = ' ';
               break;
             case RIGHT:
               currentLetter = '8';
@@ -679,7 +680,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '7';
               break;
             case UP:
-              currentLetter = 'n';
+              currentLetter = ' ';
               break;
             case RIGHT:
               currentLetter = '9';
@@ -695,7 +696,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '8';
               break;
             case UP:
-              currentLetter = 'm';
+              currentLetter = ' ';
               break;
             case RIGHT:
               currentLetter = '0';
@@ -711,7 +712,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '9';
               break;
             case UP:
-              currentLetter = 'm';
+              currentLetter = ' ';
               break;
             case RIGHT:
               currentLetter = '-';
@@ -727,13 +728,461 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '0';
               break;
             case UP:
-              currentLetter = 'm';
+              currentLetter = ' ';
               break;
             case RIGHT:
               currentLetter = '1';
               break;
             case DOWN:
               currentLetter = 'p';
+              break;
+          }
+          break;
+        case 'q':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'p';
+              break;
+            case UP:
+              currentLetter = '1';
+              break;
+            case RIGHT:
+              currentLetter = 'w';
+              break;
+            case DOWN:
+              currentLetter = 'a';
+              break;
+          }
+          break;
+        case 'w':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'q';
+              break;
+            case UP:
+              currentLetter = '2';
+              break;
+            case RIGHT:
+              currentLetter = 'e';
+              break;
+            case DOWN:
+              currentLetter = 's';
+              break;
+          }
+          break;
+        case 'e':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'w';
+              break;
+            case UP:
+              currentLetter = '3';
+              break;
+            case RIGHT:
+              currentLetter = 'r';
+              break;
+            case DOWN:
+              currentLetter = 'd';
+              break;
+          }
+          break;
+        case 'r':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'e';
+              break;
+            case UP:
+              currentLetter = '4';
+              break;
+            case RIGHT:
+              currentLetter = 't';
+              break;
+            case DOWN:
+              currentLetter = 'f';
+              break;
+          }
+          break;
+        case 't':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'r';
+              break;
+            case UP:
+              currentLetter = '5';
+              break;
+            case RIGHT:
+              currentLetter = 'y';
+              break;
+            case DOWN:
+              currentLetter = 'g';
+              break;
+          }
+          break;
+        case 'y':
+          switch(direction){
+            case LEFT:
+              currentLetter = 't';
+              break;
+            case UP:
+              currentLetter = '6';
+              break;
+            case RIGHT:
+              currentLetter = 'u';
+              break;
+            case DOWN:
+              currentLetter = 'h';
+              break;
+          }
+          break;
+        case 'u':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'y';
+              break;
+            case UP:
+              currentLetter = '7';
+              break;
+            case RIGHT:
+              currentLetter = 'i';
+              break;
+            case DOWN:
+              currentLetter = 'j';
+              break;
+          }
+          break;
+        case 'i':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'u';
+              break;
+            case UP:
+              currentLetter = '8';
+              break;
+            case RIGHT:
+              currentLetter = 'o';
+              break;
+            case DOWN:
+              currentLetter = 'k';
+              break;
+          }
+          break;
+        case 'o':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'i';
+              break;
+            case UP:
+              currentLetter = '9';
+              break;
+            case RIGHT:
+              currentLetter = 'p';
+              break;
+            case DOWN:
+              currentLetter = 'l';
+              break;
+          }
+          break;
+        case 'p':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'o';
+              break;
+            case UP:
+              currentLetter = '0';
+              break;
+            case RIGHT:
+              currentLetter = 'q';
+              break;
+            case DOWN:
+              currentLetter = 'l';
+              break;
+          }
+          break;
+        case 'a':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'l';
+              break;
+            case UP:
+              currentLetter = 'q';
+              break;
+            case RIGHT:
+              currentLetter = 's';
+              break;
+            case DOWN:
+              currentLetter = '/';
+              break;
+          }
+          break;
+        case 's':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'a';
+              break;
+            case UP:
+              currentLetter = 'w';
+              break;
+            case RIGHT:
+              currentLetter = 'd';
+              break;
+            case DOWN:
+              currentLetter = 'z';
+              break;
+          }
+          break;
+        case 'd':
+          switch(direction){
+            case LEFT:
+              currentLetter = 's';
+              break;
+            case UP:
+              currentLetter = 'e';
+              break;
+            case RIGHT:
+              currentLetter = 'f';
+              break;
+            case DOWN:
+              currentLetter = 'x';
+              break;
+          }
+          break;
+        case 'f':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'd';
+              break;
+            case UP:
+              currentLetter = 'r';
+              break;
+            case RIGHT:
+              currentLetter = 'g';
+              break;
+            case DOWN:
+              currentLetter = 'c';
+              break;
+          }
+          break;
+        case 'g':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'f';
+              break;
+            case UP:
+              currentLetter = 't';
+              break;
+            case RIGHT:
+              currentLetter = 'h';
+              break;
+            case DOWN:
+              currentLetter = 'v';
+              break;
+          }
+          break;
+        case 'h':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'g';
+              break;
+            case UP:
+              currentLetter = 'y';
+              break;
+            case RIGHT:
+              currentLetter = 'j';
+              break;
+            case DOWN:
+              currentLetter = 'b';
+              break;
+          }
+          break;
+        case 'j':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'h';
+              break;
+            case UP:
+              currentLetter = 'u';
+              break;
+            case RIGHT:
+              currentLetter = 'k';
+              break;
+            case DOWN:
+              currentLetter = 'n';
+              break;
+          }
+          break;
+        case 'k':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'j';
+              break;
+            case UP:
+              currentLetter = 'i';
+              break;
+            case RIGHT:
+              currentLetter = 'l';
+              break;
+            case DOWN:
+              currentLetter = 'm';
+              break;
+          }
+          break;
+        case 'l':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'k';
+              break;
+            case UP:
+              currentLetter = 'o';
+              break;
+            case RIGHT:
+              currentLetter = 'a';
+              break;
+            case DOWN:
+              currentLetter = 'm';
+              break;
+          }
+          break;
+        case 'z':
+          switch(direction){
+            case LEFT:
+              currentLetter = '/';
+              break;
+            case UP:
+              currentLetter = 's';
+              break;
+            case RIGHT:
+              currentLetter = 'x';
+              break;
+            case DOWN:
+              currentLetter = ' ';
+              break;
+          }
+          break;
+        case 'x':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'z';
+              break;
+            case UP:
+              currentLetter = 'd';
+              break;
+            case RIGHT:
+              currentLetter = 'c';
+              break;
+            case DOWN:
+              currentLetter = ' ';
+              break;
+          }
+          break;
+        case 'c':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'x';
+              break;
+            case UP:
+              currentLetter = 'f';
+              break;
+            case RIGHT:
+              currentLetter = 'v';
+              break;
+            case DOWN:
+              currentLetter = ' ';
+              break;
+          }
+          break;
+        case 'v':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'c';
+              break;
+            case UP:
+              currentLetter = 'g';
+              break;
+            case RIGHT:
+              currentLetter = 'b';
+              break;
+            case DOWN:
+              currentLetter = ' ';
+              break;
+          }
+          break;
+        case 'b':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'v';
+              break;
+            case UP:
+              currentLetter = 'h';
+              break;
+            case RIGHT:
+              currentLetter = 'n';
+              break;
+            case DOWN:
+              currentLetter = ' ';
+              break;
+          }
+          break;
+        case 'n':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'b';
+              break;
+            case UP:
+              currentLetter = 'j';
+              break;
+            case RIGHT:
+              currentLetter = 'm';
+              break;
+            case DOWN:
+              currentLetter = ' ';
+              break;
+          }
+          break;
+        case 'm':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'n';
+              break;
+            case UP:
+              currentLetter = 'k';
+              break;
+            case RIGHT:
+              currentLetter = '/';
+              break;
+            case DOWN:
+              currentLetter = ' ';
+              break;
+          }
+          break;
+        case '/':
+          switch(direction){
+            case LEFT:
+              currentLetter = 'm';
+              break;
+            case UP:
+              currentLetter = 'a';
+              break;
+            case RIGHT:
+              currentLetter = 'z';
+              break;
+            case DOWN:
+              currentLetter = ' ';
+              break;
+          }
+          break;
+        case ' ':
+          switch(direction){
+            case LEFT:
+              currentLetter = '/';
+              break;
+            case UP:
+              currentLetter = 'c';
+              break;
+            case RIGHT:
+              currentLetter = 'm';
+              break;
+            case DOWN:
+              currentLetter = '6';
               break;
           }
           break;

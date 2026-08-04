@@ -38,13 +38,24 @@ void setup() {
   // Serial.println("WiFi connected");
   // Serial.println("IP address: ");
   // Serial.println(WiFi.localIP());
-}
-
-void loop() {
   tft.fillScreen(ST7735_BLACK);
   tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
   tft.putKeyboard(111, false);
-  tft.changeLetter(RIGHT);
+}
+
+void loop() {
+  while(Serial.available()){
+    in = Serial.readString();
+    if (in == "left"){
+      tft.changeLetter(LEFT);
+    } else if (in == "up"){
+      tft.changeLetter(UP);
+    } else if (in == "right"){
+      tft.changeLetter(RIGHT);
+    } else if (in == "down"){
+      tft.changeLetter(DOWN);
+    }
+  }
   // if(WiFi.status() == WL_CONNECTED){
   //   HTTPClient http;  //Start a HTTP client to be able to send http requests
   //   // http.begin("https://live.trading212.com/api/v0/equity/account/summary");  // Access account data
@@ -62,5 +73,5 @@ void loop() {
   //   }
   // }
 
-  delay(5000);
+  // delay(5000);
 }

@@ -307,3 +307,5 @@ This is too finicky, new plan: just change the colour of the selected letter.
 My new plan worked perfectly! Now to add functionality to allow the user to move from letter to letter.
 
 I've created functions for selecting letters and deselecting them, and begun mapping letters to their adjacent letters.
+
+I've mapped all letters to their adjacent ones, and I've had success controlling the keyboard cursor through the serial monitor. Now I can begin actually processing the input of the on-screen keyboard.
