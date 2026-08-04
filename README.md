@@ -309,3 +309,7 @@ My new plan worked perfectly! Now to add functionality to allow the user to move
 I've created functions for selecting letters and deselecting them, and begun mapping letters to their adjacent letters.
 
 I've mapped all letters to their adjacent ones, and I've had success controlling the keyboard cursor through the serial monitor. Now I can begin actually processing the input of the on-screen keyboard.
+
+I've had success with this as well, using the serial monitor, although I realise that I'm missing an enter key and a backspace key, so I'll add those now.
+
+I've added both keys and defined constant characters for shift, enter, and backspace at the top of the Adafruit_ST7735Ext.h file to make coding easier. I've tested navigation via the serial monitor again and everything works as expected.

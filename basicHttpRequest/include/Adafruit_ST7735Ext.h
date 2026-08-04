@@ -11,6 +11,10 @@
 #define TFT_MOSI 11
 #define TFT_SCLK 7
 
+#define SHIFT '/'
+#define BACKSPACE  '*'
+#define ENTER '~'
+
 typedef enum{
   LEFT = 0,
   UP = 1,
@@ -68,6 +72,19 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
       println("Trading212");
       setTextSize(1);
       delay(3000);
+    }
+
+    void drawBackspace(int x, int y, uint16_t colour){
+      drawLine(x, y, x+7, y, colour);
+      drawLine(x, y, x+2, y+2, colour);
+      drawLine(x, y, x+2, y-2, colour);
+    }
+
+    void drawEnter(int x, int y, uint16_t colour){
+      drawLine(x+10, y-12, x+10, y, colour);
+      drawLine(x, y, x+10, y, colour);
+      drawLine(x, y, x+2, y+2, colour);
+      drawLine(x, y, x+2, y-2, colour);
     }
 
     void putKeyboard(int height, bool capital){
@@ -220,6 +237,14 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
       print("shift");
       //spacebar
       drawLine(39, keyBoardHeight+41, 84, keyBoardHeight+41, ST7735_WHITE);
+      //backspace
+      drawBackspace(6, keyBoardHeight+18, ST7735_WHITE);
+      //enter key
+      // drawLine(122, keyBoardHeight+6, 122, keyBoardHeight+18, ST7735_WHITE);
+      // drawLine(122, keyBoardHeight+18, 112, keyBoardHeight+18, ST7735_WHITE);
+      // drawLine(112, keyBoardHeight+18, 114, keyBoardHeight+16, ST7735_WHITE);
+      // drawLine(112, keyBoardHeight+18, 114, keyBoardHeight+20, ST7735_WHITE);
+      drawEnter(112, keyBoardHeight+18, ST7735_WHITE);
       selectKey(currentLetter);
       setFont(oldFont);
       setTextColor(oldColour);
@@ -379,13 +404,19 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
           setCursor(91, keyBoardHeight+36);
           if(!caps) print("m"); else print("M");
           break;
-        case '/': //shift key
+        case SHIFT: //shift key
           setFont(&Picopixel);
           setCursor(5, keyBoardHeight+31);
           print("shift");
           break;
         case ' ': //space key
           drawLine(39, keyBoardHeight+41, 84, keyBoardHeight+41, TRADING21BLUE);
+          break;
+        case BACKSPACE:
+          drawBackspace(6, keyBoardHeight+18, TRADING21BLUE);
+          break;
+        case ENTER:
+          drawEnter(112, keyBoardHeight+18, TRADING21BLUE);
           break;
         setFont(oldFont);
         setTextColor(oldColour);
@@ -546,13 +577,19 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
           setCursor(91, keyBoardHeight+36);
           if(!caps) print("m"); else print("M");
           break;
-        case '/': //shift key
+        case SHIFT: //shift key
           setFont(&Picopixel);
           setCursor(5, keyBoardHeight+31);
           print("shift");
           break;
         case ' ': //space key
           drawLine(39, keyBoardHeight+41, 84, keyBoardHeight+41, ST7735_WHITE);
+          break;
+        case BACKSPACE:
+          drawBackspace(6, keyBoardHeight+18, ST7735_WHITE);
+          break;
+        case ENTER:
+          drawEnter(112, keyBoardHeight+18, ST7735_WHITE);
           break;
         setFont(oldFont);
         setTextColor(oldColour);
@@ -734,7 +771,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '1';
               break;
             case DOWN:
-              currentLetter = 'p';
+              currentLetter = ENTER;
               break;
           }
           break;
@@ -891,7 +928,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '0';
               break;
             case RIGHT:
-              currentLetter = 'q';
+              currentLetter = ENTER;
               break;
             case DOWN:
               currentLetter = 'l';
@@ -901,7 +938,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
         case 'a':
           switch(direction){
             case LEFT:
-              currentLetter = 'l';
+              currentLetter = BACKSPACE;
               break;
             case UP:
               currentLetter = 'q';
@@ -910,7 +947,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = 's';
               break;
             case DOWN:
-              currentLetter = '/';
+              currentLetter = SHIFT;
               break;
           }
           break;
@@ -1035,7 +1072,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = 'o';
               break;
             case RIGHT:
-              currentLetter = 'a';
+              currentLetter = ENTER;
               break;
             case DOWN:
               currentLetter = 'm';
@@ -1045,7 +1082,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
         case 'z':
           switch(direction){
             case LEFT:
-              currentLetter = '/';
+              currentLetter = SHIFT;
               break;
             case UP:
               currentLetter = 's';
@@ -1147,20 +1184,20 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = 'k';
               break;
             case RIGHT:
-              currentLetter = '/';
+              currentLetter = ENTER;
               break;
             case DOWN:
               currentLetter = ' ';
               break;
           }
           break;
-        case '/':
+        case SHIFT:
           switch(direction){
             case LEFT:
               currentLetter = 'm';
               break;
             case UP:
-              currentLetter = 'a';
+              currentLetter = BACKSPACE;
               break;
             case RIGHT:
               currentLetter = 'z';
@@ -1173,7 +1210,7 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
         case ' ':
           switch(direction){
             case LEFT:
-              currentLetter = '/';
+              currentLetter = SHIFT;
               break;
             case UP:
               currentLetter = 'c';
@@ -1186,8 +1223,44 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               break;
           }
           break;
+        case BACKSPACE:
+          switch(direction){
+            case LEFT:
+              currentLetter = ENTER;
+              break;
+            case UP:
+              currentLetter = 'q';
+              break;
+            case RIGHT:
+              currentLetter = 'a';
+              break;
+            case DOWN:
+              currentLetter = SHIFT;
+              break;
+          }
+          break;
+        case ENTER:
+          switch(direction){
+            case LEFT:
+              currentLetter = 'l';
+              break;
+            case UP:
+              currentLetter = '-';
+              break;
+            case RIGHT:
+              currentLetter = BACKSPACE;
+              break;
+            case DOWN:
+              currentLetter = ' ';
+              break;
+          }
+          break;
       }
       selectKey(currentLetter);
+    }
+
+    char getCurrentLetter(){
+      return currentLetter;
     }
 
     private:

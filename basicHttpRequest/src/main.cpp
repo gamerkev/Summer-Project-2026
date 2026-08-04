@@ -12,6 +12,7 @@
 Adafruit_ST7735Ext tft = Adafruit_ST7735Ext(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
 String in;
+String inputWord;
 
 void setup() {
   Serial.begin(115200);
