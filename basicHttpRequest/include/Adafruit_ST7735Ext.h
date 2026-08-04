@@ -61,87 +61,87 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
       delay(3000);
     }
 
-    void putKeyboard(){
+    void putKeyboard(int height){
       //Top row
-      setCursor(9, 100);
+      setCursor(11, height);
       print("1");
-      setCursor(19, 100);
+      setCursor(21, height);
       print("2");
-      setCursor(29, 100);
+      setCursor(31, height);
       print("3");
-      setCursor(39, 100);
+      setCursor(41, height);
       print("4");
-      setCursor(49, 100);
+      setCursor(51, height);
       print("5");
-      setCursor(59, 100);
+      setCursor(61, height);
       print("6");
-      setCursor(69, 100);
+      setCursor(71, height);
       print("7");
-      setCursor(79, 100);
+      setCursor(81, height);
       print("8");
-      setCursor(89, 100);
+      setCursor(91, height);
       print("9");
-      setCursor(99, 100);
+      setCursor(101, height);
       print("0");
-      setCursor(109, 100);
+      setCursor(111, height);
       print("-");
       //Second row
-      setCursor(14, 112);
+      setCursor(16, height+12);
       print("q");
-      setCursor(24, 112);
+      setCursor(26, height+12);
       print("w");
-      setCursor(34, 112);
+      setCursor(36, height+12);
       print("e");
-      setCursor(44, 112);
+      setCursor(46, height+12);
       print("r");
-      setCursor(54, 112);
+      setCursor(56, height+12);
       print("t");
-      setCursor(64, 112);
+      setCursor(66, height+12);
       print("y");
-      setCursor(74, 112);
+      setCursor(76, height+12);
       print("u");
-      setCursor(84, 112);
+      setCursor(86, height+12);
       print("i");
-      setCursor(94, 112);
+      setCursor(96, height+12);
       print("o");
-      setCursor(104, 112);
+      setCursor(106, height+12);
       print("p");
       //Third row
-      setCursor(19, 124);
+      setCursor(21, height+24);
       print("a");
-      setCursor(29, 124);
+      setCursor(31, height+24);
       print("s");
-      setCursor(39, 124);
+      setCursor(41, height+24);
       print("d");
-      setCursor(49, 124);
+      setCursor(51, height+24);
       print("f");
-      setCursor(59, 124);
+      setCursor(61, height+24);
       print("g");
-      setCursor(69, 124);
+      setCursor(71, height+24);
       print("h");
-      setCursor(79, 124);
+      setCursor(81, height+24);
       print("j");
-      setCursor(89, 124);
+      setCursor(91, height+24);
       print("k");
-      setCursor(99, 124);
+      setCursor(101, height+24);
       print("l");
       //final row
-      setCursor(29, 136);
+      setCursor(31, height+36);
       print("z");
-      setCursor(39, 136);
+      setCursor(41, height+36);
       print("x");
-      setCursor(49, 136);
+      setCursor(51, height+36);
       print("c");
-      setCursor(59, 136);
+      setCursor(61, height+36);
       print("v");
-      setCursor(69, 136);
+      setCursor(71, height+36);
       print("b");
-      setCursor(79, 136);
+      setCursor(81, height+36);
       print("n");
-      setCursor(89, 136);
+      setCursor(91, height+36);
       print("m");
       //spacebar
-      drawLine(39, 143, 84, 143, ST7735_WHITE);
+      drawLine(39, height+41, 84, height+41, ST7735_WHITE);
     }
     void putCapitalKeyboard(){
 

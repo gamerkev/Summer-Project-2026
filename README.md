@@ -281,3 +281,9 @@ Serial input seems fairly straightforward, I managed to test it in serialInputTe
 This is how the on-screen keyboard currently looks, using a function, putKeyboard, that was defined in Adafruit_ST7735Ext.h:
 
 ![Keyboard first iteration](./pictures/keyboardFirstIteration.jpeg)
+
+I think that the keyboard looks slightly skewed to the right and needs to be lower as well, so I'll fix those issues now. After examining the spacing, it seems as though I have placed everything in the centre, but the spacing looks off because I've made every letter stick to the left border and left space on the right, this makes sense when typing words but not when displaying them in a keyboard, so I'll move everything by just 2 pixels and see if that fixes it.
+
+I've moved the whole keyboard down and moved every character to the right by a couple of pixels, I also placed the spacebar slightly closer to the bottom row. As a final change, I made my code more modular by passing in a height variable to say where to place the keyboard. Although, if I end up placing the keyboard at the same height constantly, I'll remove this. Here's the final keyboard:
+
+![Final keyboard](./pictures/keyboardFinal.jpeg)
