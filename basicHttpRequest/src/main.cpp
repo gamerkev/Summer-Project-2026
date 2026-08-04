@@ -55,6 +55,8 @@ void loop() {
       tft.changeLetter(RIGHT);
     } else if (in == "down"){
       tft.changeLetter(DOWN);
+    } else if (in == "select"){
+      tft.selectKey(inputWord);
     }
   }
   // if(WiFi.status() == WL_CONNECTED){

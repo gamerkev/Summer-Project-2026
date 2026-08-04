@@ -1263,6 +1263,25 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
       return currentLetter;
     }
 
+    char* selectKey(char* currentWord){
+      switch(currentLetter){
+        case SHIFT:
+          putKeyboard(keyBoardHeight, !caps);
+          //NEED TO RETURN SOMETHING HERE ALSO
+          break;
+        case BACKSPACE:
+          currentWord[strlen(currentWord)-1] = '\0';
+          return currentWord; 
+          break;
+        case ENTER:
+          return currentWord;
+          break;
+        default:
+          return currentWord + currentLetter;
+          break;
+      }
+    }
+
     private:
       int keyBoardHeight;
       bool caps;
