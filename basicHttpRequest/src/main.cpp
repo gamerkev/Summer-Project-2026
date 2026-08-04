@@ -43,9 +43,8 @@ void setup() {
 void loop() {
   tft.fillScreen(ST7735_BLACK);
   tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
-  tft.putKeyboard(111, true);
-  tft.selectKey(' ');
-  tft.selectKey('/');
+  tft.putKeyboard(111, false);
+  tft.changeLetter(RIGHT);
   // if(WiFi.status() == WL_CONNECTED){
   //   HTTPClient http;  //Start a HTTP client to be able to send http requests
   //   // http.begin("https://live.trading212.com/api/v0/equity/account/summary");  // Access account data
@@ -63,5 +62,5 @@ void loop() {
   //   }
   // }
 
-  delay(20000);
+  delay(5000);
 }

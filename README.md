@@ -291,3 +291,19 @@ I've moved the whole keyboard down and moved every character to the right by a c
 My next step is to make a capital keyboard too, and add a shift key, I'll do this by passing in another argument to the function.
 
 I've created the capital keyboard, and shift key, and also a function that will circle a button on the keyboard. The next step is to make it functional.
+
+On second thoughts, I don't really like the way the circle is, I'm going to make the selected letter have a filled-in circular background instead since the current circle has to be too big and sometimes overlaps parts of some letters. As shown by the following image where C is slightly overlapped when F is selected:
+
+![C overlap when F is selected](./pictures/fAndCOverlap.jpeg)
+
+I think that my mistake is trying to ake the same size oval for every character, I've done what I said before about changing the colour of the background of the selected letter but I still don't like how the q looks when highlighted. It's right on the edge of the oval as shown below:
+
+![Q on the edge of its circle](./pictures/qOnEdgeOfCircle.jpeg)
+
+So instead, I'll change back to what I was doing before where the selected character is circled so that I don't have to rewrite the character to the display after drawing an oval in its place, but I'll change the size of the oval depending on which letter is selected.
+
+This is too finicky, new plan: just change the colour of the selected letter.
+
+My new plan worked perfectly! Now to add functionality to allow the user to move from letter to letter.
+
+I've created functions for selecting letters and deselecting them, and begun mapping letters to their adjacent letters.

@@ -11,6 +11,13 @@
 #define TFT_MOSI 11
 #define TFT_SCLK 7
 
+typedef enum{
+  LEFT = 0,
+  UP = 1,
+  RIGHT = 2,
+  DOWN = 3
+} keyboardDirection;
+
 class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display library to be able to cleanly add functionality
   public:
     Adafruit_ST7735Ext (int8_t cs, int8_t dc, int8_t mosi, int8_t sclk, int8_t rst) : Adafruit_ST7735(cs, dc, mosi, sclk, rst){}  // Same constructor as the class it's extending
@@ -65,7 +72,10 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
 
     void putKeyboard(int height, bool capital){
       GFXfont* oldFont = gfxFont;
+      uint16_t oldColour = textcolor;
+      setTextColor(ST7735_WHITE);
       keyBoardHeight = height;
+      caps = capital;
       setFont(&Keyboard);
       fillRect(1, keyBoardHeight-13, 126, 61, ST7735_BLACK);
       //Top row
@@ -211,130 +221,528 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
       //spacebar
       drawLine(39, keyBoardHeight+41, 84, keyBoardHeight+41, ST7735_WHITE);
       setFont(oldFont);
+      setTextColor(oldColour);
     }
 
     void selectKey(char key){
+      GFXfont* oldFont = gfxFont;
+      uint16_t oldColour = textcolor;
+      setTextColor(TRADING21BLUE);
+      setFont(&Keyboard);
       switch(key){
         case '1':
-          drawEllipse(12, keyBoardHeight-7, 5, 6, TRADING21BLUE);
+          setCursor(11, keyBoardHeight);
+          print("1");
           break;
         case '2':
-          drawEllipse(23, keyBoardHeight-7, 5, 6, TRADING21BLUE);
+          setCursor(21, keyBoardHeight);
+          print("2");
           break;
         case '3':
-          drawEllipse(33, keyBoardHeight-7, 5, 6, TRADING21BLUE);
+          setCursor(31, keyBoardHeight);
+          print("3");
           break;
         case '4':
-          drawEllipse(43, keyBoardHeight-7, 5, 6, TRADING21BLUE);
+          setCursor(41, keyBoardHeight);
+          print("4");
           break;
         case '5':
-          drawEllipse(53, keyBoardHeight-7, 5, 6, TRADING21BLUE);
+          setCursor(51, keyBoardHeight);
+          print("5");
           break;
         case '6':
-          drawEllipse(63, keyBoardHeight-7, 5, 6, TRADING21BLUE);
+          setCursor(61, keyBoardHeight);
+          print("6");
           break;
         case '7':
-          drawEllipse(73, keyBoardHeight-7, 5, 6, TRADING21BLUE);
+          setCursor(71, keyBoardHeight);
+          print("7");
           break;
         case '8':
-          drawEllipse(83, keyBoardHeight-7, 5, 6, TRADING21BLUE);
+          setCursor(81, keyBoardHeight);
+          print("8");
           break;
         case '9':
-          drawEllipse(93, keyBoardHeight-7, 5, 6, TRADING21BLUE);
+          setCursor(91, keyBoardHeight);
+          print("9");
           break;
         case '0':
-          drawEllipse(103, keyBoardHeight-7, 5, 6, TRADING21BLUE);
+          setCursor(101, keyBoardHeight);
+          print("0");
           break;
         case '-':
-          drawEllipse(113, keyBoardHeight-7, 5, 6, TRADING21BLUE);
+          setCursor(111, keyBoardHeight);
+          print("-");
           break;
         case 'q':
-          drawEllipse(18, keyBoardHeight+5, 5, 8, TRADING21BLUE);
+          setCursor(16, keyBoardHeight+12);
+          if(!caps) print("q"); else print("Q");
           break;
         case 'w':
-          drawEllipse(28, keyBoardHeight+5, 5, 8, TRADING21BLUE);
+          setCursor(26, keyBoardHeight+12);
+          if(!caps) print("w"); else print("W");
           break;
         case 'e':
-          drawEllipse(38, keyBoardHeight+5, 5, 8, TRADING21BLUE);
+          setCursor(36, keyBoardHeight+12);
+          if(!caps) print("e"); else print("E");
           break;
         case 'r':
-          drawEllipse(48, keyBoardHeight+5, 5, 8, TRADING21BLUE);
+          setCursor(46, keyBoardHeight+12);
+          if(!caps) print("r"); else print("R");
           break;
         case 't':
-          drawEllipse(58, keyBoardHeight+5, 5, 8, TRADING21BLUE);
+          setCursor(56, keyBoardHeight+12);
+          if(!caps) print("t"); else print("T");
           break;
         case 'y':
-          drawEllipse(68, keyBoardHeight+5, 5, 8, TRADING21BLUE);
+          setCursor(66, keyBoardHeight+12);
+          if(!caps) print("y"); else print("Y");
           break;
         case 'u':
-          drawEllipse(78, keyBoardHeight+5, 5, 8, TRADING21BLUE);
+          setCursor(76, keyBoardHeight+12);
+          if(!caps) print("u"); else print("U");
           break;
         case 'i':
-          drawEllipse(88, keyBoardHeight+5, 5, 8, TRADING21BLUE);
+          setCursor(86, keyBoardHeight+12);
+          if(!caps) print("i"); else print("I");
           break;
         case 'o':
-          drawEllipse(98, keyBoardHeight+5, 5, 8, TRADING21BLUE);
+          setCursor(96, keyBoardHeight+12);
+          if(!caps) print("o"); else print("O");
           break;
         case 'p':
-          drawEllipse(108, keyBoardHeight+5, 5, 8, TRADING21BLUE);
+          setCursor(106, keyBoardHeight+12);
+          if(!caps) print("p"); else print("P");
           break;
         case 'a':
-          drawEllipse(23, keyBoardHeight+17, 5, 8, TRADING21BLUE);
+          setCursor(21, keyBoardHeight+24);
+          if(!caps) print("a"); else print("A");
           break;
         case 's':
-          drawEllipse(33, keyBoardHeight+17, 5, 8, TRADING21BLUE);
+          setCursor(31, keyBoardHeight+24);
+          if(!caps) print("s"); else print("S");
           break;
         case 'd':
-          drawEllipse(43, keyBoardHeight+17, 5, 8, TRADING21BLUE);
+          setCursor(41, keyBoardHeight+24);
+          if(!caps) print("d"); else print("D");
           break;
         case 'f':
-          drawEllipse(53, keyBoardHeight+17, 5, 8, TRADING21BLUE);
+          setCursor(51, keyBoardHeight+24);
+          if(!caps) print("f"); else print("F");
           break;
         case 'g':
-          drawEllipse(63, keyBoardHeight+17, 5, 8, TRADING21BLUE);
+          setCursor(61, keyBoardHeight+24);
+          if(!caps) print("g"); else print("G");
           break;
         case 'h':
-          drawEllipse(73, keyBoardHeight+17, 5, 8, TRADING21BLUE);
+          setCursor(71, keyBoardHeight+24);
+          if(!caps) print("h"); else print("H");
           break;
         case 'j':
-          drawEllipse(83, keyBoardHeight+17, 5, 8, TRADING21BLUE);
+          setCursor(81, keyBoardHeight+24);
+          if(!caps) print("j"); else print("J");
           break;
         case 'k':
-          drawEllipse(93, keyBoardHeight+17, 5, 8, TRADING21BLUE);
+          setCursor(91, keyBoardHeight+24);
+          if(!caps) print("k"); else print("K");
           break;
         case 'l':
-          drawEllipse(103, keyBoardHeight+17, 5, 8, TRADING21BLUE);
+          setCursor(101, keyBoardHeight+24);
+          if(!caps) print("l"); else print("L");
           break;
         case 'z':
-          drawEllipse(33, keyBoardHeight+29, 5, 8, TRADING21BLUE);
+          setCursor(31, keyBoardHeight+36);
+          if(!caps) print("z"); else print("Z");
           break;
         case 'x':
-          drawEllipse(43, keyBoardHeight+29, 5, 8, TRADING21BLUE);
+          setCursor(41, keyBoardHeight+36);
+          if(!caps) print("x"); else print("X");
           break;
         case 'c':
-          drawEllipse(53, keyBoardHeight+29, 5, 8, TRADING21BLUE);
+          setCursor(51, keyBoardHeight+36);
+          if(!caps) print("c"); else print("C");
           break;
         case 'v':
-          drawEllipse(63, keyBoardHeight+29, 5, 8, TRADING21BLUE);
+          setCursor(61, keyBoardHeight+36);
+          if(!caps) print("v"); else print("V");
           break;
         case 'b':
-          drawEllipse(73, keyBoardHeight+29, 5, 8, TRADING21BLUE);
+          setCursor(71, keyBoardHeight+36);
+          if(!caps) print("b"); else print("B");
           break;
         case 'n':
-          drawEllipse(83, keyBoardHeight+29, 5, 8, TRADING21BLUE);
+          setCursor(81, keyBoardHeight+36);
+          if(!caps) print("n"); else print("N");
           break;
         case 'm':
-          drawEllipse(93, keyBoardHeight+29, 5, 8, TRADING21BLUE);
+          setCursor(91, keyBoardHeight+36);
+          if(!caps) print("m"); else print("M");
           break;
         case '/': //shift key
-          drawEllipse(12, keyBoardHeight+29, 9, 6, TRADING21BLUE);
+          setFont(&Picopixel);
+          setCursor(5, keyBoardHeight+31);
+          print("shift");
           break;
         case ' ': //space key
-          drawEllipse(61, keyBoardHeight+41, 22, 4, TRADING21BLUE);
+          drawLine(39, keyBoardHeight+41, 84, keyBoardHeight+41, TRADING21BLUE);
+          break;
+        setFont(oldFont);
+        setTextColor(oldColour);
+      }
+    }
+
+    void deselectKey(char key){
+      GFXfont* oldFont = gfxFont;
+      uint16_t oldColour = textcolor;
+      setTextColor(ST7735_WHITE);
+      setFont(&Keyboard);
+      switch(key){
+        case '1':
+          setCursor(11, keyBoardHeight);
+          print("1");
+          break;
+        case '2':
+          setCursor(21, keyBoardHeight);
+          print("2");
+          break;
+        case '3':
+          setCursor(31, keyBoardHeight);
+          print("3");
+          break;
+        case '4':
+          setCursor(41, keyBoardHeight);
+          print("4");
+          break;
+        case '5':
+          setCursor(51, keyBoardHeight);
+          print("5");
+          break;
+        case '6':
+          setCursor(61, keyBoardHeight);
+          print("6");
+          break;
+        case '7':
+          setCursor(71, keyBoardHeight);
+          print("7");
+          break;
+        case '8':
+          setCursor(81, keyBoardHeight);
+          print("8");
+          break;
+        case '9':
+          setCursor(91, keyBoardHeight);
+          print("9");
+          break;
+        case '0':
+          setCursor(101, keyBoardHeight);
+          print("0");
+          break;
+        case '-':
+          setCursor(111, keyBoardHeight);
+          print("-");
+          break;
+        case 'q':
+          setCursor(16, keyBoardHeight+12);
+          if(!caps) print("q"); else print("Q");
+          break;
+        case 'w':
+          setCursor(26, keyBoardHeight+12);
+          if(!caps) print("w"); else print("W");
+          break;
+        case 'e':
+          setCursor(36, keyBoardHeight+12);
+          if(!caps) print("e"); else print("E");
+          break;
+        case 'r':
+          setCursor(46, keyBoardHeight+12);
+          if(!caps) print("r"); else print("R");
+          break;
+        case 't':
+          setCursor(56, keyBoardHeight+12);
+          if(!caps) print("t"); else print("T");
+          break;
+        case 'y':
+          setCursor(66, keyBoardHeight+12);
+          if(!caps) print("y"); else print("Y");
+          break;
+        case 'u':
+          setCursor(76, keyBoardHeight+12);
+          if(!caps) print("u"); else print("U");
+          break;
+        case 'i':
+          setCursor(86, keyBoardHeight+12);
+          if(!caps) print("i"); else print("I");
+          break;
+        case 'o':
+          setCursor(96, keyBoardHeight+12);
+          if(!caps) print("o"); else print("O");
+          break;
+        case 'p':
+          setCursor(106, keyBoardHeight+12);
+          if(!caps) print("p"); else print("P");
+          break;
+        case 'a':
+          setCursor(21, keyBoardHeight+24);
+          if(!caps) print("a"); else print("A");
+          break;
+        case 's':
+          setCursor(31, keyBoardHeight+24);
+          if(!caps) print("s"); else print("S");
+          break;
+        case 'd':
+          setCursor(41, keyBoardHeight+24);
+          if(!caps) print("d"); else print("D");
+          break;
+        case 'f':
+          setCursor(51, keyBoardHeight+24);
+          if(!caps) print("f"); else print("F");
+          break;
+        case 'g':
+          setCursor(61, keyBoardHeight+24);
+          if(!caps) print("g"); else print("G");
+          break;
+        case 'h':
+          setCursor(71, keyBoardHeight+24);
+          if(!caps) print("h"); else print("H");
+          break;
+        case 'j':
+          setCursor(81, keyBoardHeight+24);
+          if(!caps) print("j"); else print("J");
+          break;
+        case 'k':
+          setCursor(91, keyBoardHeight+24);
+          if(!caps) print("k"); else print("K");
+          break;
+        case 'l':
+          setCursor(101, keyBoardHeight+24);
+          if(!caps) print("l"); else print("L");
+          break;
+        case 'z':
+          setCursor(31, keyBoardHeight+36);
+          if(!caps) print("z"); else print("Z");
+          break;
+        case 'x':
+          setCursor(41, keyBoardHeight+36);
+          if(!caps) print("x"); else print("X");
+          break;
+        case 'c':
+          setCursor(51, keyBoardHeight+36);
+          if(!caps) print("c"); else print("C");
+          break;
+        case 'v':
+          setCursor(61, keyBoardHeight+36);
+          if(!caps) print("v"); else print("V");
+          break;
+        case 'b':
+          setCursor(71, keyBoardHeight+36);
+          if(!caps) print("b"); else print("B");
+          break;
+        case 'n':
+          setCursor(81, keyBoardHeight+36);
+          if(!caps) print("n"); else print("N");
+          break;
+        case 'm':
+          setCursor(91, keyBoardHeight+36);
+          if(!caps) print("m"); else print("M");
+          break;
+        case '/': //shift key
+          setFont(&Picopixel);
+          setCursor(5, keyBoardHeight+31);
+          print("shift");
+          break;
+        case ' ': //space key
+          drawLine(39, keyBoardHeight+41, 84, keyBoardHeight+41, TRADING21BLUE);
+          break;
+        setFont(oldFont);
+        setTextColor(oldColour);
+      }
+    }
+
+    void changeLetter(int direction){
+      deselectKey(currentLetter);
+      switch(currentLetter){
+        case '1':
+          switch(direction){
+            case LEFT:
+              currentLetter = '-';
+              break;
+            case UP:
+              currentLetter = '/';
+              break;
+            case RIGHT:
+              currentLetter = '2';
+              break;
+            case DOWN:
+              currentLetter = 'q';
+              break;
+          }
+          break;
+        case '2':
+          switch(direction){
+            case LEFT:
+              currentLetter = '1';
+              break;
+            case UP:
+              currentLetter = 'z';
+              break;
+            case RIGHT:
+              currentLetter = '3';
+              break;
+            case DOWN:
+              currentLetter = 'w';
+              break;
+          }
+          break;
+        case '3':
+          switch(direction){
+            case LEFT:
+              currentLetter = '2';
+              break;
+            case UP:
+              currentLetter = 'z';
+              break;
+            case RIGHT:
+              currentLetter = '4';
+              break;
+            case DOWN:
+              currentLetter = 'e';
+              break;
+          }
+          break;
+        case '4':
+          switch(direction){
+            case LEFT:
+              currentLetter = '3';
+              break;
+            case UP:
+              currentLetter = 'x';
+              break;
+            case RIGHT:
+              currentLetter = '5';
+              break;
+            case DOWN:
+              currentLetter = 'r';
+              break;
+          }
+          break;
+        case '5':
+          switch(direction){
+            case LEFT:
+              currentLetter = '4';
+              break;
+            case UP:
+              currentLetter = 'c';
+              break;
+            case RIGHT:
+              currentLetter = '6';
+              break;
+            case DOWN:
+              currentLetter = 'r';
+              break;
+          }
+          break;
+        case '6':
+          switch(direction){
+            case LEFT:
+              currentLetter = '5';
+              break;
+            case UP:
+              currentLetter = 'v';
+              break;
+            case RIGHT:
+              currentLetter = '7';
+              break;
+            case DOWN:
+              currentLetter = 't';
+              break;
+          }
+          break;
+        case '7':
+          switch(direction){
+            case LEFT:
+              currentLetter = '6';
+              break;
+            case UP:
+              currentLetter = 'b';
+              break;
+            case RIGHT:
+              currentLetter = '8';
+              break;
+            case DOWN:
+              currentLetter = 'u';
+              break;
+          }
+          break;
+        case '8':
+          switch(direction){
+            case LEFT:
+              currentLetter = '7';
+              break;
+            case UP:
+              currentLetter = 'n';
+              break;
+            case RIGHT:
+              currentLetter = '9';
+              break;
+            case DOWN:
+              currentLetter = 'i';
+              break;
+          }
+          break;
+        case '9':
+          switch(direction){
+            case LEFT:
+              currentLetter = '8';
+              break;
+            case UP:
+              currentLetter = 'm';
+              break;
+            case RIGHT:
+              currentLetter = '0';
+              break;
+            case DOWN:
+              currentLetter = 'o';
+              break;
+          }
+          break;
+        case '0':
+          switch(direction){
+            case LEFT:
+              currentLetter = '9';
+              break;
+            case UP:
+              currentLetter = 'm';
+              break;
+            case RIGHT:
+              currentLetter = '-';
+              break;
+            case DOWN:
+              currentLetter = 'p';
+              break;
+          }
+          break;
+        case '-':
+          switch(direction){
+            case LEFT:
+              currentLetter = '0';
+              break;
+            case UP:
+              currentLetter = 'm';
+              break;
+            case RIGHT:
+              currentLetter = '1';
+              break;
+            case DOWN:
+              currentLetter = 'p';
+              break;
+          }
           break;
       }
+      selectKey(currentLetter);
     }
 
     private:
       int keyBoardHeight;
+      bool caps;
+      char currentLetter = '1';
 };
