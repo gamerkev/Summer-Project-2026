@@ -6,46 +6,13 @@
 #include <base64.hpp>
 #include <string.h>
 #include <cJSON.h>
-#include <Adafruit_ST7735Ext.h>
+#include <Adafruit_ST7735Keyboard.h>
 #include <jsonGetters.h>
 
-Adafruit_ST7735Ext tft = Adafruit_ST7735Ext(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
+Adafruit_ST7735Keyboard tft = Adafruit_ST7735Keyboard(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
-String inputWord;
-String retVal;
 String mySsid;
-bool mySsidDone = false;
 String myPass;
-bool myPassDone = false;
-
-String takeInput(Adafruit_ST7735Ext* myTft){
-  String in;
-  String tftReturn;
-  String toReturn;
-  bool done = false;
-  while(!done){
-    while(Serial.available()){
-      in = Serial.readString();
-      if (in == "l"){
-        (*myTft).changeLetter(LEFT);
-      } else if (in == "u"){
-        (*myTft).changeLetter(UP);
-      } else if (in == "r"){
-        (*myTft).changeLetter(RIGHT);
-      } else if (in == "d"){
-        (*myTft).changeLetter(DOWN);
-      } else if (in == "s"){
-        tftReturn = (*myTft).inputKey(toReturn);
-        if(!tftReturn.isEmpty() or tft.getCurrentLetter()==BACKSPACE){
-          toReturn = tftReturn;
-        }
-        Serial.println(toReturn);
-        if((*myTft).getCurrentLetter() == ENTER) done = true;
-      }
-    }
-  }
-  return toReturn;
-}
 
 void setup() {
   Serial.begin(115200);
@@ -60,11 +27,11 @@ void setup() {
   tft.fillScreen(ST7735_BLACK);
   tft.putKeyboard(111, false);
 
-  mySsid = takeInput(&tft);
+  mySsid = tft.takeInput();
   
   Serial.println("Ready for password");
   
-  myPass = takeInput(&tft);
+  myPass = tft.takeInput();
 
   Serial.println();
   Serial.println("******************************************************");
