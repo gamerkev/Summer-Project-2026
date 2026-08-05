@@ -317,3 +317,5 @@ I've added both keys and defined constant characters for shift, enter, and backs
 I've added functionality for user-input ssid and password, however my main.cpp file and Adafruit_ST7735Ext.h file both seem very messy, and the latter is far too long to be organised. I've decided that I will create another header file for all keyboard functionality, which will be in the form of a child class of Adafruit_ST7735Ext. I'm hoping that this refactor makes my code more readable and organised.
 
 Refactor complete, everything works!
+
+I've added functionality to save network and API credentials on the flash memory of the ESP32 using the preferences library as it seems to be the standard way online. I also made another platformio project that erases the flash memory of the ESP32 in case I want to reset it to enter the details again. Everything works as intended and I can start to work on a real UI.
