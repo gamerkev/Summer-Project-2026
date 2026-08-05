@@ -313,3 +313,7 @@ I've mapped all letters to their adjacent ones, and I've had success controlling
 I've had success with this as well, using the serial monitor, although I realise that I'm missing an enter key and a backspace key, so I'll add those now.
 
 I've added both keys and defined constant characters for shift, enter, and backspace at the top of the Adafruit_ST7735Ext.h file to make coding easier. I've tested navigation via the serial monitor again and everything works as expected.
+
+I've added functionality for user-input ssid and password, however my main.cpp file and Adafruit_ST7735Ext.h file both seem very messy, and the latter is far too long to be organised. I've decided that I will create another header file for all keyboard functionality, which will be in the form of a child class of Adafruit_ST7735Ext. I'm hoping that this refactor makes my code more readable and organised.
+
+Refactor complete, everything works!
