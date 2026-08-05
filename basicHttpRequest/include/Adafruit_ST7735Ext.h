@@ -418,9 +418,9 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
         case ENTER:
           drawEnter(112, keyBoardHeight+18, TRADING21BLUE);
           break;
-        setFont(oldFont);
-        setTextColor(oldColour);
       }
+      setFont(oldFont);
+      setTextColor(oldColour);
     }
 
     void deselectKey(char key){
@@ -591,9 +591,9 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
         case ENTER:
           drawEnter(112, keyBoardHeight+18, ST7735_WHITE);
           break;
-        setFont(oldFont);
-        setTextColor(oldColour);
       }
+      setFont(oldFont);
+      setTextColor(oldColour);
     }
 
     void changeLetter(int direction){
@@ -771,14 +771,14 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
               currentLetter = '1';
               break;
             case DOWN:
-              currentLetter = ENTER;
+              currentLetter = 'p';
               break;
           }
           break;
         case 'q':
           switch(direction){
             case LEFT:
-              currentLetter = 'p';
+              currentLetter = ENTER;
               break;
             case UP:
               currentLetter = '1';
@@ -1260,24 +1260,28 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
     }
 
     char getCurrentLetter(){
-      return currentLetter;
+      if(currentLetter < 0x61){
+        return currentLetter;
+      } else{
+        if(caps) return currentLetter-0x20; else return currentLetter;
+      }
     }
 
-    char* selectKey(char* currentWord){
+    String inputKey(String currentWord){
       switch(currentLetter){
         case SHIFT:
           putKeyboard(keyBoardHeight, !caps);
-          //NEED TO RETURN SOMETHING HERE ALSO
+          return "";
           break;
         case BACKSPACE:
-          currentWord[strlen(currentWord)-1] = '\0';
+          currentWord.remove(currentWord.length()-1);
           return currentWord; 
           break;
         case ENTER:
           return currentWord;
           break;
         default:
-          return currentWord + currentLetter;
+          return currentWord + getCurrentLetter();
           break;
       }
     }
