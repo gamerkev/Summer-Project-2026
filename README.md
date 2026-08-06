@@ -321,3 +321,5 @@ I've added functionality for user-input ssid and password, however my main.cpp f
 Refactor complete, everything works!
 
 I've added functionality to save network and API credentials on the flash memory of the ESP32 using the preferences library as it seems to be the standard way online. I also made another platformio project that erases the flash memory of the ESP32 in case I want to reset it to enter the details again. Everything works as intended and I can start to work on a real UI.
+
+I had been working off of a different laptop as my laptop's lightning port had stopped working for charging, I have found a barrel jack charger now so I can resume working from my own laptop.
