@@ -2,12 +2,12 @@
 #include <Adafruit_GFX.h>
 
 #define TRADING21BLUE 0x053b
-
-#define TFT_CS 12   // Pins for the SPI interface
-#define TFT_RST 3
-#define TFT_DC 2
-#define TFT_MOSI 11
-#define TFT_SCLK 7
+// Pins for the SPI interface
+#define TFT_SCLK 7      //CLK
+#define TFT_MOSI 11     //SDA
+#define TFT_DC 2        //RS
+#define TFT_RST 3       //RST
+#define TFT_CS 12       //CS
 
 class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display library to be able to cleanly add functionality
   public:

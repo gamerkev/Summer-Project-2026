@@ -10,6 +10,11 @@
 #include <cJSON.h>
 #include <Adafruit_ST7735Ext.h>
 #include <jsonGetters.h>
+#include <Fonts/Org_01.h>
+#include <Fonts/Picopixel.h>
+#include <Fonts/Tiny3x3a2pt7b.h>
+#include <Fonts/TomThumb.h>
+#include <currencySymbols.h>
 
 Adafruit_ST7735Ext tft = Adafruit_ST7735Ext(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
@@ -54,13 +59,17 @@ void loop() {
       String payload = http.getString();  //Get the response
       Serial.println(httpCode);           //Print the response code
       http.end();
-      // payload = payload + "]";
-      // ProfileDetails parsed = ProfileDetails(payload.c_str());
-      Serial.println(cJSON_Print(cJSON_Parse(payload.c_str())));
-      // Serial.println(cJSON_Print(cJSON_Parse(payload.c_str())));
+      extractData retVal = extractData(payload.c_str());
+      Serial.println(cJSON_Print(retVal.getJson()));
 
-      // Serial.println(cJSON_Print(cJSON_GetArrayItem(cJSON_Parse(payload.c_str()), 0)));
-      tft.movingText("Check serial", 50);
+      // tft.setFont(&Org_01);
+      // tft.movingText("Org_01 Font", 10);
+      // tft.setFont(&Picopixel);
+      // tft.movingText("Picopixel Font", 30);
+      // tft.setFont(&Tiny3x3a2pt7b);
+      // tft.movingText("Tiny3x3 Font", 50);
+      // tft.setFont(&TomThumb);
+      // tft.movingText("Tomthumb Font", 70);
     } else {
       Serial.println("Error on HTTP request");
       http.end();

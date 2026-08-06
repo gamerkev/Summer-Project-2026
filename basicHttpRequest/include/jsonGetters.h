@@ -1,52 +1,81 @@
 #include <Arduino.h>
 #include <cJSON.h>
 
-class ProfileDetails{
+String currencySymbol(String currCode){
+  if (currCode == "USD"){
+    return "$";
+  } else if (currCode == "GBP"){
+    return "£";
+  } else{
+    return "?";
+  }
+}
+
+class extractData{
   public:
-    ProfileDetails(const char *value){
-      profile = cJSON_Parse(value);
+    extractData(const char *value){
+      jsonData = cJSON_Parse(value);
+    }
+
+    cJSON * getJson(){
+      return jsonData;
     }
 
     int getId(){
-      return profile->child->valueint;
+      return jsonData->child->valueint;
     }
 
     String getCurrency(){
-      return profile->child->next->valuestring;
+      return jsonData->child->next->valuestring;
     }
 
     float getTotalValue(){
-      return profile->child->next->next->valuedouble;
+      return jsonData->child->next->next->valuedouble;
     }
 
     float getCashAvailableToTrade(){
-      return profile->child->next->next->next->child->valuedouble;
+      return jsonData->child->next->next->next->child->valuedouble;
     }
 
     float getCashReservedForOrders(){
-      return profile->child->next->next->next->child->next->valuedouble;
+      return jsonData->child->next->next->next->child->next->valuedouble;
     }
 
     float getCashInPies(){
-      return profile->child->next->next->next->child->next->next->valuedouble;
+      return jsonData->child->next->next->next->child->next->next->valuedouble;
     }
 
     float getInvestmentsCurrentValue(){
-      return profile->child->next->next->next->next->child->valuedouble;
+      return jsonData->child->next->next->next->next->child->valuedouble;
     }
 
     float getInvestmentsTotalCost(){
-      return profile->child->next->next->next->next->child->next->valuedouble;
+      return jsonData->child->next->next->next->next->child->next->valuedouble;
     }
 
     float getInvestmentsRealisedProfitLoss(){
-      return profile->child->next->next->next->next->child->next->next->valuedouble;
+      return jsonData->child->next->next->next->next->child->next->next->valuedouble;
     }
 
     float getInvestMentsUnrealisedProfitLoss(){
-      return profile->child->next->next->next->next->child->next->next->next->valuedouble;
+      return jsonData->child->next->next->next->next->child->next->next->next->valuedouble;
+    }
+
+    String getInstrumentName(){
+      return jsonData->child->child->child->next->valuestring;
+    }
+
+    float getInstrumentWalletImpactTotalCost(){
+      return jsonData->child->child->next->next->next->next->next->next->next->child->next->valuedouble;
+    }
+    String getWalletCurrency(){
+      return jsonData->child->child->next->next->next->next->next->next->next->child->valuestring;
+    }
+
+    float getInstrumentWalletImpactCurrentValue(){
+      return jsonData->child->child->next->next->next->next->next->next->next->child->next->next->valuedouble;
     }
   
   private:
-    cJSON* profile;
+    cJSON* jsonData;
 };
