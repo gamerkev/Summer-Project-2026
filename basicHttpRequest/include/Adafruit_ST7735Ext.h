@@ -1,5 +1,7 @@
 #include <Adafruit_ST7735.h>
 #include <Adafruit_GFX.h>
+#include <keyboardFont.h>
+#include <Fonts/Picopixel.h>
 
 #define TRADING21BLUE 0x053b
 // Pins for the SPI interface

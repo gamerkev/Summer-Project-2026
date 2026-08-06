@@ -1,7 +1,7 @@
 # Summer-Project-2026
 ## Divergent thinking
 ### Idea 1, e-ink planner:
-![E-ink planner paper prototype 1](./e-ink%20planner%20paper.jpg)
+![E-ink planner paper prototype 1](./pictures/e-ink%20planner%20paper.jpg)
 - Possible to have some minigames with buttons on the side
 - Need to figure out the form factor for typing
     - Pull out keyboard?
@@ -28,9 +28,9 @@
 - Could even have journal functionality on this, link with an app
 - 2 form factor options:
     - Old iPod:
-    ![iPod prototype](./ipod%20mp3%20player.jpeg)
+    ![iPod prototype](./pictures/ipod%20mp3%20player.jpeg)
     - Full screen:
-    ![Full screen prototype](./mp3%20player%20full-screen.jpeg)
+    ![Full screen prototype](./pictures/mp3%20player%20full-screen.jpeg)
 
 ### Idea 5, carplay but for a desk
 - Similar to the MP3 player idea but not portable
@@ -45,7 +45,7 @@ I'm going with the MP3 idea because it's something simple to start with, but it 
 I've already done a bit of this inadvertently in the divergent thinking section, looking at different form factors for the device so let's begin by looking at those again.
 
 ### Old iPod
-![iPod prototype](./ipod%20mp3%20player.jpeg)
+![iPod prototype](./pictures/ipod%20mp3%20player.jpeg)
 - Boxy looking screen at the top
 - Pause/unpause button in the centre below the screen
 - Skip backwards track is to the left of the pause/unpause button
@@ -59,7 +59,7 @@ I've already done a bit of this inadvertently in the divergent thinking section,
     - Small screeen
 
 ### Full-screen
-![Full-screen prototype](./mp3%20player%20full-screen.jpeg)
+![Full-screen prototype](./pictures/mp3%20player%20full-screen.jpeg)
 - No buttons on the same face as the screen
 - No designated skip track buttons, just hold pressed on the volume buttons to skip track
 - Likely haptic feedback to tell you when you've skipped
@@ -79,7 +79,7 @@ I've already done a bit of this inadvertently in the divergent thinking section,
     - Less buttons means less functionality can be added in the future
 
 ### Stick
-![Stick prototype](./stick%20mp3%20player.jpeg)
+![Stick prototype](./pictures/stick%20mp3%20player.jpeg)
 - Similar to the full screen prototype but the device is a lot more narrow
 - Might not actually have the screen be the whole length of the device if things don't fit nicely
 - Benefits:
@@ -114,7 +114,7 @@ It turns out that the board I ordered doesn't have Bluetooth connectivity, only 
 
 The game will look like this:
 
-![Game prototype](./gameDiagram.jpeg)
+![Game prototype](./pictures/gameDiagram.jpeg)
 
 As you can see, I will need 6 buttons, 6 green LEDS, 5 red LEDs, 5 yellow LEDs, and 5 blue LEDs. All of which came with the breadboard kit that I previously ordered.
 
@@ -132,11 +132,11 @@ The display is estimated to arrive on the 2nd July and the ESP32 C3 SuperMini is
 
 I've been spending some time trying to figure out the wiring that I'll need to do for the display and ESP32, I think I've finally got it figured out:
 
-![Raw wiring diagram](./esp32%20display%20wiring%20raw.jpeg)
+![Raw wiring diagram](./pictures/esp32%20display%20wiring%20raw.jpeg)
 
 Cleaner diagram below:
 
-![Clean wiring diagram](./esp32%20display%20wiring%20clean.jpeg)
+![Clean wiring diagram](./pictures/esp32%20display%20wiring%20clean.jpeg)
 
 Hopefully this works, I went through a few YouTube videos and many obscure forum posts for this, I also found [a video](https://www.youtube.com/watch?v=A0fm15ydH4o) that will help me learn to use the display once it arrives as well. Still waiting on both the chip and display to be delivered.
 
@@ -184,4 +184,140 @@ I'm going to not create a json parser now, listing instruments that the user doe
 
 I had a big issue over the past week due to changing desktop environments from GNOME to Cinnamon on my laptop (as GNOME started closing all running processes when I would use my laptop's touchscreen while screensharing; which is kind of required for my tutoring job), which used to run the default version of Fedora with GNOME. I couldn't upload code and kept getting different errors from Platformio, broken pipe, and protocol error. I spent multiple days doing research in the hopes of fixing this but I had no luck, I had to resort to getting help from AI to find the solution to my problem, which ended up being putting my ESP32 into bootloader mode manually and adding a 'upload_resetmethod = no_reset' line to my platformio.ini file. From my understanding this is because the ESP32 that I'm using has no UART chip, so when Platformio's esptool was trying to put my ESP32 into bootloader mode using DTR, the kernel rejected it. This problem may have stemmed from a couple of different things: GNOME may have had udev rules that allowed DTR on the virtual port, or may have kept the port free from interference. The removal of GNOME left me with a smaller USB stack which exposed hardware limitations. Due to this, uploading code to my ESP32 is a much more manual process right now. However, my project has nothing to do with Linux so I won't get too into the quirks of it or do much more research into it, as I'd like to finish my project before university begins again. I'm just glad that I can keep coding without having to reflash Fedora to my laptop. I would also like to go back to GNOME if the touchscreen/screensharing problem is ever fixed, but again, it's something I'll look more into once my project is complete.
 
-I'm getting very used to the API calls available to myself, so I believe it's time to get started on the UI. However, none of the fonts available in the Fonts folder of the Adafruit GFX library seem to fill the display in a nice fashion. So I'll have to design my own font. I will use [pixlart.com](https://www.pixilart.com/) to sketch each character in an appropriately sized grid, using the character as a tracing image. After doing this, I will use the online [Adafruit GFX Pixel font customiser](https://tchapi.github.io/Adafruit-GFX-Font-Customiser/) to create the header file for my new font. However, I'm not big on trading stocks, Trading212 isn't something 
+I'm getting very used to the API calls available to myself, so I believe it's time to get started on the UI. However, none of the fonts available in the Fonts folder of the Adafruit GFX library seem to fill the display in a nice fashion. So I'll have to design my own font. I will use [pixlart.com](https://www.pixilart.com/) to sketch each character in an appropriately sized grid, using the character as a tracing image. After doing this, I will use the online [Adafruit GFX Pixel font customiser](https://tchapi.github.io/Adafruit-GFX-Font-Customiser/) to create the header file for my new font. However, I'm not big on trading stocks, Trading212 isn't something I need to figure out whether I'm going to use one of the Adafruit GFX built-in fonts for my project, or whether I'll have to design my own. I already found out that the built-in fonts lack the **£** symbol, so I know that I'll have to at least create a glyph for that. However, as I don't trade much, I'm not too clear on what a user would like to be able to do and see on a device such as the one I'm creating. So I've created a Google form (shown below) that I will share with people that I know trade more regularly.
+
+![Google form screenshot 0](./pictures/form0.png)
+![Google form screenshot 1](./pictures/form1.png)
+![Google form screenshot 2](./pictures/form2.png)
+![Google form screenshot 3](./pictures/form3.png)
+![Google form screenshot 4](./pictures/form4.png)
+![Google form screenshot 5](./pictures/form5.png)
+![Google form screenshot 6](./pictures/form6.png)
+![Google form screenshot 7](./pictures/form7.png)
+
+While I wait for responses to the form, I can fill in the form myself as an amateur and begin to think about possible font sizes. I want to try to fit every menu on one screen and not have any scrolling, as the screen flickers due to having to set black pixels before I can put the next frame on. If I can't fit things on one screen, I'd much rather use pages to flick through in order to minimise movements on the display.
+
+These are my responses:
+
+![My Response 0](./pictures/myResponse0.png)
+![My Response 1](./pictures/myResponse1.png)
+![My Response 2](./pictures/myResponse2.png)
+![My Response 3](./pictures/myResponse3.png)
+![My Response 4](./pictures/myResponse4.png)
+
+I divided my form into 4 sections: summary, open positions, orders, and history. It would make sense to organise menus on the device in a tree format.
+
+![Menu tree diagram](./pictures/menuTreeDiagram.jpeg)
+
+You can see pending orders and create new orders are crossed out which are coming off of pending orders. Originally the current pending orders was just "Orders", however I realised that having "Create a new order" and "Pending orders" coming off of that made no sense as fetching available instruments doesn't work (at least for now) so I crossed out "Create a new order" and then drew "Create a new order" off of open positions, past orders, and orders. And changed orders to become pending orders. I did this because the data that will be fetched for open positions, pending orders, and past orders includes the ticker string for an instrument, which is required to place an order. So it would only really make sense to place an order based off of positions/orders shown in those menus.
+
+I can now start to sketch menus, I'll start from the root of the tree (Boot-up), as the leaves and children of the root are the most likely to change. Doing these sketches will also help me get an idea of how I want to design the interface of the device. At the moment I have two ideas, I'll create multiple sketches for each menu that are based off of different hardware interfaces.
+
+Here are my boot-up menu sketches:
+
+![Boot up menu sketch](./pictures/bootUpMenu.jpeg)
+
+I've used a rounded-off button for the power button to differentiate it from the other buttons. In the sketch on the left-hand side, I use 4 buttons (excludng the power button) as the hardware interface for the device. In the boot-up menu ,each button is linked to one of the children of the root in the tree diagram. However, I forsee some problems with this, namely that if there is too much data to fit on one page, or if the user is trying to select a position or order in a different menu, navigating using those 4 buttons and selecting orders may feel unnatural. But I will still keep this as an option in case I figure out a way around it in the future as I quite like it for the boot-up menu. For the sketch on the right-hand side, I've used 3 buttons (excluding the power button). This makes things like scrolling much more natural, as you can use the top and bottom buttons to move up/down items and the middle button as a select button. If an item on the bottom or top of the screen is reached, the device can just go to the next page. However, this is boring and not a unique design. Writing about both designs, I realise that each screen design could be used with either setups of buttons. The left-hand screen could scroll through the menu in the same way that we read, left-to-right then top-to-bottom. The right-hand screen could still link one button to each option, which highlights when pressed, options could then be selected by holding its corresponding button down.
+
+This makes my choice of the buttons much more difficult, so I will have to continue sketching with both setups.
+
+I believe that a lot of the menus will be lists, namely the open positions, pending orders, past orders, past transactions, paid out dividends menus. So it will be necessary to scroll, however I believe I have a solution for the previously mentioned scrolling dilema for the 4-button setup (referring to the buttons on the left-hand side of the boot-up menu sketch). I was trying to figure out what would be the most natural way to scroll using that setup, but this may differ from person-to-person. In my opinion, the clearest way to do it would be to use the top and bottom-right buttons to scroll and then the top-left button to select. On the other hand, I would personally use the top-left and bottom-right buttons to scroll and the bottom-left button to select since those buttons have fingers on them if the device is resting in the palm of the user. This is shown **very** roughly in the below sketch:
+
+![4-button menu boot-up screen held in hand](./pictures/handBootUpMenu.jpeg)
+
+It may be difficult to see this, but I envision the pink-finger or ring-finger on the bottom-left button, index finger on the top-left button, and thumb on the bottom-left button. Because there are so many different ways to configure these buttons, I would like to leave it up to the user in a much-needed settings menu.
+
+Although, this is yet another difficult design decision, how can someone enter a settings menu? We have many examples to consider, a popular option is to have a gear symbol in any corner of the display which will take you directly to the settings menu, another option is to have to push certain buttons during boot-up (in the way that BIOS settings are accessed), we could also have the user hold certain buttons pushed down in the boot-up menu - or even a combination of buttons. In order to make in informed decision, I will have to consider how often the settings menu will need to be accessed. If it doesn't need to be accessed much, I can go for the BIOS-like choice as it will be a cleaner look if the classic settings gear isn't present on any menu. On the other hand, if users will be accessing settings often, the gear may be more practical than restarting the device every time you want to make a small settings change.
+
+So I will need to consider what options may be within the settings menu.
+
+The device needs an internet connection to pull data from the Trading212 API, so it will need an SSID and a password before it can do anything. Anyone with half a brain wouldn't give someone their WiFi SSID and password just because they'll give them a device that interfaces with their stocks app. Furthermore, people move around, portability is one of my own requirements for this device; so the devices must store multiple SSIDs and passwords. This gives us our first option in the setting menu, *WiFi networks*.
+
+Something else that the user will have to set up is the API ID/key pair. This is definitely going to be a hassle for the user as API keys are around 100 characters and made up of a mixture of numbers, uppercase letters, and lowercase letters. Evidently *API key* will have to be another option in the settings menu.
+
+Moreover, this raises another key issue, the keyboard. The display is 128 pixels wide, my keyboard will likely be 11 characters wide at its widest due to having to house 11 keys in the top row (every number and the dash as API key pairs can sometimes contain dashes). However, I could make it 10 characters wide as QWERTY keyboard rows are 10, then 9, then 7 charcters wide, so I could have numbers as the top row, followed by the usual QWERTY keyboard, and then put dashes or any other special charcter in the final, 7-charcter row. Since my longest row is 10 characters wide, I will pad the keyboard horizontally by 4 pixels either side. This leaves 12 pixels width per character, including the spacing between each character. I will likely space each character by 1 pixel either side as that's enough to be able to differentiate each one and gives me room to draw a 1-pixel width box around the selected character. This leaves me 10 pixels for the width of each character, excluding padding.
+
+There will be 4 rows for the keyboard, and characters are usually taller than they are wide, the default Adafruit GFX font is 6 pixels width per character with 7 pixels of height. So if my characters are 10 pixels wide, I'll make them 12 pixels tall. Accounting for 2 pixels between each row, I get a height of 50 for my keyboard. So my keyboard will be 120 * 50 pixels size, and each character will be 10 * 12 pixels. This is a font that I can create. I'll go for a nice monospace vibe since the screen gives a very hacker-y vibe. I'll type out every character into this file in vscode since it has a monospace font already.
+
+1234567890-qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM
+
+I had forgotten that I'll need a shift key as well, this can also go in the bottom row of the keyboard, or could even be the purpose of one of the buttons on the 4-button setup. I'll start sketching characters now in [pixilart](https://www.pixilart.com/draw?ref=home-page), using a screenshot of the characters in vscode as my reference on the website.
+
+I had started sketching out characters for my font but I quickly realised that there are some things that I should know before trying to design a font, which I don't know. Font isn't too important to me, although a horrible one can ruin the look of the entire project, so it's essential to be able to design a passable one. I've taken some very basic notes which should help me design an "ok" font from [this page](https://m2.material.io/design/typography/understanding-typography.html) as shown below:
+
+![Font notes](./pictures/fontNotes.jpeg)
+
+The biggest issue that I noticed was that I was unsure where to start and end letters vertically, having made my numbers take up the entire 10*12 pixel grid, but then realising that certain letters like "y" need to have the appearance of going below an invisible line that is at the base of all other characters that don't descend, including numbers. Having done some research now, I'm better equipped to design a font.
+
+So far, my font is all numbers from 0-9, the dash symbol, and all of the lowercase letters. I've tested how it looks on my display and all that I can see at the moment is that I may have put too great of spacing by making every character 10 pixels wide. This wouldn't matter if I was only going to use this font for the keyboard, however it's quite a nice size and is coming out nicely, so I may end up using it throughout this project. Before narrowing the space that each character takes up, I'll add all of the capital letters too, just to see if they need to take up the entire 10 pixels width.
+
+I've finished sketching all of my characters and turned them into a font, the sketches are available in the keyboardFont.pixil file, which can be opened in [pixilart](https://www.pixilart.com/draw?ref=home-page#).
+
+After testing my font, designing a font seems quite iterative, after my first iteration I can see a few issues:
+ - My "A" is too low
+ - My "Z" is too high
+ - My "W" is too low
+ - My "K" doesn't really look like a capital letter
+ - And my numbers seem too small in my opinion
+
+Apart from these things, I think that I should also make the font not as wide, 10 pixels seems much too much. However in order to do this, I should also narrow "W" a little. My first iteration can be seen below:
+
+![First font iteration](./pictures/keyboardFontIteration1.jpeg)
+
+I'll make the previously mentioned alterations and test again. I won't be altering the pixilart file anymore since the changes are fairly straightforward.
+
+Alterations done, it's time to test again. My new font looks much cleaner, shown below:
+
+![Second font iteration](./pictures/keyboardFontIteration2.jpeg)
+
+Although, I made a few more alterations than originally planned. I made the numbers larger and slimmed down the space that every character took up by 2 pixels, but to do this I also had to alter A, M, N, T, O, Q, V, X, Y, Z, m, q, w, and x. Even still, I can spot 2 remaining mistakes, x and w are 1 pixel too high. After fixing this, I get my final keyboard font:
+
+![Final font](./pictures/keyboardFontIteration3.jpeg)
+
+I had forgotten to add the character for space, I've done that now and my font is complete.
+
+Now that the keyboard font is complete, I could begin to design the screen for inputting a network SSID and password, but I can't really do that yet as I'd need to take inputs from the pins of the ESP32 to move the cursor on the on-screen keyboard to enter anything. In order to do that I either need to connect buttons to the ESP32 (by soldering or using the breadboard), or simulating inputs virtually, perhaps through the serial monitor. I'd much rather go for option 2, the serial port, because conencting the 8 pins for the display any time I want to test anything is annoying enough already. I'm not sure how serial inputs work, so I'll have to do some research now.
+
+Serial input seems fairly straightforward, I managed to test it in serialInputTest, I can go ahead with creating an interface for WiFi details.
+
+This is how the on-screen keyboard currently looks, using a function, putKeyboard, that was defined in Adafruit_ST7735Ext.h:
+
+![Keyboard first iteration](./pictures/keyboardFirstIteration.jpeg)
+
+I think that the keyboard looks slightly skewed to the right and needs to be lower as well, so I'll fix those issues now. After examining the spacing, it seems as though I have placed everything in the centre, but the spacing looks off because I've made every letter stick to the left border and left space on the right, this makes sense when typing words but not when displaying them in a keyboard, so I'll move everything by just 2 pixels and see if that fixes it.
+
+I've moved the whole keyboard down and moved every character to the right by a couple of pixels, I also placed the spacebar slightly closer to the bottom row. As a final change, I made my code more modular by passing in a height variable to say where to place the keyboard. Although, if I end up placing the keyboard at the same height constantly, I'll remove this. Here's the final keyboard:
+
+![Final keyboard](./pictures/keyboardFinal.jpeg)
+
+My next step is to make a capital keyboard too, and add a shift key, I'll do this by passing in another argument to the function.
+
+I've created the capital keyboard, and shift key, and also a function that will circle a button on the keyboard. The next step is to make it functional.
+
+On second thoughts, I don't really like the way the circle is, I'm going to make the selected letter have a filled-in circular background instead since the current circle has to be too big and sometimes overlaps parts of some letters. As shown by the following image where C is slightly overlapped when F is selected:
+
+![C overlap when F is selected](./pictures/fAndCOverlap.jpeg)
+
+I think that my mistake is trying to ake the same size oval for every character, I've done what I said before about changing the colour of the background of the selected letter but I still don't like how the q looks when highlighted. It's right on the edge of the oval as shown below:
+
+![Q on the edge of its circle](./pictures/qOnEdgeOfCircle.jpeg)
+
+So instead, I'll change back to what I was doing before where the selected character is circled so that I don't have to rewrite the character to the display after drawing an oval in its place, but I'll change the size of the oval depending on which letter is selected.
+
+This is too finicky, new plan: just change the colour of the selected letter.
+
+My new plan worked perfectly! Now to add functionality to allow the user to move from letter to letter.
+
+I've created functions for selecting letters and deselecting them, and begun mapping letters to their adjacent letters.
+
+I've mapped all letters to their adjacent ones, and I've had success controlling the keyboard cursor through the serial monitor. Now I can begin actually processing the input of the on-screen keyboard.
+
+I've had success with this as well, using the serial monitor, although I realise that I'm missing an enter key and a backspace key, so I'll add those now.
+
+I've added both keys and defined constant characters for shift, enter, and backspace at the top of the Adafruit_ST7735Ext.h file to make coding easier. I've tested navigation via the serial monitor again and everything works as expected.
+
+I've added functionality for user-input ssid and password, however my main.cpp file and Adafruit_ST7735Ext.h file both seem very messy, and the latter is far too long to be organised. I've decided that I will create another header file for all keyboard functionality, which will be in the form of a child class of Adafruit_ST7735Ext. I'm hoping that this refactor makes my code more readable and organised.
+
+Refactor complete, everything works!
+
+I've added functionality to save network and API credentials on the flash memory of the ESP32 using the preferences library as it seems to be the standard way online. I also made another platformio project that erases the flash memory of the ESP32 in case I want to reset it to enter the details again. Everything works as intended and I can start to work on a real UI.
