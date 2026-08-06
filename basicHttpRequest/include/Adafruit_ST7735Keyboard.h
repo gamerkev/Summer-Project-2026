@@ -29,23 +29,23 @@ public:
       while (Serial.available())
       {
         in = Serial.readString();
-        if (in == "l")
+        if (in == "a")
         {
           changeLetter(LEFT);
         }
-        else if (in == "u")
+        else if (in == "w")
         {
           changeLetter(UP);
         }
-        else if (in == "r")
+        else if (in == "d")
         {
           changeLetter(RIGHT);
         }
-        else if (in == "d")
+        else if (in == "s")
         {
           changeLetter(DOWN);
         }
-        else if (in == "s")
+        else if (in == "l")
         {
           tftReturn = inputKey(toReturn);
           if (!tftReturn.isEmpty() or getCurrentLetter() == BACKSPACE)
