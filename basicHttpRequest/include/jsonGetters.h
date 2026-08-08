@@ -1,13 +1,13 @@
 #include <Arduino.h>
 #include <cJSON.h>
 
-String currencySymbol(String currCode){
+char currencySymbol(String currCode){
   if (currCode == "USD"){
-    return "$";
+    return '$';
   } else if (currCode == "GBP"){
-    return "£";
+    return '&';
   } else{
-    return "?";
+    return '?';
   }
 }
 

@@ -17,26 +17,27 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
 
     void movingText(String toWrite, int y){
       // int pixelLength = toWrite.length() * 6;                       // 6 pixels width each character
-      int extraChars = toWrite.length() - 18;
+      int extraChars = toWrite.length() - 16;
       // int extraPixels = (ceil((pixelLength - 114)/6) * 6);    // chose the numbers from this line through trial and error
-      fillRect(1, y, 126, 8, ST7735_BLACK);                  // black out the line where the text will be
+      fillRect(1, y-12, 126, 12, ST7735_BLACK);                  // black out the line where the text will be
       setCursor(10, y);
       print(toWrite);
-      fillRect(1, y, 9, 8, ST7735_BLACK);                   // black out the edges of the text
-      fillRect(118, y, 9, 8, ST7735_BLACK);
+      fillRect(1, y-12, 9, 12, ST7735_BLACK);                   // black out the edges of the text
+      fillRect(118, y-12, 9, 12, ST7735_BLACK);
       drawRect(0, 0, 128, 160, TRADING21BLUE);
+      Serial.println(toWrite.length() + " long, need" + String(extraChars*8) + " more chars");
       if(extraChars>0){
         delay(1000);                                                  // time to read the first part of the text
       } else{
         delay(500);
       }
       //THE MAX LENGTH OF TEXT THAT IS PADDED BY 9 PIXELS EITHER SIDE IS 18 CHARACTERS
-      for(int i = 0; i < (extraChars*6)+1; i=i+2){
-        fillRect(1, y, 128, 8, ST7735_BLACK);
-        setCursor(10-i, y);                                     // move 1 pixel to the left
+      for(int i = 0; i < (extraChars*8)+1; i=i+2){
+        fillRect(1, y-12, 128, 12, ST7735_BLACK);
+        setCursor(10-i, y);                                     // move 2 pixel to the left
         print(toWrite);
-        fillRect(1, y, 9, 8, ST7735_BLACK);
-        fillRect(118, y, 9, 8, ST7735_BLACK);
+        fillRect(1, y-12, 9, 12, ST7735_BLACK);
+        fillRect(118, y-12, 9, 12, ST7735_BLACK);
         drawRect(0, 0, 128, 160, TRADING21BLUE);
         delay(50);
       }
@@ -61,5 +62,20 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735{    // Extend the display libr
       println("Trading212");
       setTextSize(1);
       delay(3000);
+    }
+
+    void setFontSameSize(const GFXfont *f) {
+      if (f) {          // Font struct pointer passed in?
+      if (!gfxFont) { // And no current font struct?
+          // Switching from classic to new font behavior.
+          // Move cursor pos down 6 pixels so it's on baseline.
+          cursor_y += 6;
+        }
+      } else if (gfxFont) { // NULL passed.  Current font struct defined?
+        // Switching from new to classic font behavior.
+        // Move cursor pos up 6 pixels so it's at top-left of char.
+        cursor_y -= 7;
+      }
+      gfxFont = (GFXfont *)f;
     }
 };

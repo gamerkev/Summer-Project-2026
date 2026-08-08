@@ -10,6 +10,7 @@
 #include <jsonGetters.h>
 #include <Preferences.h>
 #include <string.h>
+#include <poundSign.h>
 
 Preferences preferences;
 
@@ -126,9 +127,28 @@ void loop()
     int httpCode = http.GET();  //Send get request
     if(httpCode > 0){
       String payload = http.getString();  //Get the response
-      Serial.println(httpCode);           //Print the response code
-      Serial.println(payload);
+      // Serial.println(httpCode);           //Print the response code
+      // Serial.println(payload);            //Print the payload
       http.end();
+      extractData payloadJson = extractData(payload.c_str());
+      String curr = payloadJson.getCurrency();
+      char currSym = currencySymbol(curr);
+      int startLevel = 14;
+      tft.setCursor(10,10);
+      tft.setFontSameSize(&Pound);
+      tft.print("£");
+      tft.setFontSameSize(NULL);
+      tft.print("10");
+      // tft.movingText("Total account value:", startLevel);
+      // tft.movingText(currSym+String(payloadJson.getTotalValue()), startLevel+13);
+      // tft.movingText("Cash available to trade:", startLevel+13+15);
+      // tft.movingText(currSym+String(payloadJson.getCashAvailableToTrade()), startLevel+26+15);
+      // tft.movingText("Current value of investments:", startLevel+26+30);
+      // tft.movingText(currSym+String(payloadJson.getInvestmentsCurrentValue()), startLevel+39+30);
+      // tft.movingText("Total cost of investments:", startLevel+39+45);
+      // tft.movingText(currSym+String(payloadJson.getInvestmentsTotalCost()), startLevel+52+45);
+      // tft.movingText("Unrealised profit/loss:", startLevel+52+60);
+      // tft.movingText(currSym+String(payloadJson.getInvestMentsUnrealisedProfitLoss()), startLevel+65+60);
     } else {
       Serial.println("Error on HTTP request: " + httpCode);
       http.end();
