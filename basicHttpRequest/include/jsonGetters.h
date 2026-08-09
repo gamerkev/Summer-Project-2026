@@ -16,6 +16,7 @@ class extractData{
     extractData(const char *value){
       jsonData = cJSON_Parse(value);
     }
+    extractData() = default;
 
     cJSON * getJson(){
       return jsonData;
