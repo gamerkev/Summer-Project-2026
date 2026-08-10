@@ -10,7 +10,6 @@
 #include <jsonGetters.h>
 #include <Preferences.h>
 #include <string.h>
-#include <currencySymbols.h>
 
 Preferences preferences;
 
@@ -108,8 +107,9 @@ void setup()
 void loop()
 {
   if(WiFi.status() == WL_CONNECTED){
-    
+    tft.setCursor(5, 10);
+    tft.printUnderlineDefaultFont("Summary", ST7735_WHITE);
+    tft.printCentreLeftAlign("The quick brown fox jumped over the lazy dog", 20);
   }
-
   delay(5000);
 }

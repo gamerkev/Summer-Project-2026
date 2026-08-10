@@ -106,4 +106,32 @@ public:
     setFontSameSize(NULL);
     print(amount);
   }
+
+  void printCentreLeftAlign(String toPrint, int y){
+    String printing;
+    setCursor(5, y);
+    while(toPrint.length()>19){
+      printing = toPrint.substring(0, 19);
+      if (printing.endsWith(" ") or toPrint[19] == ' '){
+        printing = printing.substring(0, 19);
+        toPrint = toPrint.substring(19);
+      } else{
+        toPrint = toPrint.substring(printing.lastIndexOf(' '));
+        printing = printing.substring(0, printing.lastIndexOf(' '));
+      }
+      if (printing[0] == ' '){
+        printing = printing.substring(1);
+      }
+      println(printing);
+      setCursor(5, cursor_y);
+    }
+    if (!toPrint.isEmpty()){
+      if (toPrint[0] == ' ') println(toPrint.substring(1)); else println(toPrint);
+    }
+  }
+
+  void printUnderlineDefaultFont(String toPrint, uint16_t colour){
+    drawLine(cursor_x, cursor_y+8, cursor_x+(toPrint.length()*6), cursor_y+8, colour);
+    println(toPrint);
+  }
 };
