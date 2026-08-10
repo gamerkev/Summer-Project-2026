@@ -3,21 +3,16 @@
 #include <keyboardFont.h>
 #include <currencySymbols.h>
 #include <Fonts/Picopixel.h>
+#include <trading212Data.h>
 
 #define TRADING21BLUE 0x053b
+#define MENU_DARK_GREEN 0x0565
 // Pins for the SPI interface
 #define TFT_SCLK 7  // CLK
 #define TFT_MOSI 11 // SDA
 #define TFT_DC 2    // RS
 #define TFT_RST 3   // RST
 #define TFT_CS 12   // CS
-
-typedef enum
-{
-  GBP = 0,
-  EUR = 1,
-  USD = 2
-} currency;
 
 class Adafruit_ST7735Ext : public Adafruit_ST7735
 { // Extend the display library to be able to cleanly add functionality
@@ -79,7 +74,7 @@ public:
     delay(3000);
   }
 
-  void setFontSameSize(const GFXfont *f)
+  void setFontKeepSize(const GFXfont *f)
   {
     if (f)
     { // Font struct pointer passed in?
@@ -101,10 +96,10 @@ public:
 
   void printMoney(currency curr, float amount)
   {
-    setFontSameSize(&CurrencySymbols);
+    setFontKeepSize(&CurrencySymbols);
     print(curr);
-    setFontSameSize(NULL);
-    print(amount);
+    setFontKeepSize(NULL);
+    println(amount);
   }
 
   void printCentreLeftAlign(String toPrint, int y){
@@ -131,7 +126,38 @@ public:
   }
 
   void printUnderlineDefaultFont(String toPrint, uint16_t colour){
+    uint16_t oldColour = textcolor;
     drawLine(cursor_x, cursor_y+8, cursor_x+(toPrint.length()*6), cursor_y+8, colour);
+    setTextColor(colour);
     println(toPrint);
+    setTextColor(oldColour);
+  }
+
+  void printSummary(Summary aSummary){
+    uint16_t oldColour = textcolor;
+    setCursor(5, 5);
+    printUnderlineDefaultFont("Summary", TRADING21BLUE);
+    printCentreLeftAlign("Available to trade:", 20);
+    setCursor(5, cursor_y+1);
+    printMoney(currencySymbol(aSummary.getCurr()), aSummary.getAvailableToTrade());
+    printCentreLeftAlign("Total investments value:", 45);
+    setCursor(41, cursor_y-7);
+    printMoney(currencySymbol(aSummary.getCurr()), aSummary.getTotalVal());
+    printCentreLeftAlign("Paid for current shares:", 70);
+    setCursor(47, cursor_y-7);
+    printMoney(currencySymbol(aSummary.getCurr()), aSummary.getTotalCost());
+    printCentreLeftAlign("Unrealised profit:", 95);
+    setCursor(5, cursor_y+1);
+    printMoney(currencySymbol(aSummary.getCurr()), aSummary.getUnrealisedProfit());
+    printCentreLeftAlign("Reserved for orders:", 120);
+    setCursor(47, cursor_y-7);
+    printMoney(currencySymbol(aSummary.getCurr()), aSummary.getReservedForOrders());
+    fillRoundRect(5, 145, 28, 10, 1, MENU_DARK_GREEN);
+    setCursor(7, 146);
+    print("Menu");
+    fillRoundRect(97, 145, 28, 10, 1, MENU_DARK_GREEN);
+    setCursor(99, 146);
+    print("Pies");
+    setTextColor(oldColour);
   }
 };

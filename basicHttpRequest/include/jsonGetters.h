@@ -1,82 +1,117 @@
 #include <Arduino.h>
 #include <cJSON.h>
 
-char currencySymbol(String currCode){
-  if (currCode == "USD"){
-    return '$';
-  } else if (currCode == "GBP"){
-    return '&';
-  } else{
-    return '?';
+typedef enum
+{
+  OTHER = -1,
+  GBP = 0,
+  EUR = 1,
+  USD = 2
+} currency;
+
+currency currencySymbol(String currCode)
+{
+  if (currCode == "GBP")
+  {
+    return GBP;
+  }
+  else if (currCode == "EUR")
+  {
+    return EUR;
+  }
+  else if (currCode == "USD")
+  {
+    return USD;
+  }
+  else
+  {
+    return OTHER;
   }
 }
 
-class extractData{
-  public:
-    extractData(const char *value){
-      jsonData = cJSON_Parse(value);
-    }
-    extractData() = default;
+class extractData
+{
+public:
+  extractData(const char *value)
+  {
+    jsonData = cJSON_Parse(value);
+  }
+  extractData() = default;
 
-    cJSON * getJson(){
-      return jsonData;
-    }
+  cJSON *getJson()
+  {
+    return jsonData;
+  }
 
-    int getId(){
-      return jsonData->child->valueint;
-    }
+  int getId()
+  {
+    return jsonData->child->valueint;
+  }
 
-    String getCurrency(){
-      return jsonData->child->next->valuestring;
-    }
+  String getCurrency()
+  {
+    return jsonData->child->next->valuestring;
+  }
 
-    float getTotalValue(){
-      return jsonData->child->next->next->valuedouble;
-    }
+  float getTotalValue()
+  {
+    return jsonData->child->next->next->valuedouble;
+  }
 
-    float getCashAvailableToTrade(){
-      return jsonData->child->next->next->next->child->valuedouble;
-    }
+  float getCashAvailableToTrade()
+  {
+    return jsonData->child->next->next->next->child->valuedouble;
+  }
 
-    float getCashReservedForOrders(){
-      return jsonData->child->next->next->next->child->next->valuedouble;
-    }
+  float getCashReservedForOrders()
+  {
+    return jsonData->child->next->next->next->child->next->valuedouble;
+  }
 
-    float getCashInPies(){
-      return jsonData->child->next->next->next->child->next->next->valuedouble;
-    }
+  float getCashInPies()
+  {
+    return jsonData->child->next->next->next->child->next->next->valuedouble;
+  }
 
-    float getInvestmentsCurrentValue(){
-      return jsonData->child->next->next->next->next->child->valuedouble;
-    }
+  float getInvestmentsCurrentValue()
+  {
+    return jsonData->child->next->next->next->next->child->valuedouble;
+  }
 
-    float getInvestmentsTotalCost(){
-      return jsonData->child->next->next->next->next->child->next->valuedouble;
-    }
+  float getInvestmentsTotalCost()
+  {
+    return jsonData->child->next->next->next->next->child->next->valuedouble;
+  }
 
-    float getInvestmentsRealisedProfitLoss(){
-      return jsonData->child->next->next->next->next->child->next->next->valuedouble;
-    }
+  float getInvestmentsRealisedProfitLoss()
+  {
+    return jsonData->child->next->next->next->next->child->next->next->valuedouble;
+  }
 
-    float getInvestMentsUnrealisedProfitLoss(){
-      return jsonData->child->next->next->next->next->child->next->next->next->valuedouble;
-    }
+  float getInvestMentsUnrealisedProfitLoss()
+  {
+    return jsonData->child->next->next->next->next->child->next->next->next->valuedouble;
+  }
 
-    String getInstrumentName(){
-      return jsonData->child->child->child->next->valuestring;
-    }
+  String getInstrumentName()
+  {
+    return jsonData->child->child->child->next->valuestring;
+  }
 
-    float getInstrumentWalletImpactTotalCost(){
-      return jsonData->child->child->next->next->next->next->next->next->next->child->next->valuedouble;
-    }
-    String getWalletCurrency(){
-      return jsonData->child->child->next->next->next->next->next->next->next->child->valuestring;
-    }
+  float getInstrumentWalletImpactTotalCost()
+  {
+    return jsonData->child->child->next->next->next->next->next->next->next->child->next->valuedouble;
+  }
+  String getWalletCurrency()
+  {
+    return jsonData->child->child->next->next->next->next->next->next->next->child->valuestring;
+  }
 
-    float getInstrumentWalletImpactCurrentValue(){
-      return jsonData->child->child->next->next->next->next->next->next->next->child->next->next->valuedouble;
-    }
-  
-  private:
-    cJSON* jsonData;
+  float getInstrumentWalletImpactCurrentValue()
+  {
+    return jsonData->child->child->next->next->next->next->next->next->next->child->next->next->valuedouble;
+  }
+
+private:
+  cJSON *jsonData;
 };

@@ -2,10 +2,10 @@
 #include <HTTPClient.h>
 #include <jsonGetters.h>
 
-class summary
+class Summary
 {
 public:
-    summary(String encoded, WiFiClass *WiFi)
+    Summary(String encoded, WiFiClass *WiFi)
     {
         if ((*WiFi).status() == WL_CONNECTED)
         {

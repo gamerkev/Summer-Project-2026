@@ -331,3 +331,5 @@ I have also gotten help finding a good API for this, at the moment [EODHD's fina
 Another change that I have made is that I've decided to go for the default font on the display for the most part, switching to one that has additional symbols when necessary. This is purely because there's so much data to display and I want to do it in a nice way where all of it fits without any scrolling. I'm going to start working on the account summary menu now.
 
 I've added a class for a Trading212 account summary to make each desirable attribute easily accessible in the trading211Data.h file, I'm going to do this for every Trading212 API endpoint that I need to access, and then I'll make a page for each in the Adafruit_ST7735Ext.h file.
+
+I've created a function for printing the summmary screen in the extension of the display library, it works as intended and I've included (non-functional for now) buttons in the bottom corners. One will take the user back to the main menu, the other will allow the user to view their pies. Next, I will work on the screen that will list each open position and allow a user to select one to get more information.
