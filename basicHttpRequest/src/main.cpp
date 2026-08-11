@@ -75,10 +75,9 @@ void setup()
     preferences.putString("key", myKey);
   }
 
-
-  apiPair = preferences.getString("id") +":"+ preferences.getString("key");
-  int len = encode_base64((unsigned char*) apiPair.c_str(), apiPair.length(), encoded);
-  encodedPair = String((char*)encoded).substring(0, len);
+  apiPair = preferences.getString("id") + ":" + preferences.getString("key");
+  int len = encode_base64((unsigned char *)apiPair.c_str(), apiPair.length(), encoded);
+  encodedPair = String((char *)encoded).substring(0, len);
 
   Serial.println();
   Serial.println("******************************************************");
@@ -105,9 +104,10 @@ void setup()
 
 void loop()
 {
-  if(WiFi.status() == WL_CONNECTED){
-    Summary summary = Summary(encodedPair, &WiFi);
-    tft.printSummary(summary);
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    Positions positions = makePositions(encodedPair, &WiFi);
+    tft.printPositions(positions);
   }
-  delay(5000);
+  delay(20000);
 }

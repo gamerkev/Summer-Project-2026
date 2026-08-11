@@ -36,12 +36,19 @@ public:
   {
     jsonData = cJSON_Parse(value);
   }
+
+  extractData(cJSON* json){
+    jsonData = json;
+  }
+
   extractData() = default;
 
   cJSON *getJson()
   {
     return jsonData;
   }
+
+  // Account summary endpoint
 
   int getId()
   {
@@ -93,23 +100,66 @@ public:
     return jsonData->child->next->next->next->next->child->next->next->next->valuedouble;
   }
 
-  String getInstrumentName()
-  {
-    return jsonData->child->child->child->next->valuestring;
+  // Position data
+
+  String getPositionTicker(){
+    return jsonData->child->child->valuestring;
   }
 
-  float getInstrumentWalletImpactTotalCost()
-  {
-    return jsonData->child->child->next->next->next->next->next->next->next->child->next->valuedouble;
-  }
-  String getWalletCurrency()
-  {
-    return jsonData->child->child->next->next->next->next->next->next->next->child->valuestring;
+  String getPositionName(){
+    return jsonData->child->child->next->valuestring;
   }
 
-  float getInstrumentWalletImpactCurrentValue()
-  {
-    return jsonData->child->child->next->next->next->next->next->next->next->child->next->next->valuedouble;
+  String getPositionIsin(){
+    return jsonData->child->child->next->next->valuestring;
+  }
+
+  String getPositionCurr(){
+    return jsonData->child->child->next->next->next->valuestring;
+  }
+
+  String getPositionCreatedAt(){
+    return jsonData->child->next->valuestring;
+  }
+
+  float getPositionQuantity(){
+    return jsonData->child->next->next->valuedouble;
+  }
+
+  float getPositionQuantityAvailable(){
+    return jsonData->child->next->next->next->valuedouble;
+  }
+
+  float getPositionQuantityInPies(){
+    return jsonData->child->next->next->next->next->valuedouble;
+  }
+
+  float getPositionCurrentPrice(){
+    return jsonData->child->next->next->next->next->next->valuedouble;
+  }
+
+  float getPositionAvgPricePaid(){
+    return jsonData->child->next->next->next->next->next->next->valuedouble;
+  }
+
+  String getPositionWalletCurrency(){
+    return jsonData->child->next->next->next->next->next->next->next->child->valuestring;
+  }
+
+  float getPositionWalletTotalCost(){
+    return jsonData->child->next->next->next->next->next->next->next->child->next->valuedouble;
+  }
+
+  float getPositionWalletCurrentValue(){
+    return jsonData->child->next->next->next->next->next->next->next->child->next->next->valuedouble;
+  }
+
+  float getPositionWalletUnrealisedProfit(){
+    return jsonData->child->next->next->next->next->next->next->next->child->next->next->next->valuedouble;
+  }
+
+  float getPositionWalletFxImpact(){
+    return jsonData->child->next->next->next->next->next->next->next->child->next->next->next->next->valuedouble;
   }
 
 private:

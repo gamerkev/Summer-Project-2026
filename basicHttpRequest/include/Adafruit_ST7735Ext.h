@@ -102,62 +102,109 @@ public:
     println(amount);
   }
 
-  void printCentreLeftAlign(String toPrint, int y){
+  void printCentreLeftAlign(String toPrint, int y)
+  {
     String printing;
     setCursor(5, y);
-    while(toPrint.length()>19){
+    while (toPrint.length() > 19)
+    {
       printing = toPrint.substring(0, 19);
-      if (printing.endsWith(" ") or toPrint[19] == ' '){
+      if (printing.endsWith(" ") or toPrint[19] == ' ')
+      {
         printing = printing.substring(0, 19);
         toPrint = toPrint.substring(19);
-      } else{
+      }
+      else
+      {
         toPrint = toPrint.substring(printing.lastIndexOf(' '));
         printing = printing.substring(0, printing.lastIndexOf(' '));
       }
-      if (printing[0] == ' '){
+      if (printing[0] == ' ')
+      {
         printing = printing.substring(1);
       }
       println(printing);
       setCursor(5, cursor_y);
     }
-    if (!toPrint.isEmpty()){
-      if (toPrint[0] == ' ') println(toPrint.substring(1)); else println(toPrint);
+    if (!toPrint.isEmpty())
+    {
+      if (toPrint[0] == ' ')
+        println(toPrint.substring(1));
+      else
+        println(toPrint);
     }
   }
 
-  void printUnderlineDefaultFont(String toPrint, uint16_t colour){
+  void printUnderlineDefaultFont(String toPrint, uint16_t colour)
+  {
     uint16_t oldColour = textcolor;
-    drawLine(cursor_x, cursor_y+8, cursor_x+(toPrint.length()*6), cursor_y+8, colour);
+    drawLine(cursor_x, cursor_y + 8, cursor_x + (toPrint.length() * 6), cursor_y + 8, colour);
     setTextColor(colour);
     println(toPrint);
     setTextColor(oldColour);
   }
 
-  void printSummary(Summary aSummary){
+  void printSummary(Summary aSummary)
+  {
     uint16_t oldColour = textcolor;
     setCursor(5, 5);
     printUnderlineDefaultFont("Summary", TRADING21BLUE);
     printCentreLeftAlign("Available to trade:", 20);
-    setCursor(5, cursor_y+1);
+    setCursor(5, cursor_y + 1);
     printMoney(currencySymbol(aSummary.getCurr()), aSummary.getAvailableToTrade());
     printCentreLeftAlign("Total investments value:", 45);
-    setCursor(41, cursor_y-7);
+    setCursor(41, cursor_y - 7);
     printMoney(currencySymbol(aSummary.getCurr()), aSummary.getTotalVal());
     printCentreLeftAlign("Paid for current shares:", 70);
-    setCursor(47, cursor_y-7);
+    setCursor(47, cursor_y - 7);
     printMoney(currencySymbol(aSummary.getCurr()), aSummary.getTotalCost());
     printCentreLeftAlign("Unrealised profit:", 95);
-    setCursor(5, cursor_y+1);
+    setCursor(5, cursor_y + 1);
     printMoney(currencySymbol(aSummary.getCurr()), aSummary.getUnrealisedProfit());
     printCentreLeftAlign("Reserved for orders:", 120);
-    setCursor(47, cursor_y-7);
+    setCursor(47, cursor_y - 7);
     printMoney(currencySymbol(aSummary.getCurr()), aSummary.getReservedForOrders());
-    fillRoundRect(5, 145, 28, 10, 1, MENU_DARK_GREEN);
-    setCursor(7, 146);
+    drawRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
+    setCursor(7, 147);
+    setTextColor(TRADING21BLUE);
     print("Menu");
-    fillRoundRect(97, 145, 28, 10, 1, MENU_DARK_GREEN);
-    setCursor(99, 146);
+    setTextColor(oldColour);
+    fillRoundRect(97, 145, 28, 12, 1, TRADING21BLUE);
+    setCursor(99, 147);
     print("Pies");
+  }
+
+  void printPositions(Positions positions)
+  {
+    uint16_t oldColour = textcolor;
+    setCursor(5, 5);
+    printUnderlineDefaultFont("Positions", TRADING21BLUE);
+    int firstPosY = 20;
+    int count; // Will display count-positions
+    if (positions.count > 7)
+      count = 7;
+    else
+      count = positions.count;
+    Positions currentPosition = positions;
+    for (int i = 0; i < count - 1; i++)
+    {
+      if (currentPosition.currentPos.getUnrealisedProfit() >= 0)
+        setTextColor(ST7735_GREEN);
+      else
+        setTextColor(ST7735_RED);
+      printCentreLeftAlign(currentPosition.currentPos.getName(), firstPosY + (i * 17));
+      setCursor(5, cursor_y + 1);
+      printMoney(currencySymbol(currentPosition.currentPos.getWalletCurrency()), currentPosition.currentPos.getUnrealisedProfit());
+      currentPosition = *currentPosition.nextPos;
+    }
+
+    if (currentPosition.currentPos.getUnrealisedProfit() >= 0)
+      setTextColor(ST7735_GREEN);
+    else
+      setTextColor(ST7735_RED);
+    printCentreLeftAlign(currentPosition.currentPos.getName(), firstPosY + ((count - 1) * 17));
+    setCursor(5, cursor_y + 1);
+    printMoney(currencySymbol(currentPosition.currentPos.getWalletCurrency()), currentPosition.currentPos.getUnrealisedProfit());
     setTextColor(oldColour);
   }
 };
