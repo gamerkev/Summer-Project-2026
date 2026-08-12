@@ -144,6 +144,12 @@ public:
     setTextColor(oldColour);
   }
 
+  void printCentered(String toPrint)
+  {
+    cursor_x = (128 - (toPrint.length() * 6)) / 2;
+    println(toPrint);
+  }
+
   void printSummary(Summary aSummary)
   {
     uint16_t oldColour = textcolor;
@@ -174,7 +180,13 @@ public:
     print("Pies");
   }
 
-  void printPositions(Positions positions)
+  void printPage(int pageNum, int totalPages)
+  {
+    setCursor(0, 150);
+    printCentered("< " + String(pageNum) + "/" + String(totalPages) + " >");
+  }
+
+  void printPositions(Positions positions, int totalCount)
   {
     uint16_t oldColour = textcolor;
     setCursor(5, 5);
@@ -205,6 +217,45 @@ public:
     printCentreLeftAlign(currentPosition.currentPos.getName(), firstPosY + ((count - 1) * 17));
     setCursor(5, cursor_y + 1);
     printMoney(currencySymbol(currentPosition.currentPos.getWalletCurrency()), currentPosition.currentPos.getUnrealisedProfit());
+    drawRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
+    setCursor(7, 147);
+    setTextColor(TRADING21BLUE);
+    print("Menu");
     setTextColor(oldColour);
+    printPage(((totalCount - positions.count) / 7 + 1), (totalCount / 7) + 1);
+  }
+
+  void printPosition(Position position, int positionCount, int totalCount)
+  {
+    uint16_t oldColour = textcolor;
+    setCursor(5, 5);
+    printUnderlineDefaultFont(position.getName(), TRADING21BLUE);
+    int firstPosY = 20;
+    printCentreLeftAlign("Paid per share:", firstPosY);
+    setCursor(5, cursor_y + 1);
+    printMoney(currencySymbol(position.getInstrumentCurrency()), position.getPaidPerShare());
+    printCentreLeftAlign("Current share value: ", firstPosY + 20);
+    setCursor(42, cursor_y - 7);
+    if (position.getCurrShareVal() - position.getPaidPerShare() >= 0)
+      setTextColor(ST7735_GREEN);
+    else
+      setTextColor(ST7735_RED);
+    printMoney(currencySymbol(position.getInstrumentCurrency()), position.getCurrShareVal());
+    setTextColor(oldColour);
+    printCentreLeftAlign("Unrealised profit:", firstPosY + 40);
+    if (position.getUnrealisedProfit() >= 0)
+      setTextColor(ST7735_GREEN);
+    else
+      setTextColor(ST7735_RED);
+    setCursor(5, cursor_y + 1);
+    printMoney(currencySymbol(position.getWalletCurrency()), position.getUnrealisedProfit());
+    setTextColor(oldColour);
+    printCentreLeftAlign("Shares available:" + String(position.getSharesAvail()), firstPosY + 60);
+    drawRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
+    setCursor(7, 147);
+    setTextColor(TRADING21BLUE);
+    print("Back");
+    setTextColor(oldColour);
+    printPage(totalCount - positionCount + 1, totalCount);
   }
 };

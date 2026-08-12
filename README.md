@@ -335,3 +335,20 @@ I've added a class for a Trading212 account summary to make each desirable attri
 I've created a function for printing the summmary screen in the extension of the display library, it works as intended and I've included (non-functional for now) buttons in the bottom corners. One will take the user back to the main menu, the other will allow the user to view their pies. Next, I will work on the screen that will list each open position and allow a user to select one to get more information.
 
 I've implemented a function that will call the positions endpoint in trading212Data.h and store the output as a structure called positions which is basically a linked list of position, a class that I implemented to represent each position. At the moment I have the issue that when makePositions is called too many times, the ESP32 crashes and restarts. I believe it's because I'm dynamically allocating memory using the keyword "new" although I'm not sure. At the moment it isn't an issue, in the future, I may deallocate the whole linked list when the user goes to a different page such as the summary in order to fix this.
+
+I'm now able to print an in-depth page for each position. I'm happy with my UI so far, pictures show below:
+
+![Boot up menu](./pictures/bootUpMenuReal.jpeg)
+![Connected boot up menu](./pictures/connectedBootUp.jpeg)
+![Summary page](./pictures/summaryExample.jpeg)
+![Open positions page 1](./pictures/positionsPage1.jpeg)
+![Open positions page 2](./pictures/positionsPage2.jpeg)
+![Detailed position view](./pictures/detailedPositionExample.jpeg)
+
+I could go on and design the pending orders and history pages now, but they'll be fairly similar to the positions pages. Instead, I'll code the navigation menu, using the serial monitor to send commands. As I want to do this now, I should also finally decide on the buttons that I will make available to the user. I was originally envisioning a very minimalist device with the device not being much bigger than the display, however I'm now leaning towards more of an iPod-esque design, pictured below:
+
+![iPod button design](./pictures/ipodButtonDesign.jpeg)
+
+This is my favourite choice at the moment since it makes navigation easy and understandable for the user, with the button on the top edge being the power button. It also makes it so that changing button assignment for the user is unnecessary. It'll only be necessary for my current code to understand 5 serial commands, up, down, left, right, and select.
+
+I had an idea for how to fix my memory deallocation problem with positions, originally I wanted to use the free() function from C, although after doing a little bit of research I found out that I should be using the delete keyword since I used the new keyword to allocate the memory in the first place. So I made a freePositions function which works perfectly!

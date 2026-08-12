@@ -10,7 +10,7 @@ public:
         if ((*WiFi).status() == WL_CONNECTED)
         {
             HTTPClient http;
-            http.begin("https://live.trading212.com/api/v0/equity/account/summary");
+            http.begin("https://demo.trading212.com/api/v0/equity/account/summary");
             http.addHeader("Authorization", "Basic " + encoded);
             httpCode = http.GET();
             if (httpCode > 0)
@@ -84,10 +84,11 @@ private:
 class Position // One for each position owned
 {
 public:
-    Position(String aName, String aWalletCurr, float aPaidPerShare, float aCurrShareVal, float aTotalMarketVal, float aUnrealisedProfit, float aSharesAvail)
+    Position(String aName, String aWalletCurr, String aInstrumentCurrency, float aPaidPerShare, float aCurrShareVal, float aTotalMarketVal, float aUnrealisedProfit, float aSharesAvail)
     {
         name = aName;
         walletCurr = aWalletCurr;
+        instrumentCurrency = aInstrumentCurrency;
         paidPerShare = aPaidPerShare;
         currShareVal = aCurrShareVal;
         totalMarketVal = aTotalMarketVal;
@@ -106,6 +107,10 @@ public:
     String getWalletCurrency()
     {
         return walletCurr;
+    }
+    String getInstrumentCurrency()
+    {
+        return instrumentCurrency;
     }
     float getPaidPerShare()
     {
@@ -131,6 +136,7 @@ public:
 private:
     String name;
     String walletCurr;
+    String instrumentCurrency;
     float paidPerShare;
     float currShareVal;
     float totalMarketVal;
@@ -157,9 +163,41 @@ Positions::Positions(Position curr, Positions *prev, int aCount) // Used when ad
     count = aCount;
 }
 
-Positions makePositions(String encoded, WiFiClass *WiFi) // Creates entire positions linked list
+Positions* makePositions(cJSON *payloadJson) // Creates entire positions linked list
 {
-    Positions retVal; // Initialise linked list
+    Positions* retVal = new Positions(); // Initialise linked list
+    int numPositions = cJSON_GetArraySize(payloadJson); // Get the number of positions
+    (*retVal).count = numPositions;
+    extractData currPos = extractData(cJSON_GetArrayItem(payloadJson, 0)); // Get the first position, head of the linked list
+    (*retVal).currentPos = Position(currPos.getPositionName(),                // Create first position
+                                 currPos.getPositionWalletCurrency(),
+                                 currPos.getPositionCurr(),
+                                 currPos.getPositionAvgPricePaid(),
+                                 currPos.getPositionCurrentPrice(),
+                                 currPos.getPositionWalletCurrentValue(),
+                                 currPos.getPositionWalletUnrealisedProfit(),
+                                 currPos.getPositionQuantityAvailable());
+    Positions *prev = retVal; // Pointer to the previous position, used in creating the linked list
+    for (int i = 1; i < numPositions; i++)
+    {
+        currPos = extractData(cJSON_GetArrayItem(payloadJson, i));        // Store current position
+        prev->nextPos = new Positions(Position(currPos.getPositionName(), // Create link to the current position from the previous one
+                                               currPos.getPositionWalletCurrency(),
+                                               currPos.getPositionCurr(),
+                                               currPos.getPositionAvgPricePaid(),
+                                               currPos.getPositionCurrentPrice(),
+                                               currPos.getPositionWalletCurrentValue(),
+                                               currPos.getPositionWalletUnrealisedProfit(),
+                                               currPos.getPositionQuantityAvailable()),
+                                      prev, (*retVal).count - i); // Create link to the previous position from the current one, doubly linked list
+        prev = prev->nextPos;                                  // Iterate to the next item in the list
+    }
+    return retVal;
+}
+
+cJSON *getPositions(String encoded, WiFiClass *WiFi)
+{
+    cJSON *payloadJson;
     if ((*WiFi).status() == WL_CONNECTED)
     {
         HTTPClient http;
@@ -170,32 +208,24 @@ Positions makePositions(String encoded, WiFiClass *WiFi) // Creates entire posit
         {
             String payload = http.getString();
             http.end();
-            cJSON *payloadJson = cJSON_Parse(payload.c_str());
-            int numPositions = cJSON_GetArraySize(payloadJson); // Get the number of positions
-            retVal.count = numPositions;
-            extractData currPos = extractData(cJSON_GetArrayItem(payloadJson, 0)); // Get the first position, head of the linked list
-            retVal.currentPos = Position(currPos.getPositionName(),                // Create first position
-                                         currPos.getPositionWalletCurrency(),
-                                         currPos.getPositionAvgPricePaid(),
-                                         currPos.getPositionCurrentPrice(),
-                                         currPos.getPositionWalletCurrentValue(),
-                                         currPos.getPositionWalletUnrealisedProfit(),
-                                         currPos.getPositionQuantityAvailable());
-            Positions *prev = &retVal; // Pointer to the previous position, used in creating the linked list
-            for (int i = 1; i < numPositions; i++)
-            {
-                currPos = extractData(cJSON_GetArrayItem(payloadJson, i));        // Store current position
-                prev->nextPos = new Positions(Position(currPos.getPositionName(), // Create link to the current position from the previous one
-                                                       currPos.getPositionWalletCurrency(),
-                                                       currPos.getPositionAvgPricePaid(),
-                                                       currPos.getPositionCurrentPrice(),
-                                                       currPos.getPositionWalletCurrentValue(),
-                                                       currPos.getPositionWalletUnrealisedProfit(),
-                                                       currPos.getPositionQuantityAvailable()),
-                                              prev, retVal.count - i); // Create link to the previous position from the current one, doubly linked list
-                prev = prev->nextPos;                                  // Iterate to the next item in the list
-            }
+            payloadJson = cJSON_Parse(payload.c_str());
         }
     }
-    return retVal;
+    return payloadJson;
+}
+
+void freePositions(Positions* positions){
+    Positions* currPos = positions;
+    Positions* nextPos = positions->nextPos;
+    int count = positions->count;
+    for (int i=0; i<count-1; i++){
+        Serial.println("Freeing position " + currPos->currentPos.getName());
+        nextPos = currPos->nextPos;
+        Serial.println("Set netxpos in loop");
+        delete currPos;
+        Serial.println("Freed position " + String(i));
+        currPos = nextPos;
+    }
+    Serial.println("Freeing final position");
+    delete currPos;
 }

@@ -106,8 +106,33 @@ void loop()
 {
   if (WiFi.status() == WL_CONNECTED)
   {
-    Positions positions = makePositions(encodedPair, &WiFi);
-    tft.printPositions(positions);
+    cJSON* posJson = getPositions(encodedPair, &WiFi);
+    Positions* positions = makePositions(posJson);
+    Summary summary = Summary(encodedPair, &WiFi);
+    int totalPositions = (*positions).count;
+    Positions currentPosition = (*positions);
+    tft.fillScreen(ST7735_BLACK);
+    tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
+    tft.printSummary(summary);
+    delay(5000);
+    tft.fillScreen(ST7735_BLACK);
+    tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
+    tft.printPositions(currentPosition, totalPositions);
+    delay(5000);
+    tft.fillScreen(ST7735_BLACK);
+    tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
+    for (int i = 0; i < 7; i++)
+    {
+      currentPosition = *currentPosition.nextPos;
+    }
+    tft.printPositions(currentPosition, totalPositions);
+    delay(5000);
+    tft.fillScreen(ST7735_BLACK);
+    tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
+    tft.printPosition(currentPosition.currentPos, currentPosition.count, totalPositions);
+    delay(10000);
+    Serial.println("Freeing positions");
+    freePositions(positions);
+    Serial.println("Freed positions");
   }
-  delay(20000);
 }
