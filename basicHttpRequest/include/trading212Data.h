@@ -32,6 +32,9 @@ public:
             payload = "WiFi not connected";
         }
     }
+    Summary()
+    {
+    }
     int getHttpCode()
     {
         return httpCode;
@@ -163,20 +166,20 @@ Positions::Positions(Position curr, Positions *prev, int aCount) // Used when ad
     count = aCount;
 }
 
-Positions* makePositions(cJSON *payloadJson) // Creates entire positions linked list
+Positions *makePositions(cJSON *payloadJson) // Creates entire positions linked list
 {
-    Positions* retVal = new Positions(); // Initialise linked list
+    Positions *retVal = new Positions();                // Initialise linked list
     int numPositions = cJSON_GetArraySize(payloadJson); // Get the number of positions
     (*retVal).count = numPositions;
     extractData currPos = extractData(cJSON_GetArrayItem(payloadJson, 0)); // Get the first position, head of the linked list
-    (*retVal).currentPos = Position(currPos.getPositionName(),                // Create first position
-                                 currPos.getPositionWalletCurrency(),
-                                 currPos.getPositionCurr(),
-                                 currPos.getPositionAvgPricePaid(),
-                                 currPos.getPositionCurrentPrice(),
-                                 currPos.getPositionWalletCurrentValue(),
-                                 currPos.getPositionWalletUnrealisedProfit(),
-                                 currPos.getPositionQuantityAvailable());
+    (*retVal).currentPos = Position(currPos.getPositionName(),             // Create first position
+                                    currPos.getPositionWalletCurrency(),
+                                    currPos.getPositionCurr(),
+                                    currPos.getPositionAvgPricePaid(),
+                                    currPos.getPositionCurrentPrice(),
+                                    currPos.getPositionWalletCurrentValue(),
+                                    currPos.getPositionWalletUnrealisedProfit(),
+                                    currPos.getPositionQuantityAvailable());
     Positions *prev = retVal; // Pointer to the previous position, used in creating the linked list
     for (int i = 1; i < numPositions; i++)
     {
@@ -190,7 +193,7 @@ Positions* makePositions(cJSON *payloadJson) // Creates entire positions linked 
                                                currPos.getPositionWalletUnrealisedProfit(),
                                                currPos.getPositionQuantityAvailable()),
                                       prev, (*retVal).count - i); // Create link to the previous position from the current one, doubly linked list
-        prev = prev->nextPos;                                  // Iterate to the next item in the list
+        prev = prev->nextPos;                                     // Iterate to the next item in the list
     }
     return retVal;
 }
@@ -214,11 +217,13 @@ cJSON *getPositions(String encoded, WiFiClass *WiFi)
     return payloadJson;
 }
 
-void freePositions(Positions* positions){
-    Positions* currPos = positions;
-    Positions* nextPos = positions->nextPos;
+void freePositions(Positions *positions)
+{
+    Positions *currPos = positions;
+    Positions *nextPos = positions->nextPos;
     int count = positions->count;
-    for (int i=0; i<count-1; i++){
+    for (int i = 0; i < count - 1; i++)
+    {
         Serial.println("Freeing position " + currPos->currentPos.getName());
         nextPos = currPos->nextPos;
         Serial.println("Set netxpos in loop");

@@ -10,6 +10,24 @@
 #include <Preferences.h>
 #include <string.h>
 
+#define LEFT "a"
+#define UP "w"
+#define RIGHT "d"
+#define DOWN "s"
+#define SELECT " "
+
+typedef enum
+{
+  MENU_PAGE = 0,
+  SUMMARY_PAGE = 1,
+  POSITIONS_PAGE = 2,
+} Page;
+
+Page currentPage;
+Page previousPage;
+MenuSelection menuSelection;
+SummarySelection summarySelection;
+
 Preferences preferences;
 
 Adafruit_ST7735Keyboard tft = Adafruit_ST7735Keyboard(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
@@ -21,6 +39,9 @@ String myKey;
 String apiPair;
 unsigned char encoded[200];
 String encodedPair;
+
+String in;
+Summary summary;
 
 void setup()
 {
@@ -99,40 +120,81 @@ void setup()
   tft.println("connected");
   delay(2000);
   tft.fillScreen(ST7735_BLACK);
-  tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
+  currentPage = MENU_PAGE;
+  previousPage = SUMMARY_PAGE;
 }
 
 void loop()
 {
-  if (WiFi.status() == WL_CONNECTED)
+  if (previousPage != currentPage)
   {
-    cJSON* posJson = getPositions(encodedPair, &WiFi);
-    Positions* positions = makePositions(posJson);
-    Summary summary = Summary(encodedPair, &WiFi);
-    int totalPositions = (*positions).count;
-    Positions currentPosition = (*positions);
-    tft.fillScreen(ST7735_BLACK);
-    tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
-    tft.printSummary(summary);
-    delay(5000);
-    tft.fillScreen(ST7735_BLACK);
-    tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
-    tft.printPositions(currentPosition, totalPositions);
-    delay(5000);
-    tft.fillScreen(ST7735_BLACK);
-    tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
-    for (int i = 0; i < 7; i++)
+    switch (currentPage)
     {
-      currentPosition = *currentPosition.nextPos;
+    case MENU_PAGE:
+      previousPage = currentPage;
+      menuSelection = SUMMARY;
+      tft.printMenu(menuSelection);
+      while (currentPage == MENU_PAGE)
+      {
+        in = Serial.readString();
+        if (in == UP)
+        {
+          menuSelection = (menuSelection == 0) ? OPEN_POSITIONS : MenuSelection((menuSelection - 1) % 2);
+          tft.printMenu(menuSelection);
+        }
+        else if (in == DOWN)
+        {
+          menuSelection = MenuSelection((menuSelection + 1) % 2);
+          tft.printMenu(menuSelection);
+        }
+        else if (in == SELECT)
+        {
+          switch (menuSelection)
+          {
+          case SUMMARY:
+            currentPage = SUMMARY_PAGE;
+            break;
+          case OPEN_POSITIONS:
+            currentPage = POSITIONS_PAGE;
+            break;
+          }
+        }
+      }
+      break;
+    case SUMMARY_PAGE:
+      previousPage = currentPage;
+      summarySelection = PIES;
+      summary = Summary(encodedPair, &WiFi);
+      tft.printSummary(summary, summarySelection);
+      while (currentPage == SUMMARY_PAGE)
+      {
+        in = Serial.readString();
+        if (in == LEFT)
+        {
+          summarySelection = (summarySelection == 0) ? PIES : SummarySelection((summarySelection - 1) % 2);
+          tft.printSummary(summary, summarySelection);
+        }
+        else if (in == RIGHT)
+        {
+          summarySelection = SummarySelection((summarySelection + 1) % 2);
+          tft.printSummary(summary, summarySelection);
+        }
+        else if (in == SELECT)
+        {
+          switch(summarySelection){
+            case PIES:
+              Serial.println("Pies");
+              break;
+            case MENU:
+              currentPage = MENU_PAGE;
+              break;
+          }
+        }
+      }
+      break;
+    case POSITIONS_PAGE:
+      Serial.println("Positions");
+      break;
     }
-    tft.printPositions(currentPosition, totalPositions);
-    delay(5000);
-    tft.fillScreen(ST7735_BLACK);
-    tft.drawRect(0, 0, 128, 160, TRADING21BLUE);
-    tft.printPosition(currentPosition.currentPos, currentPosition.count, totalPositions);
-    delay(10000);
-    Serial.println("Freeing positions");
-    freePositions(positions);
-    Serial.println("Freed positions");
   }
 }

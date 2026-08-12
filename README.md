@@ -352,3 +352,5 @@ I could go on and design the pending orders and history pages now, but they'll b
 This is my favourite choice at the moment since it makes navigation easy and understandable for the user, with the button on the top edge being the power button. It also makes it so that changing button assignment for the user is unnecessary. It'll only be necessary for my current code to understand 5 serial commands, up, down, left, right, and select.
 
 I had an idea for how to fix my memory deallocation problem with positions, originally I wanted to use the free() function from C, although after doing a little bit of research I found out that I should be using the delete keyword since I used the new keyword to allocate the memory in the first place. So I made a freePositions function which works perfectly!
+
+At some point I will implement the singleton pattern for each request to the Trading212 API as I'm unsure of what the compiler is doing when the requests keep being called and stored in 

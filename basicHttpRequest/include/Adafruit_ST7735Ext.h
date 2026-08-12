@@ -14,6 +14,18 @@
 #define TFT_RST 3   // RST
 #define TFT_CS 12   // CS
 
+typedef enum
+{
+  SUMMARY = 0,
+  OPEN_POSITIONS = 1,
+} MenuSelection;
+
+typedef enum
+{
+  MENU = 0,
+  PIES = 1,
+} SummarySelection;
+
 class Adafruit_ST7735Ext : public Adafruit_ST7735
 { // Extend the display library to be able to cleanly add functionality
 public:
@@ -150,9 +162,10 @@ public:
     println(toPrint);
   }
 
-  void printSummary(Summary aSummary)
+  void printSummary(Summary aSummary, SummarySelection summarySelection)
   {
     uint16_t oldColour = textcolor;
+    fillScreen(ST7735_BLACK);
     setCursor(5, 5);
     printUnderlineDefaultFont("Summary", TRADING21BLUE);
     printCentreLeftAlign("Available to trade:", 20);
@@ -170,14 +183,29 @@ public:
     printCentreLeftAlign("Reserved for orders:", 120);
     setCursor(47, cursor_y - 7);
     printMoney(currencySymbol(aSummary.getCurr()), aSummary.getReservedForOrders());
-    drawRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
-    setCursor(7, 147);
-    setTextColor(TRADING21BLUE);
-    print("Menu");
-    setTextColor(oldColour);
-    fillRoundRect(97, 145, 28, 12, 1, TRADING21BLUE);
-    setCursor(99, 147);
-    print("Pies");
+    switch (summarySelection)
+    {
+    case MENU:
+      fillRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
+      setCursor(7, 147);
+      print("Menu");
+      drawRoundRect(97, 145, 28, 12, 1, TRADING21BLUE);
+      setCursor(99, 147);
+      setTextColor(TRADING21BLUE);
+      print("Pies");
+      setTextColor(oldColour);
+      break;
+    case PIES:
+      drawRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
+      setCursor(7, 147);
+      setTextColor(TRADING21BLUE);
+      print("Menu");
+      setTextColor(oldColour);
+      fillRoundRect(97, 145, 28, 12, 1, TRADING21BLUE);
+      setCursor(99, 147);
+      print("Pies");
+      break;
+    }
   }
 
   void printPage(int pageNum, int totalPages)
@@ -257,5 +285,40 @@ public:
     print("Back");
     setTextColor(oldColour);
     printPage(totalCount - positionCount + 1, totalCount);
+  }
+
+  void printMenu(MenuSelection select)
+  {
+    fillScreen(ST7735_BLACK);
+    setTextSize(2);
+    setCursor(40, 20);
+    println("MENU");
+    setTextSize(1);
+    switch (select)
+    {
+    case SUMMARY:
+      fillRoundRect(40, 48, 46, 12, 2, TRADING21BLUE);
+      setCursor(0, 50);
+      printCentered("Summary");
+      drawRoundRect(34, 68, 58, 12, 2, TRADING21BLUE);
+      setCursor(0, 70);
+      printCentered("Positions");
+      break;
+    case OPEN_POSITIONS:
+      drawRoundRect(40, 48, 46, 12, 2, TRADING21BLUE);
+      setCursor(0, 50);
+      printCentered("Summary");
+      fillRoundRect(34, 68, 58, 12, 2, TRADING21BLUE);
+      setCursor(0, 70);
+      printCentered("Positions");
+      break;
+    default:
+      drawRoundRect(40, 48, 46, 12, 2, TRADING21BLUE);
+      setCursor(0, 50);
+      printCentered("Summary");
+      drawRoundRect(34, 68, 58, 12, 2, TRADING21BLUE);
+      setCursor(0, 70);
+      printCentered("Positions");
+    }
   }
 };
