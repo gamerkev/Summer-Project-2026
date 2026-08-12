@@ -165,7 +165,6 @@ Positions::Positions(Position curr, Positions *prev, int aCount) // Used when ad
     prevPos = prev;
     count = aCount;
 }
-
 Positions *makePositions(cJSON *payloadJson) // Creates entire positions linked list
 {
     Positions *retVal = new Positions();                // Initialise linked list
@@ -224,13 +223,9 @@ void freePositions(Positions *positions)
     int count = positions->count;
     for (int i = 0; i < count - 1; i++)
     {
-        Serial.println("Freeing position " + currPos->currentPos.getName());
         nextPos = currPos->nextPos;
-        Serial.println("Set netxpos in loop");
         delete currPos;
-        Serial.println("Freed position " + String(i));
         currPos = nextPos;
     }
-    Serial.println("Freeing final position");
     delete currPos;
 }

@@ -353,4 +353,6 @@ This is my favourite choice at the moment since it makes navigation easy and und
 
 I had an idea for how to fix my memory deallocation problem with positions, originally I wanted to use the free() function from C, although after doing a little bit of research I found out that I should be using the delete keyword since I used the new keyword to allocate the memory in the first place. So I made a freePositions function which works perfectly!
 
-At some point I will implement the singleton pattern for each request to the Trading212 API as I'm unsure of what the compiler is doing when the requests keep being called and stored in 
+At some point I will implement the singleton pattern for each request to the Trading212 API as I'm unsure of what the compiler is doing when the requests keep being called and stored in .
+
+I've implemented navigation from the boot-up menu to positions and summary, the next step is to implement navigation from the positions menu to each individual postion in-depth view. I'll do this within the POSITIONS_PAGE case so that the positions linked list is not dereferenced, I know that I have a lot of refactoring ahead of me once I implement this but everything should be smooth sailing from there on. I'll highlight a certain position using an extra field in printPositions and the A_POSITION option in the PositionsSelection enum.

@@ -22,9 +22,24 @@ typedef enum
 
 typedef enum
 {
-  MENU = 0,
+  MENU_SUMMARY = 0,
   PIES = 1,
 } SummarySelection;
+
+typedef enum
+{
+  MENU_POSITIONS = 0,
+  PREV = 1,
+  NEXT = 2,
+  A_POSITION = 3,
+} PositionsSelection;
+
+typedef enum
+{
+  NONE = 0,
+  L = 1,
+  R = 2,
+} PageSelect;
 
 class Adafruit_ST7735Ext : public Adafruit_ST7735
 { // Extend the display library to be able to cleanly add functionality
@@ -185,7 +200,7 @@ public:
     printMoney(currencySymbol(aSummary.getCurr()), aSummary.getReservedForOrders());
     switch (summarySelection)
     {
-    case MENU:
+    case MENU_SUMMARY:
       fillRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
       setCursor(7, 147);
       print("Menu");
@@ -208,24 +223,36 @@ public:
     }
   }
 
-  void printPage(int pageNum, int totalPages)
+  void printPageNum(int pageNum, int totalPages, PageSelect select)
   {
     setCursor(0, 150);
-    printCentered("< " + String(pageNum) + "/" + String(totalPages) + " >");
+    switch (select)
+    {
+    case NONE:
+      printCentered(String(pageNum) + "/" + String(totalPages));
+      break;
+    case L:
+      printCentered("< " + String(pageNum) + "/" + String(totalPages) + "  ");
+      break;
+    case R:
+      printCentered("  " + String(pageNum) + "/" + String(totalPages) + " >");
+      break;
+    }
   }
 
-  void printPositions(Positions positions, int totalCount)
+  void printPositions(Positions *positions, int totalCount, PositionsSelection select, int positionSelected)
   {
+    fillScreen(ST7735_BLACK);
     uint16_t oldColour = textcolor;
     setCursor(5, 5);
     printUnderlineDefaultFont("Positions", TRADING21BLUE);
     int firstPosY = 20;
     int count; // Will display count-positions
-    if (positions.count > 7)
+    if (positions->count > 7)
       count = 7;
     else
-      count = positions.count;
-    Positions currentPosition = positions;
+      count = positions->count;
+    Positions currentPosition = *positions;
     for (int i = 0; i < count - 1; i++)
     {
       if (currentPosition.currentPos.getUnrealisedProfit() >= 0)
@@ -245,12 +272,32 @@ public:
     printCentreLeftAlign(currentPosition.currentPos.getName(), firstPosY + ((count - 1) * 17));
     setCursor(5, cursor_y + 1);
     printMoney(currencySymbol(currentPosition.currentPos.getWalletCurrency()), currentPosition.currentPos.getUnrealisedProfit());
-    drawRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
-    setCursor(7, 147);
-    setTextColor(TRADING21BLUE);
-    print("Menu");
-    setTextColor(oldColour);
-    printPage(((totalCount - positions.count) / 7 + 1), (totalCount / 7) + 1);
+    switch (select)
+    {
+    case MENU_POSITIONS:
+      fillRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
+      setTextColor(oldColour);
+      setCursor(7, 147);
+      print("Menu");
+      printPageNum(((totalCount - positions->count) / 7 + 1), (totalCount / 7) + 1, NONE);
+      break;
+    case PREV:
+      drawRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
+      setCursor(7, 147);
+      setTextColor(TRADING21BLUE);
+      print("Menu");
+      setTextColor(oldColour);
+      printPageNum(((totalCount - positions->count) / 7 + 1), (totalCount / 7) + 1, L);
+      break;
+    case NEXT:
+      drawRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
+      setCursor(7, 147);
+      setTextColor(TRADING21BLUE);
+      print("Menu");
+      setTextColor(oldColour);
+      printPageNum(((totalCount - positions->count) / 7 + 1), (totalCount / 7) + 1, R);
+      break;
+    }
   }
 
   void printPosition(Position position, int positionCount, int totalCount)
@@ -284,7 +331,7 @@ public:
     setTextColor(TRADING21BLUE);
     print("Back");
     setTextColor(oldColour);
-    printPage(totalCount - positionCount + 1, totalCount);
+    printPageNum(totalCount - positionCount + 1, totalCount, NONE);
   }
 
   void printMenu(MenuSelection select)
