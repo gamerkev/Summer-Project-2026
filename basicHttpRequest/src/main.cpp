@@ -203,7 +203,7 @@ void loop()
     case POSITIONS_PAGE:
       // REMEMBER TO DEREFERENCE THE POSITIONS LINKED LIST WHEN EXITING THIS PAGE
       previousPage = currentPage;
-      positionsSelection = PREV;
+      positionsSelection = MENU_POSITIONS;
       positionsJson = getPositions(encodedPair, &WiFi);
       positions = makePositions(positionsJson);
       currentPositions = positions;
@@ -213,53 +213,50 @@ void loop()
         in = Serial.readString();
         if (in == LEFT)
         {
-          positionsSelection = (positionsSelection == 0) ? NEXT : PositionsSelection((positionsSelection - 1) % 3);
+          Serial.println("Left");
+          if (positions->count - currentPositions->count >= 7)
+          {
+            for (int i = 0; i < 7; i++)
+              currentPositions = currentPositions->prevPos;
+          }
+          else
+          {
+            for (int i = 0; i < (positions->count / 7) * 7; i++)
+            {
+              currentPositions = currentPositions->nextPos;
+            }
+          }
           tft.printPositions(currentPositions, positions->count, positionsSelection, positionSelected);
         }
         else if (in == RIGHT)
         {
-          positionsSelection = PositionsSelection((positionsSelection + 1) % 3);
+          Serial.println("Right");
+          if (positions->count - currentPositions->count >= 7)
+          {
+            for (int i = 0; i < 7; i++)
+              currentPositions = currentPositions->prevPos;
+          }
+          else
+          {
+            for (int i = 0; i < (positions->count / 7) * 7; i++)
+            {
+              currentPositions = currentPositions->nextPos;
+            }
+          }
           tft.printPositions(currentPositions, positions->count, positionsSelection, positionSelected);
         }
         else if (in == SELECT)
         {
+          Serial.println("Select");
           switch (positionsSelection)
           {
           case MENU_POSITIONS:
             currentPage = MENU_PAGE;
-            break;
-          case PREV:
-            if (positions->count - currentPositions->count >= 7)
-            {
-              for (int i = 0; i < 7; i++)
-                currentPositions = currentPositions->prevPos;
-            }
-            else
-            {
-              for (int i = 0; i < (positions->count / 7) * 7; i++)
-              {
-                currentPositions = currentPositions->nextPos;
-              }
-            }
-            break;
-          case NEXT:
-            if (currentPositions->count >= 7)
-            {
-              for (int i = 0; i < 7; i++)
-                currentPositions = currentPositions->nextPos;
-            }
-            else
-            {
-              moveBy = positions->count - currentPositions->count;
-              for (int i = 0; i < moveBy; i++)
-                currentPositions = currentPositions->prevPos;
-            }
+            freePositions(positions);
             break;
           }
-          tft.printPositions(currentPositions, positions->count, positionsSelection, positionSelected);
         }
       }
-      freePositions(positions);
       break;
     }
   }

@@ -356,3 +356,7 @@ I had an idea for how to fix my memory deallocation problem with positions, orig
 At some point I will implement the singleton pattern for each request to the Trading212 API as I'm unsure of what the compiler is doing when the requests keep being called and stored in .
 
 I've implemented navigation from the boot-up menu to positions and summary, the next step is to implement navigation from the positions menu to each individual postion in-depth view. I'll do this within the POSITIONS_PAGE case so that the positions linked list is not dereferenced, I know that I have a lot of refactoring ahead of me once I implement this but everything should be smooth sailing from there on. I'll highlight a certain position using an extra field in printPositions and the A_POSITION option in the PositionsSelection enum.
+
+I may not need to use the PositionsSelection enum for flipping through positions pages if I go for the iPod-like design as the user could just click the left or right buttons without needing to hit select so I'll change the code in anticipation of this. I'll test this and then delete the old code if it works as intended.
+
+The new design works!

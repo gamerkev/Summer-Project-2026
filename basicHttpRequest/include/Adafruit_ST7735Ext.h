@@ -229,13 +229,13 @@ public:
     switch (select)
     {
     case NONE:
-      printCentered(String(pageNum) + "/" + String(totalPages));
+      printCentered("< " + String(pageNum) + "/" + String(totalPages) + " >");
       break;
     case L:
-      printCentered("< " + String(pageNum) + "/" + String(totalPages) + "  ");
+      printCentered("< " + String(pageNum) + "/" + String(totalPages) + " >");
       break;
     case R:
-      printCentered("  " + String(pageNum) + "/" + String(totalPages) + " >");
+      printCentered("< " + String(pageNum) + "/" + String(totalPages) + " >");
       break;
     }
   }
