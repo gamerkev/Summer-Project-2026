@@ -1,5 +1,4 @@
 #include <Adafruit_ST7735.h>
-#include <Adafruit_GFX.h>
 #include <keyboardFont.h>
 #include <currencySymbols.h>
 #include <Fonts/Picopixel.h>

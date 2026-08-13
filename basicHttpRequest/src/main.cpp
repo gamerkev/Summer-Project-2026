@@ -1,14 +1,7 @@
 #include <Arduino.h>
-#include <WiFi.h>
-#include <HTTPClient.h>
-// #include "secret.h"
-#include <math.h>
 #include <base64.hpp>
-#include <string.h>
-#include <cJSON.h>
 #include <Adafruit_ST7735Keyboard.h>
 #include <Preferences.h>
-#include <string.h>
 
 #define LEFT "a"
 #define UP "w"

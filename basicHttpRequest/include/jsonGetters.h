@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include <cJSON.h>
 
 typedef enum
