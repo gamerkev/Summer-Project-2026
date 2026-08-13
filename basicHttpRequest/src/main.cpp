@@ -27,7 +27,7 @@ Page currentPage;
 Page previousPage;
 MenuSelection menuSelection;
 SummarySelection summarySelection;
-PositionsSelection positionsSelection;
+int positionsSelection;
 
 Preferences preferences;
 
@@ -59,8 +59,6 @@ void setup()
   tft.fillScreen(ST77XX_BLACK); // Black out the screen
   tft.setTextWrap(false);       // This is so that we can use the moving text
   tft.fillScreen(ST7735_BLACK);
-  tft.logo();
-  delay(1000);
 
   preferences.begin("netCreds", false);
   if (preferences.getString("ssid").isEmpty() or preferences.getString("pass").isEmpty())
@@ -203,7 +201,7 @@ void loop()
     case POSITIONS_PAGE:
       // REMEMBER TO DEREFERENCE THE POSITIONS LINKED LIST WHEN EXITING THIS PAGE
       previousPage = currentPage;
-      positionsSelection = MENU_POSITIONS;
+      positionsSelection = 0;
       positionsJson = getPositions(encodedPair, &WiFi);
       positions = makePositions(positionsJson);
       currentPositions = positions;
@@ -213,7 +211,7 @@ void loop()
         in = Serial.readString();
         if (in == LEFT)
         {
-          Serial.println("Left");
+          positionsSelection = 0;
           if (positions->count - currentPositions->count >= 7)
           {
             for (int i = 0; i < 7; i++)
@@ -230,7 +228,7 @@ void loop()
         }
         else if (in == RIGHT)
         {
-          Serial.println("Right");
+          positionsSelection = 0;
           if (positions->count - currentPositions->count >= 7)
           {
             for (int i = 0; i < 7; i++)
@@ -247,14 +245,47 @@ void loop()
         }
         else if (in == SELECT)
         {
-          Serial.println("Select");
           switch (positionsSelection)
           {
-          case MENU_POSITIONS:
+          case 7:
             currentPage = MENU_PAGE;
             freePositions(positions);
             break;
+          default:
+            for (int i = 0; i < positionsSelection; i++)
+            {
+              currentPositions = currentPositions->nextPos;
+            }
+            tft.printPosition(currentPositions->currentPos, currentPositions->count, positions->count);
           }
+        }
+        else if (in == UP)
+        {
+          switch (positionsSelection)
+          {
+          case 0:
+            positionsSelection = 7;
+            break;
+          case 7:
+            if (currentPositions->count < 7)
+              positionsSelection = currentPositions->count - 1;
+            else
+              positionsSelection--;
+            break;
+          default:
+            positionsSelection--;
+          }
+          tft.printPositions(currentPositions, positions->count, positionsSelection, positionSelected);
+        }
+        else if (in == DOWN)
+        {
+          if (positionsSelection == 7)
+            positionsSelection = 0;
+          else if (positionsSelection == currentPositions->count - 1)
+            positionsSelection = 7;
+          else
+            positionsSelection++;
+          tft.printPositions(currentPositions, positions->count, positionsSelection, positionSelected);
         }
       }
       break;

@@ -360,3 +360,7 @@ I've implemented navigation from the boot-up menu to positions and summary, the 
 I may not need to use the PositionsSelection enum for flipping through positions pages if I go for the iPod-like design as the user could just click the left or right buttons without needing to hit select so I'll change the code in anticipation of this. I'll test this and then delete the old code if it works as intended.
 
 The new design works!
+
+I'll also delete the PositionsSelection enum and replace it with a simple integer type since that makes more sense than having an enum type with possible values POS0, POS1, all the way to POS6. 
+
+Navigation in the positions menu is complete, I can select any position in a detailed view. I still can't move between positions in the detailed view but that's soon to come. Right now I think that I'm overdue a refactor, my select cases in main are way too long and some functions in the display are overcomplicated.
