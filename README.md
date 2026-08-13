@@ -364,3 +364,5 @@ The new design works!
 I'll also delete the PositionsSelection enum and replace it with a simple integer type since that makes more sense than having an enum type with possible values POS0, POS1, all the way to POS6. 
 
 Navigation in the positions menu is complete, I can select any position in a detailed view. I still can't move between positions in the detailed view but that's soon to come. Right now I think that I'm overdue a refactor, my select cases in main are way too long and some functions in the display are overcomplicated.
+
+Refactor done

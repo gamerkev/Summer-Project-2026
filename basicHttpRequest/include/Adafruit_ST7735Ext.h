@@ -213,7 +213,7 @@ public:
     printCentered("< " + String(pageNum) + "/" + String(totalPages) + " >");
   }
 
-  void printPositions(Positions *positions, int totalCount, int select, int positionSelected)
+  void printPositions(Positions *positions, int totalCount, int select)
   {
     fillScreen(ST7735_BLACK);
     uint16_t oldColour = textcolor;
