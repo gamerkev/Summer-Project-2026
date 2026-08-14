@@ -137,9 +137,7 @@ Positions *PositionsPageFlipLeft(Positions *positions, Positions *currentPositio
     else // If we're on the first page, go to the last page
     {
         for (int i = 0; i < (positions->count / 7) * 7; i++)
-        {
             currentPositions = currentPositions->nextPos;
-        }
     }
     return currentPositions;
 }
@@ -155,11 +153,57 @@ Positions *PositionsPageFlipRight(Positions *positions, Positions *currentPositi
     {
         int moveBy = positions->count - currentPositions->count;
         for (int i = 0; i < moveBy; i++)
-        {
             currentPositions = currentPositions->prevPos;
-        }
     }
     return currentPositions;
+}
+
+Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, Positions *currentPositions, int positionsSize)
+{
+    PositionSelection positionSelection = BACK;
+    (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
+    while (true)
+    {
+        in = Serial.readString();
+        if (in == LEFT)
+        {
+            if (currentPositions->count == positionsSize)
+            {
+                for (int i = 0; i < positionsSize - 1; i++)
+                    currentPositions = currentPositions->nextPos;
+            }
+            else
+                currentPositions = currentPositions->prevPos;
+            positionSelection = BACK;
+            (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
+        }
+        else if (in == RIGHT)
+        {
+            if (currentPositions->count == 1)
+            {
+                for (int i = 0; i < positionsSize - 1; i++)
+                    currentPositions = currentPositions->prevPos;
+            }
+            else
+                currentPositions = currentPositions->nextPos;
+            positionSelection = BACK;
+            (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
+        }
+        else if (in == UP)
+        {
+            positionSelection = positionSelection == BUY ? BACK : PositionSelection(positionSelection - 1);
+            (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
+        }
+        else if (in == DOWN)
+        {
+            positionSelection = positionSelection == BACK ? BUY : PositionSelection(positionSelection + 1);
+            (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
+        }
+        else if (in == SELECT)
+        {
+            return POSITIONS_PAGE;
+        }
+    }
 }
 
 Page PositionsPageHandler(Adafruit_ST7735Keyboard *tft, Page *previousPage, Positions *positions)
@@ -223,11 +267,16 @@ Page PositionsPageHandler(Adafruit_ST7735Keyboard *tft, Page *previousPage, Posi
             case 7:
                 return MENU_PAGE;
             default:
+                // Move to the highlighted position
                 for (int i = 0; i < positionsSelection; i++)
-                {
                     currentPositions = currentPositions->nextPos;
-                }
-                (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positions->count);
+                PositionPageHandler(tft, currentPositions, positions->count);
+                // Move back to one of the positions that would be at the start of a page
+                int moveBy = positions->count - (((positions->count - currentPositions->count) / 7) * 7) - currentPositions->count;
+                positionsSelection = 0;
+                for (int i = 0; i < moveBy; i++)
+                    currentPositions = currentPositions->prevPos;
+                (*tft).printPositions(currentPositions, positions->count, positionsSelection);
             }
         }
     }

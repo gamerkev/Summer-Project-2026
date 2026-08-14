@@ -165,7 +165,7 @@ Positions::Positions(Position curr, Positions *prev, int aCount) // Used when ad
     prevPos = prev;
     count = aCount;
 }
-Positions *makePositions(cJSON *payloadJson) // Creates entire positions linked list
+Positions *makePositions(cJSON *payloadJson, bool *created) // Creates entire positions linked list
 {
     Positions *retVal = new Positions();                // Initialise linked list
     int numPositions = cJSON_GetArraySize(payloadJson); // Get the number of positions
@@ -194,6 +194,7 @@ Positions *makePositions(cJSON *payloadJson) // Creates entire positions linked 
                                       prev, (*retVal).count - i); // Create link to the previous position from the current one, doubly linked list
         prev = prev->nextPos;                                     // Iterate to the next item in the list
     }
+    *created = true;
     return retVal;
 }
 
@@ -216,7 +217,7 @@ cJSON *getPositions(String encoded, WiFiClass *WiFi)
     return payloadJson;
 }
 
-void freePositions(Positions *positions)
+void freePositions(Positions *positions, bool *created)
 {
     Positions *currPos = positions;
     Positions *nextPos = positions->nextPos;
@@ -228,4 +229,5 @@ void freePositions(Positions *positions)
         currPos = nextPos;
     }
     delete currPos;
+    *created = false;
 }

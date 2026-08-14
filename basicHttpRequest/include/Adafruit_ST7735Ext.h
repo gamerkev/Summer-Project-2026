@@ -25,6 +25,13 @@ typedef enum
   PIES = 1,
 } SummarySelection;
 
+typedef enum
+{
+  BUY = 0,
+  SELL = 1,
+  BACK = 2,
+} PositionSelection;
+
 class Adafruit_ST7735Ext : public Adafruit_ST7735
 { // Extend the display library to be able to cleanly add functionality
 public:
@@ -262,7 +269,7 @@ public:
     }
   }
 
-  void printPosition(Position position, int positionCount, int totalCount)
+  void printPosition(Position position, int positionCount, int totalCount, PositionSelection select)
   {
     uint16_t oldColour = textcolor;
     fillScreen(ST7735_BLACK);
@@ -293,6 +300,35 @@ public:
     setCursor(7, 147);
     setTextColor(TRADING21BLUE);
     print("Back");
+    drawRoundRect(5, 105, 22, 12, 1, ST7735_GREEN);
+    setTextColor(ST7735_GREEN);
+    setCursor(7, 107);
+    print("Buy");
+    drawRoundRect(5, 120, 28, 12, 1, ST7735_RED);
+    setTextColor(ST7735_RED);
+    setCursor(7, 122);
+    print("Sell");
+    switch (select)
+    {
+    case BUY:
+      fillRoundRect(5, 105, 22, 12, 1, ST7735_GREEN);
+      setTextColor(ST7735_BLACK);
+      setCursor(7, 107);
+      print("Buy");
+      break;
+    case SELL:
+      fillRoundRect(5, 120, 28, 12, 1, ST7735_RED);
+      setTextColor(oldColour);
+      setCursor(7, 122);
+      print("Sell");
+      break;
+    case BACK:
+      fillRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
+      setCursor(7, 147);
+      setTextColor(oldColour);
+      print("Back");
+      break;
+    }
     setTextColor(oldColour);
     printPageNum(totalCount - positionCount + 1, totalCount);
   }

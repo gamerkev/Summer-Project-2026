@@ -365,4 +365,6 @@ I'll also delete the PositionsSelection enum and replace it with a simple intege
 
 Navigation in the positions menu is complete, I can select any position in a detailed view. I still can't move between positions in the detailed view but that's soon to come. Right now I think that I'm overdue a refactor, my select cases in main are way too long and some functions in the display are overcomplicated.
 
-Refactor done
+Refactor done.
+
+I've been thinking about how to implement the in-depth position pages and I think that my best bet is having a boolean variable that gets set to true when positions is made and false when it's deleted. I'll have the in-depth position pages handled by a separate handler to the positions handler, and before each handler begins, it checks if positions exists or not.

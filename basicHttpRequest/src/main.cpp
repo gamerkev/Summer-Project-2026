@@ -17,6 +17,7 @@ String encodedPair;
 Summary summary;
 Positions *positions;
 cJSON *positionsJson;
+bool positionsExists = false;
 
 void setup()
 {
@@ -75,10 +76,14 @@ void loop()
       break;
     case POSITIONS_PAGE:
       // REMEMBER TO DEREFERENCE THE POSITIONS LINKED LIST WHEN EXITING THIS PAGE
-      positionsJson = getPositions(encodedPair, &WiFi);
-      positions = makePositions(positionsJson);
+      if (!positionsExists)
+      {
+        positionsJson = getPositions(encodedPair, &WiFi);
+        positions = makePositions(positionsJson, &positionsExists);
+      }
       currentPage = PositionsPageHandler(&tft, &previousPage, positions);
-      freePositions(positions);
+      if (positionsExists)
+        freePositions(positions, &positionsExists);
       break;
     }
   }
