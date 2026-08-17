@@ -85,3 +85,103 @@ This header contains functions/classes that call the Trading212 API and format t
         - totalMarketVal: a float value for the current market value in the wallet currency of the user
         - unrealisedProfit: a float value for how much money you'd gain or lose if you sold all shares of this position this instant in wallet currency
         - sharesAvail: a float value for the number of shares currently available for trading
+
+### Structs:
+
+- Positions
+    - Attributes:
+        - currentPos: in a linked list, this would be the data of the current node. It's of Position type
+        - nextPos and prevPos: pointers to the Positions after and before the current node
+        - count: an integer representing how many positions are after the current one, including the current position
+    - Methods:
+        - Constructors: one empty constructor and one that takes a value for currentPos, prevPos, and count.
+
+### Functions:
+
+- makePositions(payloadJson, created)
+    - This function creates the Positions linked list
+    - Receives: a cJSON* pointer that contains the json returned by the positions Trading212 endpoint, and a pointer to a boolean variable that says whether or not positions has been created yet, this is used to not create multiple instances of positions as it takes up a lot of memory.
+    - Outputs: a Positions pointer to the head of the Positions linked list.
+- getPositions(encoded, WiFi)
+    - This function sends a request to the Trading212 positions API endpoint and returns the json that it receives
+    - Receives: base64 encoded credentials, and a pointer to the WiFiClass
+    - Outputs: a cJSON pointer that contains the data returned by the positions Trading212 endpoint
+- freePositions(positions, created)
+    - This function frees the memory that is taken up by the Positions linked list since that memory is assigned using the *new* keyword.
+    - Receives: a pointer to the positions linked list, and a boolean that tells the function whether the linked list exists or not
+    - Outputs: nothing.
+
+## keyboardFont.h
+
+This header contains the GFX font created with the [Adafruit GFX font customiser](https://tchapi.github.io/Adafruit-GFX-Font-Customiser/) which is used to print the characters on on-screen keyboard.
+
+## currencySymbols.h
+
+This header contains the GFX font created with the [Adafruit GFX font customiser](https://tchapi.github.io/Adafruit-GFX-Font-Customiser/) which is used to print currency symbols that don't exist in the default Adafruit_GFX fonts.
+
+## Adafruit_ST7735Ext.h
+
+This header extends the Adafruit_ST7735 class, adding more specific methods which allow easy printing for things such as the Trading212 logo and pages for the device.
+
+### Imported includes:
+
+- Adafruit_ST7735
+
+### Self-defined includes:
+
+- trading212Data.h
+- keyboardFont.h
+- currencySymbols.h
+
+### enums:
+
+- MenuSelection
+    - This is used to keep track of which button is selected in the main boot-up menu
+- SummarySelection
+    - This is used to keep track of which button is selected in the summary page
+- PositionSelection
+    - This is used to keep track of which button is selected in the individual position page
+
+### Classes:
+
+- Adafruit_ST7735Ext
+    - This is an extention of the Adafruit_ST7735 class by Adafruit and adds methods to print pages from this project, among other things like the Trading212 logo
+    - Public:
+        - movingText(toWrite, y)
+            - This prints some text at a certain y-level on the display, it's padded by 10 pixels on the left and right and if it's too long, the text wipes across the display. This function may not be used due to the slow refresh rate of the display.
+            - Receives: a String which is to be written, and an integer for the y-level at which to write the String.
+            - Outputs: nothing.
+        - logo()
+            - This draws the Trading212 logo with triangles on the display and writes Trading212 in large font below.
+            - Receives: nothing.
+            - Outputs: nothing.
+        - setFontKeepSize()
+            - This changes the font without changing the y-level of the cursor, which the regular Adafruit_ST7735 setFont function cannot do. This is used when printing a currency symbol followed by an amount of money without having to setCursor as well as setFont between each print.
+            - Receives: nothing.
+            - Outputs: nothing.
+        - printMoney(curr, amount)
+            - This prints a currency symbol followed by an amount of money, it uses setFontKeepSize to do this.
+            - Receives: a currency enum, and a float type amount of money
+            - Outputs: nothing.
+        - printCentreLeftAlign(toPrint, y)
+            - This prints some text left-aligned, padded by 5 pixels either side. If the text is too long to be on one line, it's written across multiple lines until there is no more text to write.
+            - Receives: a String toPrint, an integer y which is the y-level at which to print the text.
+            - Outputs: nothing.
+        - printUnderlineDefaultFont(toPrint, colour)
+            - Prints some text in the default GFX font and underlines it
+            - Receives: a String toPrint, a uint16_t colour which to make the text and line.
+            - Outputs: nothing.
+        - printCentered(toPrint)
+            - Prints some text to the display centered, used to show the page number
+            - Receives: a String toPrint
+            - Outputs: nothing.
+        - printSummary(aSummary, summarySelection)
+            - Prints the summary page
+            - Receives: a Summary, a SummarySelection which represents the button to be highlighted
+            - Outputs: nothing.
+        - printPageNum(pageNum, totalPages)
+            - Prints the current page number and the total pages at the bottom of the display
+            - Receives: the current page number, and the total pages
+            - Outputs: nothing.
+        - printPositions(positions, totalCount, select)
+            - 
