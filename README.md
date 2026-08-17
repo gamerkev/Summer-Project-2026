@@ -1,370 +1,87 @@
-# Summer-Project-2026
-## Divergent thinking
-### Idea 1, e-ink planner:
-![E-ink planner paper prototype 1](./pictures/e-ink%20planner%20paper.jpg)
-- Possible to have some minigames with buttons on the side
-- Need to figure out the form factor for typing
-    - Pull out keyboard?
-    - Magnetic wireless keyboard?
-    - Pen?
-- Maybe a little compartment for pieces of paper in case you want to sketch something
-- [Possible display](https://www.aliexpress.com/item/1005009712001279.html?spm=a2g0o.detail.pcDetailBottomMoreOtherSeller.5.27f1lMwflMwfpN&gps-id=pcDetailBottomMoreOtherSeller&scm=1007.40050.354490.0&scm_id=1007.40050.354490.0&scm-url=1007.40050.354490.0&pvid=f8932bdc-10cd-4720-824a-765b6bdad1d0&_t=gps-id%3ApcDetailBottomMoreOtherSeller%2Cscm-url%3A1007.40050.354490.0%2Cpvid%3Af8932bdc-10cd-4720-824a-765b6bdad1d0%2Ctpp_buckets%3A668%232846%238116%232002&pdp_ext_f=%7B%22order%22%3A%22501%22%2C%22eval%22%3A%221%22%2C%22sceneId%22%3A%2230050%22%2C%22fromPage%22%3A%22recommend%22%7D&pdp_npi=6%40dis%21GBP%2113.68%2110.60%21%21%21122.68%2195.07%21%40211b80f717772799564108492e2c58%2112000049926703178%21rec%21UK%217590588945%21XZ%211%210%21n_tag%3A-29911%3Bd%3A2a5ed4e6%3Bm03_new_user%3A-29895%3BpisId%3A5000000203680005&utparam-url=scene%3ApcDetailBottomMoreOtherSeller%7Cquery_from%3A%7Cx_object_id%3A1005009712001279%7C_p_origin_prod%3A)
-
-### Idea 2, cyberdeck:
-- Lots of versatility but may be too complex or expensive
-
-### Idea 3, extend functionality of my radio, give it a timer on the screen, games, link it with calendar, etc.
-- Similar to Amazon Echo or Google Home
-
-### Idea 4, MP3 player
-- Could be a fun little project
-- Might be too easy
-- A good starting place for someone inexperienced
-- Lots of opportunity to extend functionality, give it Wi-Fi etc.
-- Could add buttons for a tactile experience
-- Could have it link to another device via Bluetooth to show what's playing and provide controls for it
-    - Rather than having it be its own MP3 player
-- Local storage too
-- Could even have journal functionality on this, link with an app
-- 2 form factor options:
-    - Old iPod:
-    ![iPod prototype](./pictures/ipod%20mp3%20player.jpeg)
-    - Full screen:
-    ![Full screen prototype](./pictures/mp3%20player%20full-screen.jpeg)
-
-### Idea 5, carplay but for a desk
-- Similar to the MP3 player idea but not portable
-- Not really a good idea because I could just make a stand for the MP3 player that can "convert" it to this
-
-### Decision time
-I'm going with the MP3 idea because it's something simple to start with, but it has a lot of potential to be extended and innovated. Namely with the journal functionality and Wi-Fi. There are also a lot of design decisions which I'm going to have to justify which will be good practice.
-
-***
-
-## Convergent thinking
-I've already done a bit of this inadvertently in the divergent thinking section, looking at different form factors for the device so let's begin by looking at those again.
-
-### Old iPod
-![iPod prototype](./pictures/ipod%20mp3%20player.jpeg)
-- Boxy looking screen at the top
-- Pause/unpause button in the centre below the screen
-- Skip backwards track is to the left of the pause/unpause button
-- Skip forwards track is to the right of the pause/unpause button
-- Power on and volume buttons would be on the side of the device
-- Benefits:
-    - Clear buttons for everything
-- Drawbacks:
-    - More buttons than necessary
-    - Could use something similar to the Motorola gesture where you can skip tracks by holding pressed down on the volume buttons which eliminates the need for 2 of the front buttons
-    - Small screeen
+# Project docs
 
-### Full-screen
-![Full-screen prototype](./pictures/mp3%20player%20full-screen.jpeg)
-- No buttons on the same face as the screen
-- No designated skip track buttons, just hold pressed on the volume buttons to skip track
-- Likely haptic feedback to tell you when you've skipped
-- Buttons on the side of the device:
-    - Volume up (also skip forward track)
-    - Pause
-    - Volume down (also skip backward track)
-- Power button will likely be on the top of the device to not get confused with the rest of the buttons
-- Power button could just be a secondary functionality of the pause button, e.g. hold the pause button to power off, but that seems tacky
-- Benefits:
-    - More of a tactile feel when skipping tracks or pausing
-    - Has a nice casette player vibe
-    - Haptic feedback when skipping tracks is satisfying
-    - Less buttons so it's a simpler, more elegant design
-    - Big screen
-- Drawbacks:
-    - Less buttons means less functionality can be added in the future
+## jsonGetters.h
 
-### Stick
-![Stick prototype](./pictures/stick%20mp3%20player.jpeg)
-- Similar to the full screen prototype but the device is a lot more narrow
-- Might not actually have the screen be the whole length of the device if things don't fit nicely
-- Benefits:
-    - Even more portable
-    - Very tactile, can easily be held with no risk of dropping
-    - Would be nice for running
-- Drawbacks:
-    - Smaller screen
-    - Less opportunity for adding features in the future due to the smaller screen, would have to find workarounds like a landscape mode
+This header provides a class called extractData. The project uses the cJSON library to parse the response from APIs but since there are multiple responses and multiple values are needed from them, the cJSON library by itself doesn't give the cleanest code since it uses a linked-list style approach the code would end up having very long lines full of cjsonObject->next->next->child->next.......
 
-### Decision time
-At the moment I can't think of any other viable ideas. I think the iPod form factor is a clear loser, having more buttons than necessary is quite silly and having used a Motorola in the past, what I miss the most about it is the ability to hold pressed on the volume buttons to skip tracks so this would be a nice homage to that. Additionally, the smaller screen on the iPod form factor is uncessary, if the buttons below it are unnecessary, either there should be no space below the screen, or there should be a bigger screen so that it takes up the whole body.
+This header file solves that with methods that abstract away from those long lines.
 
-Deciding between the stick and the full-screen options, it's really quite difficult. As the designer of this, I think that it would be quite elegant to have the slim, stick form factor as it doesn't use more space than is necessary. Although, it could be nice to have the larger screen of the full-screen prototype so that there's a lot of space for adding extra functionality. Overall, I will attempt to take the stick prototype further since it has the added factor that it's quite unique and cool, but if I can't fit all of the components inside of that form factor, I'll be forced to go with the full-screen prototype. I won't really look at buying a screen until I've decided on all of the internal components and worked out what features I want to have, and then analysed whether I need the larger screen or if the smaller form factor will suffice.
+### Imported includes:
 
-***
+- cJSON.h
 
-## Deciding on components
-For this part, I'm going to be experimenting with different boards on [Wokwi](https://wokwi.com/), the simulations will be found in ./simulations
+### Self-defined includes:
 
-After messing around with Wokwi, I've decided to experiment with an ESP32-S2 board (linked [here](https://www.aliexpress.com/item/1005009711874009.html?spm=a2g0o.order_list.order_list_main.5.2b641802aIwZAe)) and a breadboard kit (linked [here](https://www.aliexpress.com/item/1005006152882281.html?spm=a2g0o.order_list.order_list_main.17.2b641802aIwZAe)) from AliExpress. I was trying to create a pushbutton-activated LED circuit using the ESP32 simulation on Wokwi but nothing that I tried worked although my code looks right to me. I decided to purchase a cheap ESP32 board and breadboard kit so that I can't blame the simulation software for not working anymore, my last attempt at making it work is in ./esp32-s2/src/main.cpp.
+- None.
 
-I've managed to make a basic program that will switch an LED on and off (./testPrograms/ledOnOff.ino). My next goal is to make a program that works with an RGB LED to make it change colour. This will be done in ./testPrograms/rgbLed.ino.
+### currency enum
 
-The program doesn't work for the RGB LED that came with the kit, however it does work if I connect a red LED to pin 2, green to pin 3, and blue to pin 4. I believe it's either because the RGB LED is faulty or due to the fact that I can't tell if it's common anode or common cathode. I'm going to try for BlueTooth connectivity now.
+This enum has a corresponding value for every currency code that the Trading212 API may return. This makes it easier to print currency symbols to the display since the display is not able to have a glyph for multi-character symbols such as €. For this reason, I'll have to have each currency character represented by a different character in a font file for the display, using numbers for the characters makes this enum very useful!
 
-It turns out that the board I ordered doesn't have Bluetooth connectivity, only WiFi connectivity. So I can't use it for the project that I want. However, that's no reason that I can't still use it for something. I will make a small shooting game using some LEDs and 3 buttons.
+### Functions:
 
-***
+- currencySymol
+    - Returns: currency (enum)
+    - Arguments: currCode (String)
+    - This function converts the currency code returned by the Trading212 API, which is a String, into the currency enum so that the currency symbol can be easily printed to the display.
 
-## Change of plan!!
+### Classes:
 
-The game will look like this:
+- extractData
+    - Public:
+        - Constructors:
+            - There are 3 ways to create an object of this type, the default way, which creates an empty object. This is used to initialise an object of this type before any calls to APIs are made so that the objects isn't re-initialised every time that an API response is received. The other two ways take in either a char*, which is parsed with the cJSON library, or a cJSON*, which has already been parsed.
+        - getJson()
+            - Returns: jsonData (the cJSON* of the object)
+        - All of the other functions are essentially crawling the cJSON* attribute of this object to return any value from the json returned by an API. Since the API can return different things, such as account data, or positions data, the methods for each are denoted by comments inside the header file.
+    - Private:
+        - jsonData: the cJSON* which points to all of the data returned by the API.
 
-![Game prototype](./pictures/gameDiagram.jpeg)
+## trading212Data.h
 
-As you can see, I will need 6 buttons, 6 green LEDS, 5 red LEDs, 5 yellow LEDs, and 5 blue LEDs. All of which came with the breadboard kit that I previously ordered.
+This header contains functions/classes that call the Trading212 API and format the response in a way that is easier to understand and work with.
 
-The middle button will be the button for shooting. For example, if the blue player is in the middle and presses the middle button, the middle yellow LED will light up, and if the red player is standing in the middle as well, they will lose a life - represented by the green LEDs in the red end. The other two buttons will be used for moving left and right.
+### Imported includes:
 
-This game will be in ./testPrograms/shootingGame.ino
+- WiFi.h
+- HTTPClient.h
 
-At this point I think my game is done, however I don't have enough female to male connectors to fully test it so I'll have to wait to get my hands on some more of those before being able to say for sure that it's done. I'm also not sure if the delay that I've put for shooting will block the players from moving, again it's something that I'll test when I have more connectors. Although if it does block player movement, I've been researching asynchronicity in c++ and Arduino. I found [this article](https://medium.com/@m.valizadeh/async-programming-in-arduino-unleashing-the-power-of-non-blocking-code-45205a691938) which may be of use.
+### Self-defined includes:
 
-I started looking at using WiFi on the ESP32 that I originally bought too, however I can't seem to figure out how to create a webpage would be able to run anything resembling a game or something interesting to interact with because it seems like the only way to send that webpage data to a client is by printing lines of HTML to each NetworkClient.
+- jsonGetters.h
 
-I've now ordered a [new ESP32](https://www.aliexpress.com/item/1005010676427148.html?spm=a2g0o.order_list.order_list_main.10.44901802PRF54w), this time the C3 SuperMini variant as I've double checked that it has both WiFi and Bluetooth capabilities and it's very small, as required by my project. Along with that, I've also ordered a [1.8 inch display module](https://www.aliexpress.com/item/1005012439751456.html?spm=a2g0o.order_list.order_list_main.5.44901802PRF54w). I saw someone that has similar requirements to my project with also a similar screen and the ESP32 C3 SuperMini, so I'm hoping [their question](https://forum.arduino.cc/t/how-to-connect-st7789-display-to-esp32-c3-supermini/1298551) on the Arduino forum will be able to help me with my project as well. A Redditor also asked a [similar question](https://www.reddit.com/r/esp32/comments/1l130hk/esp32_c3_supermini_ga9a01_display_128_240x240/) on r/esp32 which may be of help when connecting the display as well. Some more female to male connectors have also been ordered so that I can finish off testing the game that I made on the ESP32-S2.
+### Classes:
 
-The display is estimated to arrive on the 2nd July and the ESP32 C3 SuperMini is estimated to arrive on the 6th July
+- Summary
+    - An instance of this class is used to store the important values returned by the Trading212 summary endpoint
+    - Public:
+        - Constructors:
+            - One constructor creates an empty object, this is used to initalise a Summary in a place in the code such that it will not be re-initialised.
+            - The other constructor receives the base64 encoded Trading212 credentials and a pointer to a WiFiClass object. These are used to make calls to the Trading212 API and the response is stored in the attributes of this class.
+        - All of the other methods simply return the private attributes of this class.
+    - Private:
+        - httpCode: the integer value code returned by the http call to the Trading212 summary API endpoint
+        - payload: the string returned by the http call to the Trading212 summary API endpoint
+        - curr: the currency code string for the wallet currency of the user
+        - totalVal: a float, the total value of the user's account
+        - availableToTrade: a float, the total cash available to be traded for the user
+        - reservedForOrders: a float, the total cash in a user's account that has already been reserved for orders
+        - totalCost: a float, the total value that a user has paid for the positions that they currently own
+        - unrealisedProfit: a float, amount that a user would lose or gain if they sold all of their positions in this moment. This value can be positive or negative depending on if the user would gain or lose money.
 
-I've been spending some time trying to figure out the wiring that I'll need to do for the display and ESP32, I think I've finally got it figured out:
-
-![Raw wiring diagram](./pictures/esp32%20display%20wiring%20raw.jpeg)
-
-Cleaner diagram below:
-
-![Clean wiring diagram](./pictures/esp32%20display%20wiring%20clean.jpeg)
-
-Hopefully this works, I went through a few YouTube videos and many obscure forum posts for this, I also found [a video](https://www.youtube.com/watch?v=A0fm15ydH4o) that will help me learn to use the display once it arrives as well. Still waiting on both the chip and display to be delivered.
-
-Both have been delivered! I've tested the screen and the new ESP32 and both work perfectly, I'm taking a look at libraries that I could use to control media on my phone and I think I've found a promising one [here](https://github.com/T-vK/ESP32-BLE-Keyboard). I'm going to test it out now!
-
-I had a small issue with this library but it was fixed using [this thread](https://github.com/T-vK/ESP32-BLE-Keyboard/issues/313). Now everything works smoothly.
-
-The BLE Keyboard library was a flop, trying to send media key presses to any device would cause a seg fault in the ESP32. I have a theory this may be because the device has so little memory since it doesn't seem to be able to send strings longer than 7 characters via bluetooth using that library either. So I'm going to try to proceed with [EDP-IDF](https://github.com/espressif/esp-idf/tree/master), which is the Expressif IoT Development Framework. This may be more difficult to code as it seems to be lower-level, however I don't wish to order any more ESP's, I'm already 2 in...
-
-I'm havin difficulty finding the OpenOCD file for the ESP32 C3 SuperMini so I'm going to read over the Bluetooth examples in Arduino IDE and try to make sense of them, that may allow me to send media control signals to devices.
-
-In trying to figure out how ArduinoBLE works, I took some notes and then wanted to try to create a program that will just connect my ESP32 to a device and print to serial that it worked. So I had to install the ArduinoBLE library, when doing this, I also took a look at any library that came up when I searched "ble". I found a library that I have now tested pausing media with, and it works perfectly! [Hijel_BLEKeyboard](https://github.com/HijelHub/HijelHID_BLEKeyboard). I no longer need to work with ArduinoBLE, however it was interesting to find out some things about it.
-
-This new library is exactly what was needed, all media controls that I would like work. I can pause, play, skip a track, go back a track, and change the volume via Bluetooth! The next thing that I need to do for the backend is to make sure that I can receive information about the track playing: the track name, artist, track cover, track duration, how far into the track we are, and whether the media is paused or playing.
-
-Reading [online forums](https://forum.arduino.cc/t/need-help-with-song-metadata-on-esp32/1358020), I found out about an A2DP library that I could potentially use for getting song metadata, it seems like I'll need to parse a string to get the data that I seek. The ESP32 that I have gotten only supports BLE, not Bluetooth classic. So that library won't work, I can't get song metadata using A2DP nor AVRCP which are the default ways to get media metadata over Bluetooth. At the moment it looks like I'll have to create a custom GATT service, as hinted by [this post](https://stackoverflow.com/questions/49206211/what-is-the-equivalent-of-avrcp-for-bluetooth-low-energy).
-
-I need to work with BLE on a lower level, so I've read all of the [Arduino docs on ArduinoBLE](https://docs.arduino.cc/libraries/arduinoble/#BLE%20class) and made extensive notes. I have some sort of an idea of how I'll be able to send media metadata to the ESP32 now, but I may need to create a mobile app to do some BLE things for this, which is something that I wanted to avoid. However, it seems unavoidable due to the lack of BLE audio on the ESP32 that was purchased.
-
-I'm going to draw a flow diagram to help myself picture what the role of both the ESP32 and the connected device will be and how they will work together.
-
-The flow diagram has ended up being more a bit of pseudocode sketch that details the setup of BLE on the ESP32, as a flow diagram feels largely useless, it's now a PDF at root called 'flow diagram.pdf'. I'm going to start coding and seeing if the ESP32 will even connect.
-
-Using the Arduino BLE library keeps making my ESP32 bootloop with a guru meditation error, so I don't think that this project will be possible with the ESP32 that I've bought, yet again. I think it's time to change the project entirely.
-
-## New project, stocks checker
-
-I give up on BLE. I'm going to make something that uses the WiFi chip on one of my boards instead, currently I'm considering making a device that will allow you to check on how purchased stocks are doing at a glance. I don't think that I have enough time left in this summer to go through the convergent and divergent thinking that I was previously able to do for the previous project attempt. It's been around a month since my first ESP32 arrived and I still have no working software. So I'll just get started and deal with errors as they come up, I already have a screen and 2 ESP32s with integrated WiFi chips so I have all of the hardware that I'll need to begin.
-
-I've managed to send HTTP requests successfully now, the code is in basicHttpRequest. The next step is researching the HTTP client library more to understand how I'll be using API keys etc. for the final project.
-
-I've managed to connect to another API using a token in the header now, and I'm currently working on parsing the returned json response from the server as I don't have a verified trading212 account yet, so the only productive thing that I can do is work on what I will do when I do have a verified account.
-
-I've managed to print the json response on the ST7735 screen that I originally bought for the second ESP32, it works perfectly as intended, each field of the response is printed on a separate line and swipes across the screen. For the future, I'm considering adding the function to wipe the text as a method of the ST7735 object.
-
-Having now opened a trading212 account, I'm trying to access my details with [the API](https://docs.trading212.com/api/section/general-information/quickstart), although I'm having a lot of trouble at the moment.
-
-Update, I've fixed the authorisation header! The problem was where with the way that I was concatenating my encoded API key and API ID with 'Basic '. I was doing it using a loop because I kept on getting errors when trying to concatenate with a +. I then just used casting since I realised it was replacing 'Basic ' with random numbers, I'm still unclear why, and now it works! 
-
-Everything is going very well at the moment, the API works as intended so now I can focus on coding something resembling an OS. First I'll look through the API docs to identify anything I might want to be able to do, after that I'll sketch some menus on paper and start coding.
-
-I've been trying to access the [Get all available instruments API endpoint](https://docs.trading212.com/api/instruments/instruments), although I don't think that my ESP32 has enough memeory to handle the request response. The request response is supposed to be a list of json objects, however the list doesn't have a closing square bracket which would signify its ending. I believe that this is also why the cJSON library can't parse the response, it returns an empty cJSON object. Clearly, cJSON can't parse json that doesn't have closing brackets, so I'll have to create my own minimal cJSON parsing library which will do the bare minimum for my project.
-
-I'm going to not create a json parser now, listing instruments that the user doesn't even own seems a little out of scope at the moment. If I manage to list all owned positions and have functionality to sell off stocks that should be enough, and I can add further functionality if necessary in the future.
-
-I had a big issue over the past week due to changing desktop environments from GNOME to Cinnamon on my laptop (as GNOME started closing all running processes when I would use my laptop's touchscreen while screensharing; which is kind of required for my tutoring job), which used to run the default version of Fedora with GNOME. I couldn't upload code and kept getting different errors from Platformio, broken pipe, and protocol error. I spent multiple days doing research in the hopes of fixing this but I had no luck, I had to resort to getting help from AI to find the solution to my problem, which ended up being putting my ESP32 into bootloader mode manually and adding a 'upload_resetmethod = no_reset' line to my platformio.ini file. From my understanding this is because the ESP32 that I'm using has no UART chip, so when Platformio's esptool was trying to put my ESP32 into bootloader mode using DTR, the kernel rejected it. This problem may have stemmed from a couple of different things: GNOME may have had udev rules that allowed DTR on the virtual port, or may have kept the port free from interference. The removal of GNOME left me with a smaller USB stack which exposed hardware limitations. Due to this, uploading code to my ESP32 is a much more manual process right now. However, my project has nothing to do with Linux so I won't get too into the quirks of it or do much more research into it, as I'd like to finish my project before university begins again. I'm just glad that I can keep coding without having to reflash Fedora to my laptop. I would also like to go back to GNOME if the touchscreen/screensharing problem is ever fixed, but again, it's something I'll look more into once my project is complete.
-
-I'm getting very used to the API calls available to myself, so I believe it's time to get started on the UI. However, none of the fonts available in the Fonts folder of the Adafruit GFX library seem to fill the display in a nice fashion. So I'll have to design my own font. I will use [pixlart.com](https://www.pixilart.com/) to sketch each character in an appropriately sized grid, using the character as a tracing image. After doing this, I will use the online [Adafruit GFX Pixel font customiser](https://tchapi.github.io/Adafruit-GFX-Font-Customiser/) to create the header file for my new font. However, I'm not big on trading stocks, Trading212 isn't something I need to figure out whether I'm going to use one of the Adafruit GFX built-in fonts for my project, or whether I'll have to design my own. I already found out that the built-in fonts lack the **£** symbol, so I know that I'll have to at least create a glyph for that. However, as I don't trade much, I'm not too clear on what a user would like to be able to do and see on a device such as the one I'm creating. So I've created a Google form (shown below) that I will share with people that I know trade more regularly.
-
-![Google form screenshot 0](./pictures/form0.png)
-![Google form screenshot 1](./pictures/form1.png)
-![Google form screenshot 2](./pictures/form2.png)
-![Google form screenshot 3](./pictures/form3.png)
-![Google form screenshot 4](./pictures/form4.png)
-![Google form screenshot 5](./pictures/form5.png)
-![Google form screenshot 6](./pictures/form6.png)
-![Google form screenshot 7](./pictures/form7.png)
-
-While I wait for responses to the form, I can fill in the form myself as an amateur and begin to think about possible font sizes. I want to try to fit every menu on one screen and not have any scrolling, as the screen flickers due to having to set black pixels before I can put the next frame on. If I can't fit things on one screen, I'd much rather use pages to flick through in order to minimise movements on the display.
-
-These are my responses:
-
-![My Response 0](./pictures/myResponse0.png)
-![My Response 1](./pictures/myResponse1.png)
-![My Response 2](./pictures/myResponse2.png)
-![My Response 3](./pictures/myResponse3.png)
-![My Response 4](./pictures/myResponse4.png)
-
-I divided my form into 4 sections: summary, open positions, orders, and history. It would make sense to organise menus on the device in a tree format.
-
-![Menu tree diagram](./pictures/menuTreeDiagram.jpeg)
-
-You can see pending orders and create new orders are crossed out which are coming off of pending orders. Originally the current pending orders was just "Orders", however I realised that having "Create a new order" and "Pending orders" coming off of that made no sense as fetching available instruments doesn't work (at least for now) so I crossed out "Create a new order" and then drew "Create a new order" off of open positions, past orders, and orders. And changed orders to become pending orders. I did this because the data that will be fetched for open positions, pending orders, and past orders includes the ticker string for an instrument, which is required to place an order. So it would only really make sense to place an order based off of positions/orders shown in those menus.
-
-I can now start to sketch menus, I'll start from the root of the tree (Boot-up), as the leaves and children of the root are the most likely to change. Doing these sketches will also help me get an idea of how I want to design the interface of the device. At the moment I have two ideas, I'll create multiple sketches for each menu that are based off of different hardware interfaces.
-
-Here are my boot-up menu sketches:
-
-![Boot up menu sketch](./pictures/bootUpMenu.jpeg)
-
-I've used a rounded-off button for the power button to differentiate it from the other buttons. In the sketch on the left-hand side, I use 4 buttons (excludng the power button) as the hardware interface for the device. In the boot-up menu ,each button is linked to one of the children of the root in the tree diagram. However, I forsee some problems with this, namely that if there is too much data to fit on one page, or if the user is trying to select a position or order in a different menu, navigating using those 4 buttons and selecting orders may feel unnatural. But I will still keep this as an option in case I figure out a way around it in the future as I quite like it for the boot-up menu. For the sketch on the right-hand side, I've used 3 buttons (excluding the power button). This makes things like scrolling much more natural, as you can use the top and bottom buttons to move up/down items and the middle button as a select button. If an item on the bottom or top of the screen is reached, the device can just go to the next page. However, this is boring and not a unique design. Writing about both designs, I realise that each screen design could be used with either setups of buttons. The left-hand screen could scroll through the menu in the same way that we read, left-to-right then top-to-bottom. The right-hand screen could still link one button to each option, which highlights when pressed, options could then be selected by holding its corresponding button down.
-
-This makes my choice of the buttons much more difficult, so I will have to continue sketching with both setups.
-
-I believe that a lot of the menus will be lists, namely the open positions, pending orders, past orders, past transactions, paid out dividends menus. So it will be necessary to scroll, however I believe I have a solution for the previously mentioned scrolling dilema for the 4-button setup (referring to the buttons on the left-hand side of the boot-up menu sketch). I was trying to figure out what would be the most natural way to scroll using that setup, but this may differ from person-to-person. In my opinion, the clearest way to do it would be to use the top and bottom-right buttons to scroll and then the top-left button to select. On the other hand, I would personally use the top-left and bottom-right buttons to scroll and the bottom-left button to select since those buttons have fingers on them if the device is resting in the palm of the user. This is shown **very** roughly in the below sketch:
-
-![4-button menu boot-up screen held in hand](./pictures/handBootUpMenu.jpeg)
-
-It may be difficult to see this, but I envision the pink-finger or ring-finger on the bottom-left button, index finger on the top-left button, and thumb on the bottom-left button. Because there are so many different ways to configure these buttons, I would like to leave it up to the user in a much-needed settings menu.
-
-Although, this is yet another difficult design decision, how can someone enter a settings menu? We have many examples to consider, a popular option is to have a gear symbol in any corner of the display which will take you directly to the settings menu, another option is to have to push certain buttons during boot-up (in the way that BIOS settings are accessed), we could also have the user hold certain buttons pushed down in the boot-up menu - or even a combination of buttons. In order to make in informed decision, I will have to consider how often the settings menu will need to be accessed. If it doesn't need to be accessed much, I can go for the BIOS-like choice as it will be a cleaner look if the classic settings gear isn't present on any menu. On the other hand, if users will be accessing settings often, the gear may be more practical than restarting the device every time you want to make a small settings change.
-
-So I will need to consider what options may be within the settings menu.
-
-The device needs an internet connection to pull data from the Trading212 API, so it will need an SSID and a password before it can do anything. Anyone with half a brain wouldn't give someone their WiFi SSID and password just because they'll give them a device that interfaces with their stocks app. Furthermore, people move around, portability is one of my own requirements for this device; so the devices must store multiple SSIDs and passwords. This gives us our first option in the setting menu, *WiFi networks*.
-
-Something else that the user will have to set up is the API ID/key pair. This is definitely going to be a hassle for the user as API keys are around 100 characters and made up of a mixture of numbers, uppercase letters, and lowercase letters. Evidently *API key* will have to be another option in the settings menu.
-
-Moreover, this raises another key issue, the keyboard. The display is 128 pixels wide, my keyboard will likely be 11 characters wide at its widest due to having to house 11 keys in the top row (every number and the dash as API key pairs can sometimes contain dashes). However, I could make it 10 characters wide as QWERTY keyboard rows are 10, then 9, then 7 charcters wide, so I could have numbers as the top row, followed by the usual QWERTY keyboard, and then put dashes or any other special charcter in the final, 7-charcter row. Since my longest row is 10 characters wide, I will pad the keyboard horizontally by 4 pixels either side. This leaves 12 pixels width per character, including the spacing between each character. I will likely space each character by 1 pixel either side as that's enough to be able to differentiate each one and gives me room to draw a 1-pixel width box around the selected character. This leaves me 10 pixels for the width of each character, excluding padding.
-
-There will be 4 rows for the keyboard, and characters are usually taller than they are wide, the default Adafruit GFX font is 6 pixels width per character with 7 pixels of height. So if my characters are 10 pixels wide, I'll make them 12 pixels tall. Accounting for 2 pixels between each row, I get a height of 50 for my keyboard. So my keyboard will be 120 * 50 pixels size, and each character will be 10 * 12 pixels. This is a font that I can create. I'll go for a nice monospace vibe since the screen gives a very hacker-y vibe. I'll type out every character into this file in vscode since it has a monospace font already.
-
-1234567890-qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM
-
-I had forgotten that I'll need a shift key as well, this can also go in the bottom row of the keyboard, or could even be the purpose of one of the buttons on the 4-button setup. I'll start sketching characters now in [pixilart](https://www.pixilart.com/draw?ref=home-page), using a screenshot of the characters in vscode as my reference on the website.
-
-I had started sketching out characters for my font but I quickly realised that there are some things that I should know before trying to design a font, which I don't know. Font isn't too important to me, although a horrible one can ruin the look of the entire project, so it's essential to be able to design a passable one. I've taken some very basic notes which should help me design an "ok" font from [this page](https://m2.material.io/design/typography/understanding-typography.html) as shown below:
-
-![Font notes](./pictures/fontNotes.jpeg)
-
-The biggest issue that I noticed was that I was unsure where to start and end letters vertically, having made my numbers take up the entire 10*12 pixel grid, but then realising that certain letters like "y" need to have the appearance of going below an invisible line that is at the base of all other characters that don't descend, including numbers. Having done some research now, I'm better equipped to design a font.
-
-So far, my font is all numbers from 0-9, the dash symbol, and all of the lowercase letters. I've tested how it looks on my display and all that I can see at the moment is that I may have put too great of spacing by making every character 10 pixels wide. This wouldn't matter if I was only going to use this font for the keyboard, however it's quite a nice size and is coming out nicely, so I may end up using it throughout this project. Before narrowing the space that each character takes up, I'll add all of the capital letters too, just to see if they need to take up the entire 10 pixels width.
-
-I've finished sketching all of my characters and turned them into a font, the sketches are available in the keyboardFont.pixil file, which can be opened in [pixilart](https://www.pixilart.com/draw?ref=home-page#).
-
-After testing my font, designing a font seems quite iterative, after my first iteration I can see a few issues:
- - My "A" is too low
- - My "Z" is too high
- - My "W" is too low
- - My "K" doesn't really look like a capital letter
- - And my numbers seem too small in my opinion
-
-Apart from these things, I think that I should also make the font not as wide, 10 pixels seems much too much. However in order to do this, I should also narrow "W" a little. My first iteration can be seen below:
-
-![First font iteration](./pictures/keyboardFontIteration1.jpeg)
-
-I'll make the previously mentioned alterations and test again. I won't be altering the pixilart file anymore since the changes are fairly straightforward.
-
-Alterations done, it's time to test again. My new font looks much cleaner, shown below:
-
-![Second font iteration](./pictures/keyboardFontIteration2.jpeg)
-
-Although, I made a few more alterations than originally planned. I made the numbers larger and slimmed down the space that every character took up by 2 pixels, but to do this I also had to alter A, M, N, T, O, Q, V, X, Y, Z, m, q, w, and x. Even still, I can spot 2 remaining mistakes, x and w are 1 pixel too high. After fixing this, I get my final keyboard font:
-
-![Final font](./pictures/keyboardFontIteration3.jpeg)
-
-I had forgotten to add the character for space, I've done that now and my font is complete.
-
-Now that the keyboard font is complete, I could begin to design the screen for inputting a network SSID and password, but I can't really do that yet as I'd need to take inputs from the pins of the ESP32 to move the cursor on the on-screen keyboard to enter anything. In order to do that I either need to connect buttons to the ESP32 (by soldering or using the breadboard), or simulating inputs virtually, perhaps through the serial monitor. I'd much rather go for option 2, the serial port, because conencting the 8 pins for the display any time I want to test anything is annoying enough already. I'm not sure how serial inputs work, so I'll have to do some research now.
-
-Serial input seems fairly straightforward, I managed to test it in serialInputTest, I can go ahead with creating an interface for WiFi details.
-
-This is how the on-screen keyboard currently looks, using a function, putKeyboard, that was defined in Adafruit_ST7735Ext.h:
-
-![Keyboard first iteration](./pictures/keyboardFirstIteration.jpeg)
-
-I think that the keyboard looks slightly skewed to the right and needs to be lower as well, so I'll fix those issues now. After examining the spacing, it seems as though I have placed everything in the centre, but the spacing looks off because I've made every letter stick to the left border and left space on the right, this makes sense when typing words but not when displaying them in a keyboard, so I'll move everything by just 2 pixels and see if that fixes it.
-
-I've moved the whole keyboard down and moved every character to the right by a couple of pixels, I also placed the spacebar slightly closer to the bottom row. As a final change, I made my code more modular by passing in a height variable to say where to place the keyboard. Although, if I end up placing the keyboard at the same height constantly, I'll remove this. Here's the final keyboard:
-
-![Final keyboard](./pictures/keyboardFinal.jpeg)
-
-My next step is to make a capital keyboard too, and add a shift key, I'll do this by passing in another argument to the function.
-
-I've created the capital keyboard, and shift key, and also a function that will circle a button on the keyboard. The next step is to make it functional.
-
-On second thoughts, I don't really like the way the circle is, I'm going to make the selected letter have a filled-in circular background instead since the current circle has to be too big and sometimes overlaps parts of some letters. As shown by the following image where C is slightly overlapped when F is selected:
-
-![C overlap when F is selected](./pictures/fAndCOverlap.jpeg)
-
-I think that my mistake is trying to ake the same size oval for every character, I've done what I said before about changing the colour of the background of the selected letter but I still don't like how the q looks when highlighted. It's right on the edge of the oval as shown below:
-
-![Q on the edge of its circle](./pictures/qOnEdgeOfCircle.jpeg)
-
-So instead, I'll change back to what I was doing before where the selected character is circled so that I don't have to rewrite the character to the display after drawing an oval in its place, but I'll change the size of the oval depending on which letter is selected.
-
-This is too finicky, new plan: just change the colour of the selected letter.
-
-My new plan worked perfectly! Now to add functionality to allow the user to move from letter to letter.
-
-I've created functions for selecting letters and deselecting them, and begun mapping letters to their adjacent letters.
-
-I've mapped all letters to their adjacent ones, and I've had success controlling the keyboard cursor through the serial monitor. Now I can begin actually processing the input of the on-screen keyboard.
-
-I've had success with this as well, using the serial monitor, although I realise that I'm missing an enter key and a backspace key, so I'll add those now.
-
-I've added both keys and defined constant characters for shift, enter, and backspace at the top of the Adafruit_ST7735Ext.h file to make coding easier. I've tested navigation via the serial monitor again and everything works as expected.
-
-I've added functionality for user-input ssid and password, however my main.cpp file and Adafruit_ST7735Ext.h file both seem very messy, and the latter is far too long to be organised. I've decided that I will create another header file for all keyboard functionality, which will be in the form of a child class of Adafruit_ST7735Ext. I'm hoping that this refactor makes my code more readable and organised.
-
-Refactor complete, everything works!
-
-I've added functionality to save network and API credentials on the flash memory of the ESP32 using the preferences library as it seems to be the standard way online. I also made another platformio project that erases the flash memory of the ESP32 in case I want to reset it to enter the details again. Everything works as intended and I can start to work on a real UI.
-
-I had been working off of a different laptop as my laptop's lightning port had stopped working for charging, I have found a barrel jack charger now so I can resume working from my own laptop.
-
-Yesterday I met with a man who invests a lot in stocks and other asset classes, he's also someone who responded to the Google form that I had made. He told me a lot of information that I could've only gotten from someone who invests well and often. One key outtake was that I could add a lot of value to this device and make it desirable by adding information about stocks such as EPS, PE, forward PE, and 32 week high-low. To be honest, I'm not totally sure of what all of this means as I'm not an investor, but this is extremely valuable information to me as I don't just want this to be a summer project that I make and isn't used - this makes my device genuinely useful as information like this isn't available on Trading212 at the moment.
-
-I have also gotten help finding a good API for this, at the moment [EODHD's financial data API](https://eodhistoricaldata.github.io/EODHD-openapi/redoc.html#tag/Fundamentals/operation/GetBulkFundamentalsV1_1) seems the best, but I'll look into this and create an account further down the line after I have the base Trading 212 things down. The idea is to display data from the new API and then give the user the chance to invest in such a stock as well. EODHD also have a financial news API which I can use to display some news stories for a user based on their interests, which can then send requests to the financial data API which will give the user more concrete data which they can use to invest, and then a request can e sent to the Trading212 API to invest.
-
-Another change that I have made is that I've decided to go for the default font on the display for the most part, switching to one that has additional symbols when necessary. This is purely because there's so much data to display and I want to do it in a nice way where all of it fits without any scrolling. I'm going to start working on the account summary menu now.
-
-I've added a class for a Trading212 account summary to make each desirable attribute easily accessible in the trading211Data.h file, I'm going to do this for every Trading212 API endpoint that I need to access, and then I'll make a page for each in the Adafruit_ST7735Ext.h file.
-
-I've created a function for printing the summmary screen in the extension of the display library, it works as intended and I've included (non-functional for now) buttons in the bottom corners. One will take the user back to the main menu, the other will allow the user to view their pies. Next, I will work on the screen that will list each open position and allow a user to select one to get more information.
-
-I've implemented a function that will call the positions endpoint in trading212Data.h and store the output as a structure called positions which is basically a linked list of position, a class that I implemented to represent each position. At the moment I have the issue that when makePositions is called too many times, the ESP32 crashes and restarts. I believe it's because I'm dynamically allocating memory using the keyword "new" although I'm not sure. At the moment it isn't an issue, in the future, I may deallocate the whole linked list when the user goes to a different page such as the summary in order to fix this.
-
-I'm now able to print an in-depth page for each position. I'm happy with my UI so far, pictures show below:
-
-![Boot up menu](./pictures/bootUpMenuReal.jpeg)
-![Connected boot up menu](./pictures/connectedBootUp.jpeg)
-![Summary page](./pictures/summaryExample.jpeg)
-![Open positions page 1](./pictures/positionsPage1.jpeg)
-![Open positions page 2](./pictures/positionsPage2.jpeg)
-![Detailed position view](./pictures/detailedPositionExample.jpeg)
-
-I could go on and design the pending orders and history pages now, but they'll be fairly similar to the positions pages. Instead, I'll code the navigation menu, using the serial monitor to send commands. As I want to do this now, I should also finally decide on the buttons that I will make available to the user. I was originally envisioning a very minimalist device with the device not being much bigger than the display, however I'm now leaning towards more of an iPod-esque design, pictured below:
-
-![iPod button design](./pictures/ipodButtonDesign.jpeg)
-
-This is my favourite choice at the moment since it makes navigation easy and understandable for the user, with the button on the top edge being the power button. It also makes it so that changing button assignment for the user is unnecessary. It'll only be necessary for my current code to understand 5 serial commands, up, down, left, right, and select.
-
-I had an idea for how to fix my memory deallocation problem with positions, originally I wanted to use the free() function from C, although after doing a little bit of research I found out that I should be using the delete keyword since I used the new keyword to allocate the memory in the first place. So I made a freePositions function which works perfectly!
-
-At some point I will implement the singleton pattern for each request to the Trading212 API as I'm unsure of what the compiler is doing when the requests keep being called and stored in .
-
-I've implemented navigation from the boot-up menu to positions and summary, the next step is to implement navigation from the positions menu to each individual postion in-depth view. I'll do this within the POSITIONS_PAGE case so that the positions linked list is not dereferenced, I know that I have a lot of refactoring ahead of me once I implement this but everything should be smooth sailing from there on. I'll highlight a certain position using an extra field in printPositions and the A_POSITION option in the PositionsSelection enum.
-
-I may not need to use the PositionsSelection enum for flipping through positions pages if I go for the iPod-like design as the user could just click the left or right buttons without needing to hit select so I'll change the code in anticipation of this. I'll test this and then delete the old code if it works as intended.
-
-The new design works!
-
-I'll also delete the PositionsSelection enum and replace it with a simple integer type since that makes more sense than having an enum type with possible values POS0, POS1, all the way to POS6. 
-
-Navigation in the positions menu is complete, I can select any position in a detailed view. I still can't move between positions in the detailed view but that's soon to come. Right now I think that I'm overdue a refactor, my select cases in main are way too long and some functions in the display are overcomplicated.
-
-Refactor done.
-
-I've been thinking about how to implement the in-depth position pages and I think that my best bet is having a boolean variable that gets set to true when positions is made and false when it's deleted. I'll have the in-depth position pages handled by a separate handler to the positions handler, and before each handler begins, it checks if positions exists or not.
+- Position
+    - Instances of this class are used to store important values about each position that is returned by the open positions endpoint of the Trading212 API
+    - Public:
+        - Constructors:
+            - One constructor creates an empty object which is used to avoid re-initialising instances
+            - The other constructor takes in values for each attribute and assigns them accordingly
+        - All of the other methods return the private attributes of this class.
+    - Private:
+        - name: the string that contains the name of the position
+        - walletCurr: a string value for the wallet currency code of the user
+        - instrumentCurrency: a string value for the instrument currency code of the position
+        - paidPerShare: a float value for the average price paid per share of this position in instrument currency
+        - currShareVal: a float value for the current value of one share of this position in instrument currency
+        - totalMarketVal: a float value for the current market value in the wallet currency of the user
+        - unrealisedProfit: a float value for how much money you'd gain or lose if you sold all shares of this position this instant in wallet currency
+        - sharesAvail: a float value for the number of shares currently available for trading

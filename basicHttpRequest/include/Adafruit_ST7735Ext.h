@@ -1,8 +1,7 @@
 #include <Adafruit_ST7735.h>
+#include <trading212Data.h>
 #include <keyboardFont.h>
 #include <currencySymbols.h>
-#include <Fonts/Picopixel.h>
-#include <trading212Data.h>
 
 #define TRADING21BLUE 0x053b
 #define MENU_DARK_GREEN 0x0565

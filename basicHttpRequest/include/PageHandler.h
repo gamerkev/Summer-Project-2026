@@ -158,7 +158,36 @@ Positions *PositionsPageFlipRight(Positions *positions, Positions *currentPositi
     return currentPositions;
 }
 
-Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, Positions *currentPositions, int positionsSize)
+Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Position position, bool buy)
+{
+    switch (buy)
+    {
+    case true:
+        (*tft).drawRect(15, 19, 98, 122, TRADING21BLUE);
+        (*tft).fillRect(16, 20, 96, 120, ST7735_BLACK);
+        (*tft).drawLine(40, 140, 40, 98, TRADING21BLUE);
+        (*tft).drawLine(64, 140, 64, 98, TRADING21BLUE);
+        (*tft).drawLine(88, 140, 88, 98, TRADING21BLUE);
+        (*tft).drawLine(16, 98, 112, 98, TRADING21BLUE);
+        (*tft).drawLine(16, 112, 112, 112, TRADING21BLUE);
+        (*tft).drawLine(16, 126, 112, 126, TRADING21BLUE);
+        (*tft).drawRect(15, 87, 13, 12, TRADING21BLUE);
+        (*tft).drawRect(100, 87, 13, 12, TRADING21BLUE);
+        break;
+    case false:
+        (*tft).drawRect(15, 19, 98, 122, TRADING21BLUE);
+        (*tft).fillRect(16, 20, 96, 120, ST7735_BLACK);
+        break;
+    }
+    while (true)
+    {
+        in = Serial.readString();
+        if (in == SELECT)
+            return POSITIONS_PAGE;
+    }
+}
+
+Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Positions *currentPositions, int positionsSize)
 {
     PositionSelection positionSelection = BACK;
     (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
@@ -201,12 +230,24 @@ Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, Positions *currentPositio
         }
         else if (in == SELECT)
         {
-            return POSITIONS_PAGE;
+            switch (positionSelection)
+            {
+            case BACK:
+                return POSITIONS_PAGE;
+            case BUY:
+                BuySellPositionHandler(tft, WiFi, currentPositions->currentPos, true);
+                (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
+                break;
+            case SELL:
+                BuySellPositionHandler(tft, WiFi, currentPositions->currentPos, true);
+                (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
+                break;
+            }
         }
     }
 }
 
-Page PositionsPageHandler(Adafruit_ST7735Keyboard *tft, Page *previousPage, Positions *positions)
+Page PositionsPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Page *previousPage, Positions *positions)
 {
     *previousPage = POSITIONS_PAGE;
     int positionsSelection = 0;
@@ -270,7 +311,7 @@ Page PositionsPageHandler(Adafruit_ST7735Keyboard *tft, Page *previousPage, Posi
                 // Move to the highlighted position
                 for (int i = 0; i < positionsSelection; i++)
                     currentPositions = currentPositions->nextPos;
-                PositionPageHandler(tft, currentPositions, positions->count);
+                PositionPageHandler(tft, WiFi, currentPositions, positions->count);
                 // Move back to one of the positions that would be at the start of a page
                 int moveBy = positions->count - (((positions->count - currentPositions->count) / 7) * 7) - currentPositions->count;
                 positionsSelection = 0;

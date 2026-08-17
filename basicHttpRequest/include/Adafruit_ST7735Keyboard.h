@@ -1,4 +1,5 @@
 #include <Adafruit_ST7735Ext.h>
+#include <Fonts/Picopixel.h>
 
 #define SHIFT '/'
 #define BACKSPACE '*'

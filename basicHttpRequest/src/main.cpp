@@ -81,7 +81,7 @@ void loop()
         positionsJson = getPositions(encodedPair, &WiFi);
         positions = makePositions(positionsJson, &positionsExists);
       }
-      currentPage = PositionsPageHandler(&tft, &previousPage, positions);
+      currentPage = PositionsPageHandler(&tft, &WiFi, &previousPage, positions);
       if (positionsExists)
         freePositions(positions, &positionsExists);
       break;
