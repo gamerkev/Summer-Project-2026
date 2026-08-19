@@ -160,25 +160,8 @@ Positions *PositionsPageFlipRight(Positions *positions, Positions *currentPositi
 
 Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Position position, bool buy)
 {
-    switch (buy)
-    {
-    case true:
-        (*tft).drawRect(15, 19, 98, 122, TRADING21BLUE);
-        (*tft).fillRect(16, 20, 96, 120, ST7735_BLACK);
-        (*tft).drawLine(40, 140, 40, 98, TRADING21BLUE);
-        (*tft).drawLine(64, 140, 64, 98, TRADING21BLUE);
-        (*tft).drawLine(88, 140, 88, 98, TRADING21BLUE);
-        (*tft).drawLine(16, 98, 112, 98, TRADING21BLUE);
-        (*tft).drawLine(16, 112, 112, 112, TRADING21BLUE);
-        (*tft).drawLine(16, 126, 112, 126, TRADING21BLUE);
-        (*tft).drawRect(15, 87, 13, 12, TRADING21BLUE);
-        (*tft).drawRect(100, 87, 13, 12, TRADING21BLUE);
-        break;
-    case false:
-        (*tft).drawRect(15, 19, 98, 122, TRADING21BLUE);
-        (*tft).fillRect(16, 20, 96, 120, ST7735_BLACK);
-        break;
-    }
+    (*tft).printBuySellMenu(buy);
+    (*tft).putKeypad(98);
     while (true)
     {
         in = Serial.readString();
@@ -239,7 +222,7 @@ Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Position
                 (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
                 break;
             case SELL:
-                BuySellPositionHandler(tft, WiFi, currentPositions->currentPos, true);
+                BuySellPositionHandler(tft, WiFi, currentPositions->currentPos, false);
                 (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
                 break;
             }

@@ -17,7 +17,7 @@ public:
             {
                 payload = http.getString();
                 http.end();
-                payloadJson = extractData(payload.c_str());
+                payloadJson = ExtractData(payload.c_str());
                 curr = payloadJson.getCurrency();
                 totalVal = payloadJson.getTotalValue();
                 availableToTrade = payloadJson.getCashAvailableToTrade();
@@ -43,7 +43,7 @@ public:
     {
         return payload;
     }
-    extractData getPayloadJson()
+    ExtractData getPayloadJson()
     {
         return payloadJson;
     }
@@ -75,7 +75,7 @@ public:
 private:
     int httpCode;
     String payload;
-    extractData payloadJson;
+    ExtractData payloadJson;
     String curr;
     float totalVal;
     float availableToTrade;
@@ -170,7 +170,7 @@ Positions *makePositions(cJSON *payloadJson, bool *created) // Creates entire po
     Positions *retVal = new Positions();                // Initialise linked list
     int numPositions = cJSON_GetArraySize(payloadJson); // Get the number of positions
     (*retVal).count = numPositions;
-    extractData currPos = extractData(cJSON_GetArrayItem(payloadJson, 0)); // Get the first position, head of the linked list
+    ExtractData currPos = ExtractData(cJSON_GetArrayItem(payloadJson, 0)); // Get the first position, head of the linked list
     (*retVal).currentPos = Position(currPos.getPositionName(),             // Create first position
                                     currPos.getPositionWalletCurrency(),
                                     currPos.getPositionCurr(),
@@ -182,7 +182,7 @@ Positions *makePositions(cJSON *payloadJson, bool *created) // Creates entire po
     Positions *prev = retVal; // Pointer to the previous position, used in creating the linked list
     for (int i = 1; i < numPositions; i++)
     {
-        currPos = extractData(cJSON_GetArrayItem(payloadJson, i));        // Store current position
+        currPos = ExtractData(cJSON_GetArrayItem(payloadJson, i));        // Store current position
         prev->nextPos = new Positions(Position(currPos.getPositionName(), // Create link to the current position from the previous one
                                                currPos.getPositionWalletCurrency(),
                                                currPos.getPositionCurr(),

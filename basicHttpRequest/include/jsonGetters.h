@@ -28,19 +28,19 @@ Currency currencySymbol(String currCode)
   }
 }
 
-class extractData
+class ExtractData
 {
 public:
-  extractData(const char *value)
+  ExtractData(const char *value)
   {
     jsonData = cJSON_Parse(value);
   }
 
-  extractData(cJSON* json){
+  ExtractData(cJSON* json){
     jsonData = json;
   }
 
-  extractData() = default;
+  ExtractData() = default;
 
   cJSON *getJson()
   {

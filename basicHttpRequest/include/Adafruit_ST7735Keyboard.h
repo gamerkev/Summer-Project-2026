@@ -20,7 +20,7 @@ public:
 
   String takeInput(int x, int y)
   {
-    GFXfont* oldFond = gfxFont;
+    GFXfont *oldFond = gfxFont;
     String in;
     String tftReturn;
     String toReturn;
@@ -55,7 +55,7 @@ public:
           }
           setFont(&Keyboard);
           setCursor(x, y);
-          fillRect(1, y-12, 126, 12, ST7735_BLACK);
+          fillRect(1, y - 12, 126, 12, ST7735_BLACK);
           if (toReturn.length() < 14)
           {
             print(toReturn);
@@ -88,6 +88,18 @@ public:
     drawLine(x, y, x + 10, y, colour);
     drawLine(x, y, x + 2, y + 2, colour);
     drawLine(x, y, x + 2, y - 2, colour);
+  }
+
+  void drawTick(int x, int y, uint16_t colour)
+  {
+    drawLine(x, y, x + 3, y + 3, colour);
+    drawLine(x + 3, y + 3, x + 9, y - 3, colour);
+  }
+
+  void drawCross(int x, int y, uint16_t colour)
+  {
+    drawLine(x, y, x + 5, y + 5, colour);
+    drawLine(x, y + 5, x + 5, y, colour);
   }
 
   void putKeyboard(int height, bool capital)
@@ -1505,8 +1517,401 @@ public:
     }
   }
 
+  void putKeypad(int height)
+  {
+    keypadHeight = height;
+    fillRect(17, keypadHeight, 95, 42, ST7735_BLACK);
+    drawLine(40, keypadHeight + 42, 40, keypadHeight, TRADING21BLUE);
+    drawLine(64, keypadHeight + 42, 64, keypadHeight, TRADING21BLUE);
+    drawLine(88, keypadHeight + 42, 88, keypadHeight, TRADING21BLUE);
+    drawLine(16, keypadHeight, 112, keypadHeight, TRADING21BLUE);
+    drawLine(16, keypadHeight + 14, 112, keypadHeight + 14, TRADING21BLUE);
+    drawLine(16, keypadHeight + 28, 112, keypadHeight + 28, TRADING21BLUE);
+    drawRect(101, keypadHeight - 78, 12, 12, TRADING21BLUE);
+    drawCross(104, keypadHeight - 75, ST7735_WHITE);
+    setCursor(26, keypadHeight + 4);
+    print("1");
+    setCursor(50, keypadHeight + 4);
+    print("2");
+    setCursor(74, keypadHeight + 4);
+    print("3");
+    setCursor(26, keypadHeight + 18);
+    print("4");
+    setCursor(50, keypadHeight + 18);
+    print("5");
+    setCursor(74, keypadHeight + 18);
+    print("6");
+    setCursor(97, keypadHeight + 18);
+    print(".");
+    setCursor(26, keypadHeight + 32);
+    print("7");
+    setCursor(50, keypadHeight + 32);
+    print("8");
+    setCursor(74, keypadHeight + 32);
+    print("9");
+    setCursor(98, keypadHeight + 32);
+    print("0");
+    drawTick(96, keypadHeight + 7, ST7735_WHITE);
+    selectNum(currentNum);
+  }
+
+  void selectNum(char num)
+  {
+    uint16_t oldColour = textcolor;
+    setTextColor(TRADING21BLUE);
+    switch (num)
+    {
+    case '1':
+      setCursor(26, keypadHeight + 4);
+      print("1");
+      break;
+    case '2':
+      setCursor(50, keypadHeight + 4);
+      print("2");
+      break;
+    case '3':
+      setCursor(74, keypadHeight + 4);
+      print("3");
+      break;
+    case '4':
+      setCursor(26, keypadHeight + 18);
+      print("4");
+      break;
+    case '5':
+      setCursor(50, keypadHeight + 18);
+      print("5");
+      break;
+    case '6':
+      setCursor(74, keypadHeight + 18);
+      print("6");
+      break;
+    case '.':
+      setCursor(97, keypadHeight + 18);
+      print(".");
+      break;
+    case '7':
+      setCursor(26, keypadHeight + 32);
+      print("7");
+      break;
+    case '8':
+      setCursor(50, keypadHeight + 32);
+      print("8");
+      break;
+    case '9':
+      setCursor(74, keypadHeight + 32);
+      print("9");
+      break;
+    case '0':
+      setCursor(98, keypadHeight + 32);
+      print("0");
+      break;
+    case ENTER:
+      drawTick(96, keypadHeight + 7, TRADING21BLUE);
+      break;
+    case 'x':
+      drawCross(104, keypadHeight - 75, ST7735_RED);
+      break;
+    }
+    setTextColor(oldColour);
+  }
+
+  void deSelectNum(char num)
+  {
+    uint16_t oldColour = textcolor;
+    setTextColor(ST7735_WHITE);
+    switch (num)
+    {
+    case '1':
+      setCursor(26, keypadHeight + 4);
+      print("1");
+      break;
+    case '2':
+      setCursor(50, keypadHeight + 4);
+      print("2");
+      break;
+    case '3':
+      setCursor(74, keypadHeight + 4);
+      print("3");
+      break;
+    case '4':
+      setCursor(26, keypadHeight + 18);
+      print("4");
+      break;
+    case '5':
+      setCursor(50, keypadHeight + 18);
+      print("5");
+      break;
+    case '6':
+      setCursor(74, keypadHeight + 18);
+      print("6");
+      break;
+    case '.':
+      setCursor(97, keypadHeight + 18);
+      print(".");
+      break;
+    case '7':
+      setCursor(26, keypadHeight + 32);
+      print("7");
+      break;
+    case '8':
+      setCursor(50, keypadHeight + 32);
+      print("8");
+      break;
+    case '9':
+      setCursor(74, keypadHeight + 32);
+      print("9");
+      break;
+    case '0':
+      setCursor(98, keypadHeight + 32);
+      print("0");
+      break;
+    case ENTER:
+      drawTick(96, keypadHeight + 7, ST7735_WHITE);
+      break;
+    case 'x':
+      drawCross(104, keypadHeight - 75, ST7735_WHITE);
+      break;
+    }
+    setTextColor(oldColour);
+  }
+
+  char getCurrentNum()
+  {
+    return currentNum;
+  }
+
+  void changeNum(KeyboardDirection direction)
+  {
+    deSelectNum(currentNum);
+    switch (currentNum)
+    {
+    case '1':
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = ENTER;
+        break;
+      case UP:
+        currentNum = 'x';
+        break;
+      case RIGHT:
+        currentNum = '2';
+        break;
+      case DOWN:
+        currentNum = '4';
+        break;
+      }
+      break;
+    case '2':
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = '1';
+        break;
+      case UP:
+        currentNum = 'x';
+        break;
+      case RIGHT:
+        currentNum = '3';
+        break;
+      case DOWN:
+        currentNum = '5';
+        break;
+      }
+      break;
+    case '3':
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = '2';
+        break;
+      case UP:
+        currentNum = 'x';
+        break;
+      case RIGHT:
+        currentNum = ENTER;
+        break;
+      case DOWN:
+        currentNum = '6';
+        break;
+      }
+      break;
+    case ENTER:
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = '3';
+        break;
+      case UP:
+        currentNum = 'x';
+        break;
+      case RIGHT:
+        currentNum = '1';
+        break;
+      case DOWN:
+        currentNum = '.';
+        break;
+      }
+      break;
+    case '4':
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = '.';
+        break;
+      case UP:
+        currentNum = '1';
+        break;
+      case RIGHT:
+        currentNum = '5';
+        break;
+      case DOWN:
+        currentNum = '7';
+        break;
+      }
+      break;
+    case '5':
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = '4';
+        break;
+      case UP:
+        currentNum = '2';
+        break;
+      case RIGHT:
+        currentNum = '6';
+        break;
+      case DOWN:
+        currentNum = '8';
+        break;
+      }
+      break;
+    case '6':
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = '5';
+        break;
+      case UP:
+        currentNum = '3';
+        break;
+      case RIGHT:
+        currentNum = '.';
+        break;
+      case DOWN:
+        currentNum = '9';
+        break;
+      }
+      break;
+    case '.':
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = '6';
+        break;
+      case UP:
+        currentNum = ENTER;
+        break;
+      case RIGHT:
+        currentNum = '4';
+        break;
+      case DOWN:
+        currentNum = '0';
+        break;
+      }
+      break;
+    case '7':
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = '0';
+        break;
+      case UP:
+        currentNum = '4';
+        break;
+      case RIGHT:
+        currentNum = '8';
+        break;
+      case DOWN:
+        currentNum = 'x';
+        break;
+      }
+      break;
+    case '8':
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = '7';
+        break;
+      case UP:
+        currentNum = '5';
+        break;
+      case RIGHT:
+        currentNum = '9';
+        break;
+      case DOWN:
+        currentNum = 'x';
+        break;
+      }
+      break;
+    case '9':
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = '8';
+        break;
+      case UP:
+        currentNum = '6';
+        break;
+      case RIGHT:
+        currentNum = '0';
+        break;
+      case DOWN:
+        currentNum = 'x';
+        break;
+      }
+      break;
+    case '0':
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = '9';
+        break;
+      case UP:
+        currentNum = '.';
+        break;
+      case RIGHT:
+        currentNum = '7';
+        break;
+      case DOWN:
+        currentNum = 'x';
+        break;
+      }
+      break;
+    case 'x':
+      switch (direction)
+      {
+      case UP:
+        currentNum = '0';
+        break;
+      case DOWN:
+        currentNum = ENTER;
+        break;
+      }
+      break;
+    }
+    selectNum(currentNum);
+  }
+
+  String takeKeypadInput(){
+
+  }
+  
 private:
   int keyboardHeight;
+  int keypadHeight;
   bool caps;
   char currentLetter = '1';
+  char currentNum = '1';
 };

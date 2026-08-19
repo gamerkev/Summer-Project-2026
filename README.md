@@ -14,20 +14,20 @@ This header file solves that with methods that abstract away from those long lin
 
 - None.
 
-### currency enum
+### Currency enum
 
 This enum has a corresponding value for every currency code that the Trading212 API may return. This makes it easier to print currency symbols to the display since the display is not able to have a glyph for multi-character symbols such as €. For this reason, I'll have to have each currency character represented by a different character in a font file for the display, using numbers for the characters makes this enum very useful!
 
 ### Functions:
 
-- currencySymol
-    - Returns: currency (enum)
-    - Arguments: currCode (String)
+- currencySymbol(currCode)
     - This function converts the currency code returned by the Trading212 API, which is a String, into the currency enum so that the currency symbol can be easily printed to the display.
+    - Receives: currCode (String)
+    - Outputs: Currency (enum)
 
 ### Classes:
 
-- extractData
+- ExtractData
     - Public:
         - Constructors:
             - There are 3 ways to create an object of this type, the default way, which creates an empty object. This is used to initialise an object of this type before any calls to APIs are made so that the objects isn't re-initialised every time that an API response is received. The other two ways take in either a char*, which is parsed with the cJSON library, or a cJSON*, which has already been parsed.

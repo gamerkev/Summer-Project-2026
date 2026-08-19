@@ -111,7 +111,7 @@ public:
     gfxFont = (GFXfont *)f;
   }
 
-  void printMoney(currency curr, float amount)
+  void printMoney(Currency curr, float amount)
   {
     setFontKeepSize(&CurrencySymbols);
     print(curr);
@@ -364,6 +364,23 @@ public:
       drawRoundRect(34, 68, 58, 12, 2, TRADING21BLUE);
       setCursor(0, 70);
       printCentered("Positions");
+    }
+  }
+
+  void printBuySellMenu(bool select)
+  {
+    fillRect(16, 20, 97, 78, ST7735_BLACK);
+    drawRect(16, 20, 97, 121, TRADING21BLUE);
+    switch (select)
+    {
+    case true:
+      setCursor(20, 24);
+      printUnderlineDefaultFont("Buy", ST7735_GREEN);
+      break;
+    case false:
+      setCursor(20, 24);
+      printUnderlineDefaultFont("Sell", ST7735_RED);
+      break;
     }
   }
 };
