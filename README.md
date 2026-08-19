@@ -339,3 +339,50 @@ This is temporarily used for taking Serial monitor input before soldering button
     - Receives: an Adafruit_ST7735Keyboard pointer to the display object, a WiFiClass pointer to the WiFi object, a pointer to the previous Page, a Positions pointer to the positions linked list
     - Outputs: the next Page to be displayed
 
+## main.cpp
+
+### Imported includes
+
+- Adruino.h
+- base64.hpp
+- Prefernces.h
+
+### Self-defined includes
+
+- PageHandler.h
+
+### Global variables
+
+- Page currentPage
+    - This is the page that is currently going to be displayed
+- Page previousPage
+    - This is the page that was displayed before the current page
+- Preferences preferences
+    - This is the object that allows for storing in flash memory
+- Adafruit_ST7735Keyboard tft
+    - This is the object that allows writing to the display
+- String apiPair
+    - This stores the unencoded Trading212 API ID/key pair of the user
+- unsigned char encoded
+    - This stores the output of the encoding of the Trading212 API ID/key pair of the user, it must be an unsigned char pointer of constant size because of the way that the encoding function outputs things
+- String encodedPair
+    - This stores what is in the unsigned char pointer encoded, but rather than being of constant size, it only uses takes the non-empty part of encoded
+- Summary summary
+    - This is an object that stores what is returned by the Trading212 account summary endpoint
+- Positions *positions
+    - This is the pointer to the linked list that is made from the return value of the Trading212 open positions endpoint
+- cJSON *positionsJson
+    - This stores the json response from the Trading212 positions endpoint
+- bool positionsExists
+    - This is used to keep track of whether or not the Trading212 positions API endpoint has been called as its response takes up a lot of memory so we don't want to make multiple calls to it.
+
+### Setup
+
+- This is only run once, on the boot-up of the chip.
+- Initialises the display object and the preferences object.
+- Encodes the Trading 212 API credentials
+- Intiates a connection with the WiFi network using the credentials in flash memory
+
+### Loop
+
+This runs repeatedly, it calls the correct page handler when it's needed.
