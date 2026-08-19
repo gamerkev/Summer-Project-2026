@@ -376,13 +376,13 @@ This is temporarily used for taking Serial monitor input before soldering button
 - bool positionsExists
     - This is used to keep track of whether or not the Trading212 positions API endpoint has been called as its response takes up a lot of memory so we don't want to make multiple calls to it.
 
-### Setup
+## Setup
 
 - This is only run once, on the boot-up of the chip.
 - Initialises the display object and the preferences object.
 - Encodes the Trading 212 API credentials
 - Intiates a connection with the WiFi network using the credentials in flash memory
 
-### Loop
+## Loop
 
 This runs repeatedly, it calls the correct page handler when it's needed.
