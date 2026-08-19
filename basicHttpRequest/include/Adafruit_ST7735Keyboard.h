@@ -55,7 +55,7 @@ public:
           }
           setFont(&Keyboard);
           setCursor(x, y);
-          fillRect(1, y-12, 126, 12, ST7735_BLUE);
+          fillRect(1, y-12, 126, 12, ST7735_BLACK);
           if (toReturn.length() < 14)
           {
             print(toReturn);
@@ -64,7 +64,6 @@ public:
           {
             print(toReturn.substring(toReturn.length() - 14, toReturn.length() - 1));
           }
-          // Serial.println(toReturn);
           if (getCurrentLetter() == ENTER)
           {
             done = true;
@@ -96,163 +95,163 @@ public:
     GFXfont *oldFont = gfxFont;
     uint16_t oldColour = textcolor;
     setTextColor(ST7735_WHITE);
-    keyBoardHeight = height;
+    keyboardHeight = height;
     caps = capital;
     setFont(&Keyboard);
-    fillRect(1, keyBoardHeight - 13, 126, 61, ST7735_BLACK);
+    fillRect(1, keyboardHeight - 13, 126, 61, ST7735_BLACK);
     // Top row
-    setCursor(11, keyBoardHeight);
+    setCursor(11, keyboardHeight);
     print("1");
-    setCursor(21, keyBoardHeight);
+    setCursor(21, keyboardHeight);
     print("2");
-    setCursor(31, keyBoardHeight);
+    setCursor(31, keyboardHeight);
     print("3");
-    setCursor(41, keyBoardHeight);
+    setCursor(41, keyboardHeight);
     print("4");
-    setCursor(51, keyBoardHeight);
+    setCursor(51, keyboardHeight);
     print("5");
-    setCursor(61, keyBoardHeight);
+    setCursor(61, keyboardHeight);
     print("6");
-    setCursor(71, keyBoardHeight);
+    setCursor(71, keyboardHeight);
     print("7");
-    setCursor(81, keyBoardHeight);
+    setCursor(81, keyboardHeight);
     print("8");
-    setCursor(91, keyBoardHeight);
+    setCursor(91, keyboardHeight);
     print("9");
-    setCursor(101, keyBoardHeight);
+    setCursor(101, keyboardHeight);
     print("0");
-    setCursor(111, keyBoardHeight);
+    setCursor(111, keyboardHeight);
     print("-");
     if (!capital)
     {
       // Second row
-      setCursor(16, keyBoardHeight + 12);
+      setCursor(16, keyboardHeight + 12);
       print("q");
-      setCursor(26, keyBoardHeight + 12);
+      setCursor(26, keyboardHeight + 12);
       print("w");
-      setCursor(36, keyBoardHeight + 12);
+      setCursor(36, keyboardHeight + 12);
       print("e");
-      setCursor(46, keyBoardHeight + 12);
+      setCursor(46, keyboardHeight + 12);
       print("r");
-      setCursor(56, keyBoardHeight + 12);
+      setCursor(56, keyboardHeight + 12);
       print("t");
-      setCursor(66, keyBoardHeight + 12);
+      setCursor(66, keyboardHeight + 12);
       print("y");
-      setCursor(76, keyBoardHeight + 12);
+      setCursor(76, keyboardHeight + 12);
       print("u");
-      setCursor(86, keyBoardHeight + 12);
+      setCursor(86, keyboardHeight + 12);
       print("i");
-      setCursor(96, keyBoardHeight + 12);
+      setCursor(96, keyboardHeight + 12);
       print("o");
-      setCursor(106, keyBoardHeight + 12);
+      setCursor(106, keyboardHeight + 12);
       print("p");
       // Third row
-      setCursor(21, keyBoardHeight + 24);
+      setCursor(21, keyboardHeight + 24);
       print("a");
-      setCursor(31, keyBoardHeight + 24);
+      setCursor(31, keyboardHeight + 24);
       print("s");
-      setCursor(41, keyBoardHeight + 24);
+      setCursor(41, keyboardHeight + 24);
       print("d");
-      setCursor(51, keyBoardHeight + 24);
+      setCursor(51, keyboardHeight + 24);
       print("f");
-      setCursor(61, keyBoardHeight + 24);
+      setCursor(61, keyboardHeight + 24);
       print("g");
-      setCursor(71, keyBoardHeight + 24);
+      setCursor(71, keyboardHeight + 24);
       print("h");
-      setCursor(81, keyBoardHeight + 24);
+      setCursor(81, keyboardHeight + 24);
       print("j");
-      setCursor(91, keyBoardHeight + 24);
+      setCursor(91, keyboardHeight + 24);
       print("k");
-      setCursor(101, keyBoardHeight + 24);
+      setCursor(101, keyboardHeight + 24);
       print("l");
       // final row
-      setCursor(31, keyBoardHeight + 36);
+      setCursor(31, keyboardHeight + 36);
       print("z");
-      setCursor(41, keyBoardHeight + 36);
+      setCursor(41, keyboardHeight + 36);
       print("x");
-      setCursor(51, keyBoardHeight + 36);
+      setCursor(51, keyboardHeight + 36);
       print("c");
-      setCursor(61, keyBoardHeight + 36);
+      setCursor(61, keyboardHeight + 36);
       print("v");
-      setCursor(71, keyBoardHeight + 36);
+      setCursor(71, keyboardHeight + 36);
       print("b");
-      setCursor(81, keyBoardHeight + 36);
+      setCursor(81, keyboardHeight + 36);
       print("n");
-      setCursor(91, keyBoardHeight + 36);
+      setCursor(91, keyboardHeight + 36);
       print("m");
     }
     else
     {
       // Second row
-      setCursor(16, keyBoardHeight + 12);
+      setCursor(16, keyboardHeight + 12);
       print("Q");
-      setCursor(26, keyBoardHeight + 12);
+      setCursor(26, keyboardHeight + 12);
       print("W");
-      setCursor(36, keyBoardHeight + 12);
+      setCursor(36, keyboardHeight + 12);
       print("E");
-      setCursor(46, keyBoardHeight + 12);
+      setCursor(46, keyboardHeight + 12);
       print("R");
-      setCursor(56, keyBoardHeight + 12);
+      setCursor(56, keyboardHeight + 12);
       print("T");
-      setCursor(66, keyBoardHeight + 12);
+      setCursor(66, keyboardHeight + 12);
       print("Y");
-      setCursor(76, keyBoardHeight + 12);
+      setCursor(76, keyboardHeight + 12);
       print("U");
-      setCursor(86, keyBoardHeight + 12);
+      setCursor(86, keyboardHeight + 12);
       print("I");
-      setCursor(96, keyBoardHeight + 12);
+      setCursor(96, keyboardHeight + 12);
       print("O");
-      setCursor(106, keyBoardHeight + 12);
+      setCursor(106, keyboardHeight + 12);
       print("P");
       // Third row
-      setCursor(21, keyBoardHeight + 24);
+      setCursor(21, keyboardHeight + 24);
       print("A");
-      setCursor(31, keyBoardHeight + 24);
+      setCursor(31, keyboardHeight + 24);
       print("S");
-      setCursor(41, keyBoardHeight + 24);
+      setCursor(41, keyboardHeight + 24);
       print("D");
-      setCursor(51, keyBoardHeight + 24);
+      setCursor(51, keyboardHeight + 24);
       print("F");
-      setCursor(61, keyBoardHeight + 24);
+      setCursor(61, keyboardHeight + 24);
       print("G");
-      setCursor(71, keyBoardHeight + 24);
+      setCursor(71, keyboardHeight + 24);
       print("H");
-      setCursor(81, keyBoardHeight + 24);
+      setCursor(81, keyboardHeight + 24);
       print("J");
-      setCursor(91, keyBoardHeight + 24);
+      setCursor(91, keyboardHeight + 24);
       print("K");
-      setCursor(101, keyBoardHeight + 24);
+      setCursor(101, keyboardHeight + 24);
       print("L");
       // final row
-      setCursor(31, keyBoardHeight + 36);
+      setCursor(31, keyboardHeight + 36);
       print("Z");
-      setCursor(41, keyBoardHeight + 36);
+      setCursor(41, keyboardHeight + 36);
       print("X");
-      setCursor(51, keyBoardHeight + 36);
+      setCursor(51, keyboardHeight + 36);
       print("C");
-      setCursor(61, keyBoardHeight + 36);
+      setCursor(61, keyboardHeight + 36);
       print("V");
-      setCursor(71, keyBoardHeight + 36);
+      setCursor(71, keyboardHeight + 36);
       print("B");
-      setCursor(81, keyBoardHeight + 36);
+      setCursor(81, keyboardHeight + 36);
       print("N");
-      setCursor(91, keyBoardHeight + 36);
+      setCursor(91, keyboardHeight + 36);
       print("M");
     }
     // shift key
     setFont(&Picopixel);
-    setCursor(5, keyBoardHeight + 31);
+    setCursor(5, keyboardHeight + 31);
     print("shift");
     // spacebar
-    drawLine(39, keyBoardHeight + 41, 84, keyBoardHeight + 41, ST7735_WHITE);
+    drawLine(39, keyboardHeight + 41, 84, keyboardHeight + 41, ST7735_WHITE);
     // backspace
-    drawBackspace(6, keyBoardHeight + 18, ST7735_WHITE);
+    drawBackspace(6, keyboardHeight + 18, ST7735_WHITE);
     // enter key
-    //  drawLine(122, keyBoardHeight+6, 122, keyBoardHeight+18, ST7735_WHITE);
-    //  drawLine(122, keyBoardHeight+18, 112, keyBoardHeight+18, ST7735_WHITE);
-    //  drawLine(112, keyBoardHeight+18, 114, keyBoardHeight+16, ST7735_WHITE);
-    //  drawLine(112, keyBoardHeight+18, 114, keyBoardHeight+20, ST7735_WHITE);
-    drawEnter(112, keyBoardHeight + 18, ST7735_WHITE);
+    //  drawLine(122, keyboardHeight+6, 122, keyboardHeight+18, ST7735_WHITE);
+    //  drawLine(122, keyboardHeight+18, 112, keyboardHeight+18, ST7735_WHITE);
+    //  drawLine(112, keyboardHeight+18, 114, keyboardHeight+16, ST7735_WHITE);
+    //  drawLine(112, keyboardHeight+18, 114, keyboardHeight+20, ST7735_WHITE);
+    drawEnter(112, keyboardHeight + 18, ST7735_WHITE);
     selectKey(currentLetter);
     setFont(oldFont);
     setTextColor(oldColour);
@@ -267,226 +266,226 @@ public:
     switch (key)
     {
     case '1':
-      setCursor(11, keyBoardHeight);
+      setCursor(11, keyboardHeight);
       print("1");
       break;
     case '2':
-      setCursor(21, keyBoardHeight);
+      setCursor(21, keyboardHeight);
       print("2");
       break;
     case '3':
-      setCursor(31, keyBoardHeight);
+      setCursor(31, keyboardHeight);
       print("3");
       break;
     case '4':
-      setCursor(41, keyBoardHeight);
+      setCursor(41, keyboardHeight);
       print("4");
       break;
     case '5':
-      setCursor(51, keyBoardHeight);
+      setCursor(51, keyboardHeight);
       print("5");
       break;
     case '6':
-      setCursor(61, keyBoardHeight);
+      setCursor(61, keyboardHeight);
       print("6");
       break;
     case '7':
-      setCursor(71, keyBoardHeight);
+      setCursor(71, keyboardHeight);
       print("7");
       break;
     case '8':
-      setCursor(81, keyBoardHeight);
+      setCursor(81, keyboardHeight);
       print("8");
       break;
     case '9':
-      setCursor(91, keyBoardHeight);
+      setCursor(91, keyboardHeight);
       print("9");
       break;
     case '0':
-      setCursor(101, keyBoardHeight);
+      setCursor(101, keyboardHeight);
       print("0");
       break;
     case '-':
-      setCursor(111, keyBoardHeight);
+      setCursor(111, keyboardHeight);
       print("-");
       break;
     case 'q':
-      setCursor(16, keyBoardHeight + 12);
+      setCursor(16, keyboardHeight + 12);
       if (!caps)
         print("q");
       else
         print("Q");
       break;
     case 'w':
-      setCursor(26, keyBoardHeight + 12);
+      setCursor(26, keyboardHeight + 12);
       if (!caps)
         print("w");
       else
         print("W");
       break;
     case 'e':
-      setCursor(36, keyBoardHeight + 12);
+      setCursor(36, keyboardHeight + 12);
       if (!caps)
         print("e");
       else
         print("E");
       break;
     case 'r':
-      setCursor(46, keyBoardHeight + 12);
+      setCursor(46, keyboardHeight + 12);
       if (!caps)
         print("r");
       else
         print("R");
       break;
     case 't':
-      setCursor(56, keyBoardHeight + 12);
+      setCursor(56, keyboardHeight + 12);
       if (!caps)
         print("t");
       else
         print("T");
       break;
     case 'y':
-      setCursor(66, keyBoardHeight + 12);
+      setCursor(66, keyboardHeight + 12);
       if (!caps)
         print("y");
       else
         print("Y");
       break;
     case 'u':
-      setCursor(76, keyBoardHeight + 12);
+      setCursor(76, keyboardHeight + 12);
       if (!caps)
         print("u");
       else
         print("U");
       break;
     case 'i':
-      setCursor(86, keyBoardHeight + 12);
+      setCursor(86, keyboardHeight + 12);
       if (!caps)
         print("i");
       else
         print("I");
       break;
     case 'o':
-      setCursor(96, keyBoardHeight + 12);
+      setCursor(96, keyboardHeight + 12);
       if (!caps)
         print("o");
       else
         print("O");
       break;
     case 'p':
-      setCursor(106, keyBoardHeight + 12);
+      setCursor(106, keyboardHeight + 12);
       if (!caps)
         print("p");
       else
         print("P");
       break;
     case 'a':
-      setCursor(21, keyBoardHeight + 24);
+      setCursor(21, keyboardHeight + 24);
       if (!caps)
         print("a");
       else
         print("A");
       break;
     case 's':
-      setCursor(31, keyBoardHeight + 24);
+      setCursor(31, keyboardHeight + 24);
       if (!caps)
         print("s");
       else
         print("S");
       break;
     case 'd':
-      setCursor(41, keyBoardHeight + 24);
+      setCursor(41, keyboardHeight + 24);
       if (!caps)
         print("d");
       else
         print("D");
       break;
     case 'f':
-      setCursor(51, keyBoardHeight + 24);
+      setCursor(51, keyboardHeight + 24);
       if (!caps)
         print("f");
       else
         print("F");
       break;
     case 'g':
-      setCursor(61, keyBoardHeight + 24);
+      setCursor(61, keyboardHeight + 24);
       if (!caps)
         print("g");
       else
         print("G");
       break;
     case 'h':
-      setCursor(71, keyBoardHeight + 24);
+      setCursor(71, keyboardHeight + 24);
       if (!caps)
         print("h");
       else
         print("H");
       break;
     case 'j':
-      setCursor(81, keyBoardHeight + 24);
+      setCursor(81, keyboardHeight + 24);
       if (!caps)
         print("j");
       else
         print("J");
       break;
     case 'k':
-      setCursor(91, keyBoardHeight + 24);
+      setCursor(91, keyboardHeight + 24);
       if (!caps)
         print("k");
       else
         print("K");
       break;
     case 'l':
-      setCursor(101, keyBoardHeight + 24);
+      setCursor(101, keyboardHeight + 24);
       if (!caps)
         print("l");
       else
         print("L");
       break;
     case 'z':
-      setCursor(31, keyBoardHeight + 36);
+      setCursor(31, keyboardHeight + 36);
       if (!caps)
         print("z");
       else
         print("Z");
       break;
     case 'x':
-      setCursor(41, keyBoardHeight + 36);
+      setCursor(41, keyboardHeight + 36);
       if (!caps)
         print("x");
       else
         print("X");
       break;
     case 'c':
-      setCursor(51, keyBoardHeight + 36);
+      setCursor(51, keyboardHeight + 36);
       if (!caps)
         print("c");
       else
         print("C");
       break;
     case 'v':
-      setCursor(61, keyBoardHeight + 36);
+      setCursor(61, keyboardHeight + 36);
       if (!caps)
         print("v");
       else
         print("V");
       break;
     case 'b':
-      setCursor(71, keyBoardHeight + 36);
+      setCursor(71, keyboardHeight + 36);
       if (!caps)
         print("b");
       else
         print("B");
       break;
     case 'n':
-      setCursor(81, keyBoardHeight + 36);
+      setCursor(81, keyboardHeight + 36);
       if (!caps)
         print("n");
       else
         print("N");
       break;
     case 'm':
-      setCursor(91, keyBoardHeight + 36);
+      setCursor(91, keyboardHeight + 36);
       if (!caps)
         print("m");
       else
@@ -494,17 +493,17 @@ public:
       break;
     case SHIFT: // shift key
       setFont(&Picopixel);
-      setCursor(5, keyBoardHeight + 31);
+      setCursor(5, keyboardHeight + 31);
       print("shift");
       break;
     case ' ': // space key
-      drawLine(39, keyBoardHeight + 41, 84, keyBoardHeight + 41, TRADING21BLUE);
+      drawLine(39, keyboardHeight + 41, 84, keyboardHeight + 41, TRADING21BLUE);
       break;
     case BACKSPACE:
-      drawBackspace(6, keyBoardHeight + 18, TRADING21BLUE);
+      drawBackspace(6, keyboardHeight + 18, TRADING21BLUE);
       break;
     case ENTER:
-      drawEnter(112, keyBoardHeight + 18, TRADING21BLUE);
+      drawEnter(112, keyboardHeight + 18, TRADING21BLUE);
       break;
     }
     setFont(oldFont);
@@ -520,226 +519,226 @@ public:
     switch (key)
     {
     case '1':
-      setCursor(11, keyBoardHeight);
+      setCursor(11, keyboardHeight);
       print("1");
       break;
     case '2':
-      setCursor(21, keyBoardHeight);
+      setCursor(21, keyboardHeight);
       print("2");
       break;
     case '3':
-      setCursor(31, keyBoardHeight);
+      setCursor(31, keyboardHeight);
       print("3");
       break;
     case '4':
-      setCursor(41, keyBoardHeight);
+      setCursor(41, keyboardHeight);
       print("4");
       break;
     case '5':
-      setCursor(51, keyBoardHeight);
+      setCursor(51, keyboardHeight);
       print("5");
       break;
     case '6':
-      setCursor(61, keyBoardHeight);
+      setCursor(61, keyboardHeight);
       print("6");
       break;
     case '7':
-      setCursor(71, keyBoardHeight);
+      setCursor(71, keyboardHeight);
       print("7");
       break;
     case '8':
-      setCursor(81, keyBoardHeight);
+      setCursor(81, keyboardHeight);
       print("8");
       break;
     case '9':
-      setCursor(91, keyBoardHeight);
+      setCursor(91, keyboardHeight);
       print("9");
       break;
     case '0':
-      setCursor(101, keyBoardHeight);
+      setCursor(101, keyboardHeight);
       print("0");
       break;
     case '-':
-      setCursor(111, keyBoardHeight);
+      setCursor(111, keyboardHeight);
       print("-");
       break;
     case 'q':
-      setCursor(16, keyBoardHeight + 12);
+      setCursor(16, keyboardHeight + 12);
       if (!caps)
         print("q");
       else
         print("Q");
       break;
     case 'w':
-      setCursor(26, keyBoardHeight + 12);
+      setCursor(26, keyboardHeight + 12);
       if (!caps)
         print("w");
       else
         print("W");
       break;
     case 'e':
-      setCursor(36, keyBoardHeight + 12);
+      setCursor(36, keyboardHeight + 12);
       if (!caps)
         print("e");
       else
         print("E");
       break;
     case 'r':
-      setCursor(46, keyBoardHeight + 12);
+      setCursor(46, keyboardHeight + 12);
       if (!caps)
         print("r");
       else
         print("R");
       break;
     case 't':
-      setCursor(56, keyBoardHeight + 12);
+      setCursor(56, keyboardHeight + 12);
       if (!caps)
         print("t");
       else
         print("T");
       break;
     case 'y':
-      setCursor(66, keyBoardHeight + 12);
+      setCursor(66, keyboardHeight + 12);
       if (!caps)
         print("y");
       else
         print("Y");
       break;
     case 'u':
-      setCursor(76, keyBoardHeight + 12);
+      setCursor(76, keyboardHeight + 12);
       if (!caps)
         print("u");
       else
         print("U");
       break;
     case 'i':
-      setCursor(86, keyBoardHeight + 12);
+      setCursor(86, keyboardHeight + 12);
       if (!caps)
         print("i");
       else
         print("I");
       break;
     case 'o':
-      setCursor(96, keyBoardHeight + 12);
+      setCursor(96, keyboardHeight + 12);
       if (!caps)
         print("o");
       else
         print("O");
       break;
     case 'p':
-      setCursor(106, keyBoardHeight + 12);
+      setCursor(106, keyboardHeight + 12);
       if (!caps)
         print("p");
       else
         print("P");
       break;
     case 'a':
-      setCursor(21, keyBoardHeight + 24);
+      setCursor(21, keyboardHeight + 24);
       if (!caps)
         print("a");
       else
         print("A");
       break;
     case 's':
-      setCursor(31, keyBoardHeight + 24);
+      setCursor(31, keyboardHeight + 24);
       if (!caps)
         print("s");
       else
         print("S");
       break;
     case 'd':
-      setCursor(41, keyBoardHeight + 24);
+      setCursor(41, keyboardHeight + 24);
       if (!caps)
         print("d");
       else
         print("D");
       break;
     case 'f':
-      setCursor(51, keyBoardHeight + 24);
+      setCursor(51, keyboardHeight + 24);
       if (!caps)
         print("f");
       else
         print("F");
       break;
     case 'g':
-      setCursor(61, keyBoardHeight + 24);
+      setCursor(61, keyboardHeight + 24);
       if (!caps)
         print("g");
       else
         print("G");
       break;
     case 'h':
-      setCursor(71, keyBoardHeight + 24);
+      setCursor(71, keyboardHeight + 24);
       if (!caps)
         print("h");
       else
         print("H");
       break;
     case 'j':
-      setCursor(81, keyBoardHeight + 24);
+      setCursor(81, keyboardHeight + 24);
       if (!caps)
         print("j");
       else
         print("J");
       break;
     case 'k':
-      setCursor(91, keyBoardHeight + 24);
+      setCursor(91, keyboardHeight + 24);
       if (!caps)
         print("k");
       else
         print("K");
       break;
     case 'l':
-      setCursor(101, keyBoardHeight + 24);
+      setCursor(101, keyboardHeight + 24);
       if (!caps)
         print("l");
       else
         print("L");
       break;
     case 'z':
-      setCursor(31, keyBoardHeight + 36);
+      setCursor(31, keyboardHeight + 36);
       if (!caps)
         print("z");
       else
         print("Z");
       break;
     case 'x':
-      setCursor(41, keyBoardHeight + 36);
+      setCursor(41, keyboardHeight + 36);
       if (!caps)
         print("x");
       else
         print("X");
       break;
     case 'c':
-      setCursor(51, keyBoardHeight + 36);
+      setCursor(51, keyboardHeight + 36);
       if (!caps)
         print("c");
       else
         print("C");
       break;
     case 'v':
-      setCursor(61, keyBoardHeight + 36);
+      setCursor(61, keyboardHeight + 36);
       if (!caps)
         print("v");
       else
         print("V");
       break;
     case 'b':
-      setCursor(71, keyBoardHeight + 36);
+      setCursor(71, keyboardHeight + 36);
       if (!caps)
         print("b");
       else
         print("B");
       break;
     case 'n':
-      setCursor(81, keyBoardHeight + 36);
+      setCursor(81, keyboardHeight + 36);
       if (!caps)
         print("n");
       else
         print("N");
       break;
     case 'm':
-      setCursor(91, keyBoardHeight + 36);
+      setCursor(91, keyboardHeight + 36);
       if (!caps)
         print("m");
       else
@@ -747,24 +746,24 @@ public:
       break;
     case SHIFT: // shift key
       setFont(&Picopixel);
-      setCursor(5, keyBoardHeight + 31);
+      setCursor(5, keyboardHeight + 31);
       print("shift");
       break;
     case ' ': // space key
-      drawLine(39, keyBoardHeight + 41, 84, keyBoardHeight + 41, ST7735_WHITE);
+      drawLine(39, keyboardHeight + 41, 84, keyboardHeight + 41, ST7735_WHITE);
       break;
     case BACKSPACE:
-      drawBackspace(6, keyBoardHeight + 18, ST7735_WHITE);
+      drawBackspace(6, keyboardHeight + 18, ST7735_WHITE);
       break;
     case ENTER:
-      drawEnter(112, keyBoardHeight + 18, ST7735_WHITE);
+      drawEnter(112, keyboardHeight + 18, ST7735_WHITE);
       break;
     }
     setFont(oldFont);
     setTextColor(oldColour);
   }
 
-  void changeLetter(int direction)
+  void changeLetter(keyboardDirection direction)
   {
     deselectKey(currentLetter);
     switch (currentLetter)
@@ -1490,7 +1489,7 @@ public:
     switch (currentLetter)
     {
     case SHIFT:
-      putKeyboard(keyBoardHeight, !caps);
+      putKeyboard(keyboardHeight, !caps);
       return "";
       break;
     case BACKSPACE:
@@ -1507,7 +1506,7 @@ public:
   }
 
 private:
-  int keyBoardHeight;
+  int keyboardHeight;
   bool caps;
   char currentLetter = '1';
 };

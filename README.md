@@ -152,7 +152,7 @@ This header extends the Adafruit_ST7735 class, adding more specific methods whic
             - Receives: a String which is to be written, and an integer for the y-level at which to write the String.
             - Outputs: nothing.
         - logo()
-            - This draws the Trading212 logo with triangles on the display and writes Trading212 in large font below.
+            - This draws the Trading212 logo with triangles on the display and writes Trading212 in large font below on the display.
             - Receives: nothing.
             - Outputs: nothing.
         - setFontKeepSize()
@@ -160,15 +160,15 @@ This header extends the Adafruit_ST7735 class, adding more specific methods whic
             - Receives: nothing.
             - Outputs: nothing.
         - printMoney(curr, amount)
-            - This prints a currency symbol followed by an amount of money, it uses setFontKeepSize to do this.
+            - This prints a currency symbol followed by an amount of money to the display, it uses setFontKeepSize to do this.
             - Receives: a currency enum, and a float type amount of money
             - Outputs: nothing.
         - printCentreLeftAlign(toPrint, y)
-            - This prints some text left-aligned, padded by 5 pixels either side. If the text is too long to be on one line, it's written across multiple lines until there is no more text to write.
+            - This prints some text left-aligned, padded by 5 pixels either side to the display. If the text is too long to be on one line, it's written across multiple lines until there is no more text to write.
             - Receives: a String toPrint, an integer y which is the y-level at which to print the text.
             - Outputs: nothing.
         - printUnderlineDefaultFont(toPrint, colour)
-            - Prints some text in the default GFX font and underlines it
+            - Prints some text to the display, in the default GFX font and underlines it 
             - Receives: a String toPrint, a uint16_t colour which to make the text and line.
             - Outputs: nothing.
         - printCentered(toPrint)
@@ -176,7 +176,7 @@ This header extends the Adafruit_ST7735 class, adding more specific methods whic
             - Receives: a String toPrint
             - Outputs: nothing.
         - printSummary(aSummary, summarySelection)
-            - Prints the summary page
+            - Prints the summary page to the display
             - Receives: a Summary, a SummarySelection which represents the button to be highlighted
             - Outputs: nothing.
         - printPageNum(pageNum, totalPages)
@@ -184,4 +184,158 @@ This header extends the Adafruit_ST7735 class, adding more specific methods whic
             - Receives: the current page number, and the total pages
             - Outputs: nothing.
         - printPositions(positions, totalCount, select)
-            - 
+            - Prints one page of open positions to the display, with a page number at the bottom, highlights the selected position/button
+            - Receives: a Positions pointer to the current node in the positions linked list, an integer for the total number of positions, and an integer for which position/button is selected (using an integer instead of enum as it makes it easier to select positions)
+            - Outputs: nothing.
+        - printPosition(position, positionCount, totalCount, select)
+            - Prints one position in detailed view to the display
+            - Receives: the Position that should be shown, an integer for the number of positions remaining (including the current position), an integer for the total amount of positions received from the Trading212 json response, a PositionSelect enum to represent which button on the page is selected
+            - Outputs: nothing.
+        - printMenu(select)
+            - Prints the main menu to the display
+            - Receives: a MenuSelect to tell which button is selected
+            - Outputs: nothing.
+
+## Adafruit_ST7735Keyboard.h
+
+This header extends the previously-defined Adafruit_ST7735Ext class in order to give it on-screen keyboard functionality.
+
+### Imported includes:
+
+- Fonts/PicoPixel.h (an Adafruit GFX default font)
+
+### Self-defined includes:
+
+- Adafruit_ST7735Ext.h
+
+### Defines
+
+These are all characters that are unused in the keyboard so they can be safely used to represent special buttons on the keyboard. This allows things such as switch cases to be used for characters returned from the keyboard.
+
+- SHIFT: **/**
+- BACKSPACE: __*__
+- ENTER: **~**
+
+### keyboardDirection enum
+
+This is used to make switching based on the keyboard direction more natural to write/work with
+
+### Classes
+
+- Adafruit_ST7735Keyboard
+    - This is an extension of the Adafruit_ST7735Ext class, mainly to give it the ability to print a keyboard on the display and received user-input Strings
+    - Public:
+        - takeInput(x, y)
+            - This calls upon other methods in order to:
+                - Print the keyboard to the display
+                - Print what the user has input so far to the display
+                - Change what key on the keyboard is highlighted depending on user input
+                - Return the String that the user has input
+            - Receives:
+                - Integers x and y, these dictate where the user-input word will be displayed as the user is writing it
+            - Outputs:
+                - The String that the user has entered
+        - drawBackspace(x, y, colour)
+            - This prints a backspace (left facing arrow) to the display
+            - Receives: integers x and y, and uint16_t colour, which dictate where the backspace should be drawn and in which colour
+            - Outputs: nothing.
+        - drawEnter(x, y, colour)
+            - This prints an enter key (right-angled arrow pointing left with tail pointing upwards) to the display
+            - Receives: integers x and y, and uint16_t colour, which dictate where the enter key should be drawn and in which colour
+            - Outputs: nothing.
+        - putKeyboard(height, capital)
+            - This prints a keyboard to the display
+            - Receives: integer height which dictates at which y-level to place the keyboard, and boolean capital which dictates whether or not the keys are capitalised
+            - Outputs: nothing.
+        - selectKey(key)
+            - This highlights one key on the keyboard
+            - Receives: a char for which key is to be highlighted
+            - Outputs: nothing.
+        - deselectKey(key)
+            - This takes away one key's highlighting on the keyboard
+            - Receives: a char for which key is not to be highlighted
+            - Outputs: nothing.
+        - changeLetter(direction)
+            - This highlights a different letter on the keyboard depending on the direction that a user moves the cursor, and takes away the highlighting from the previously-highlighted letter. It uses selectKey and deselectKey to do this.
+            - Receives: a keyboardDirection enum for which direction to move the cursor in
+            - Outputs: nothing.
+        - getCurrentLetter()
+            - Receives: nothing.
+            - Outputs: a char, the currently selected letter on the keyboard
+        - inputKey(currentWord)
+            - This changes the input String depending on which letter is currently selected
+            - Receives: a String
+            - Outputs: the input String modified depending on which letter is currently selected
+    - Private:
+        - keyboardHeight
+            - An integer that represents the y-level of the keyboard, used when highlighting letters
+        - caps
+            - A boolean that represents whether or not the keyboard is capitalised, used when printing the keyboard and getting the current letter
+        - currentLetter
+            - A character, the letter that is currently selected. Initialised to 1 so that the cursor is in the top-right of the keyboard.
+
+## PageHandler.h
+
+This contains all of the handlers for pages in order to make page display more modular and clean up the main file
+
+### Imported includes:
+
+None.
+
+### Self-defined includes:
+
+- AdafruitST7735_Keyboard.h
+
+### Defines
+
+These are used to take Serial monitor input in a more readable way
+
+- LEFT: **a**
+- UP: **w**
+- RIGHT: **d**
+- DOWN: **s**
+- SELECT: (space)
+
+### Page enum
+
+This is used to keep track of which page is currently being displayed, has just been displayed, or will be displayed
+
+### String in
+
+This is temporarily used for taking Serial monitor input before soldering buttons in the system.
+
+### Functions
+
+- setCreds(tft, preferences)
+    - This function is used to set the credentials of the user (SSID, WiFi password, API ID, API key) in flash memory
+    - Receives: an Adafruit_ST7735Keyboard pointer to the display object, a pointer to the Preferences object
+    - Outputs: nothing
+- MenuPageHandler(tft, previousPage)
+    - Handles the main boot-up page
+    - Receives: an Adafruit_ST7735Keyboard pointer to the display object, a pointer to the previous Page so that it can update its value
+    - Outputs: the next Page to be displayed
+- SummaryPageHandler(tft, previousPage, summary)
+    - Handles the summary page
+    - Receives: an Adafruit_ST7735Keyboard pointer to the display object, a pointer to the previous Page so that it can update its value, and the Summary of the linked Trading212 account
+    - Outputs: the next Page to be displayed
+- PositionsPageFlipLeft(positions, currentPositions)
+    - Moves up the positions linked list until it reaches the top position of the page on the left of the current page
+    - Receives: a Positions pointer to the whole positions linked list, and a Positions pointer to the position that is at the top of the current page
+    - Outputs: a Positions pointer to the position at the top of the page on the left of the current page
+- PositionsPageFlipRight(positions, currentPositions)
+    - Moves down the positions linked list until it reaches the top position of the page on the right of the current page
+    - Receives: a Positions pointer to the whole positions linked list, and a Positions pointer to the position that is at the top of the current page
+    - Outputs: a Positions pointer to the position at the top of the page on the right of the current page
+- BuySellPositionHandler(tft, WiFi, position, buy)
+    - Handles the buy/sell popup on a detailed position page
+    - Receives: an Adafruit_ST7735Keyboard pointer to the display object, a WiFiClass pointer to the WiFi object, the Position to be bought or sold, a boolean that represents whether the user wishes to buy more of this position or sell some quantity
+    - Outputs: the next Page to be displayed
+- PositionPageHandler(tft, WiFi, currentPositions, positionsSize)
+    - Handles the detailed position page
+    - Receives: an Adafruit_ST7735Keyboard pointer to the display object, a WiFiClass pointer to the WiFi object, a pointer to the current position in the Positions linked list, the total number of Positions returned by the positions endpoint of the Trading212 API endpoint
+    - Outputs: the next Page to be displayed
+- PositionsPageHandler(tft, WiFi, previousPage, positions)
+    - Handles the positions page
+    - Receives: an Adafruit_ST7735Keyboard pointer to the display object, a WiFiClass pointer to the WiFi object, a pointer to the previous Page, a Positions pointer to the positions linked list
+    - Outputs: the next Page to be displayed
+
