@@ -195,6 +195,10 @@ This header extends the Adafruit_ST7735 class, adding more specific methods whic
             - Prints the main menu to the display
             - Receives: a MenuSelect to tell which button is selected
             - Outputs: nothing.
+        - printBuySellMenu(select)
+            - Prints the buy/sell menu popup
+            - Receives: a boolean to say whether to buy or sell
+            - Outputs: nothing.
 
 ## Adafruit_ST7735Keyboard.h
 
@@ -266,13 +270,37 @@ This is used to make switching based on the keyboard direction more natural to w
             - This changes the input String depending on which letter is currently selected
             - Receives: a String
             - Outputs: the input String modified depending on which letter is currently selected
+        - putKeypad(height)
+            - This prints a keypad to the display
+            - Receives: an integer for the height at which to place the keypad
+            - Outputs: nothing.
+        - selectNum(num)
+            - Similar to selectKey but for the numpad
+            - Receives: the character that should be selected
+            - Outputs: nothing.
+        - deselectNum(num)
+            - Similar to deselectKey but for the numpad
+            - Receives: the character to be deselected
+            - Outputs: nothing.
+        - getCurrentNum()
+            - Similar to getCurrentLetter but for the numpad
+            - Receives: nothing.
+            - Outputs: the character that is currently selected
+        - changeNum(direction)
+            - Similar to changeLetter but for the numpad
+            - Receives: a KeyboardDirection
+            - Outputs: nothing.
     - Private:
         - keyboardHeight
             - An integer that represents the y-level of the keyboard, used when highlighting letters
+        - keypadHeight
+            - An integer that represents the y-level of the keypad
         - caps
             - A boolean that represents whether or not the keyboard is capitalised, used when printing the keyboard and getting the current letter
         - currentLetter
-            - A character, the letter that is currently selected. Initialised to 1 so that the cursor is in the top-right of the keyboard.
+            - A character, the letter that is currently selected in the keyboard. Initialised to 1 so that the cursor is in the top-right of the keyboard.
+        - currentNum
+            - A character, the number or special key that is currently selected in the numpad. Also initialised to 1.
 
 ## PageHandler.h
 
