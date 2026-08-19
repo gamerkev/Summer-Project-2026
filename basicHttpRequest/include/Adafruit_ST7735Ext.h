@@ -167,7 +167,7 @@ public:
     println(toPrint);
   }
 
-  void printSummary(Summary aSummary, SummarySelection summarySelection)
+  void printSummary(Summary aSummary, SummarySelection select)
   {
     uint16_t oldColour = textcolor;
     fillScreen(ST7735_BLACK);
@@ -188,7 +188,7 @@ public:
     printCentreLeftAlign("Reserved for orders:", 120);
     setCursor(47, cursor_y - 7);
     printMoney(currencySymbol(aSummary.getCurr()), aSummary.getReservedForOrders());
-    switch (summarySelection)
+    switch (select)
     {
     case MENU_SUMMARY:
       fillRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
@@ -219,7 +219,7 @@ public:
     printCentered("< " + String(pageNum) + "/" + String(totalPages) + " >");
   }
 
-  void printPositions(Positions *positions, int totalCount, int select)
+  void printPositions(Positions *aPositions, int totalCount, int select)
   {
     fillScreen(ST7735_BLACK);
     uint16_t oldColour = textcolor;
@@ -227,8 +227,8 @@ public:
     printUnderlineDefaultFont("Positions", TRADING21BLUE);
     int firstPosY = 20;
     int count; // Will display count-positions
-    count = positions->count > 7 ? 7 : positions->count;
-    Positions currentPosition = *positions;
+    count = aPositions->count > 7 ? 7 : aPositions->count;
+    Positions currentPosition = *aPositions;
     for (int i = 0; i < count - 1; i++)
     {
       if (currentPosition.currentPos.getUnrealisedProfit() >= 0)
@@ -255,7 +255,7 @@ public:
       setTextColor(oldColour);
       setCursor(7, 147);
       print("Menu");
-      printPageNum(((totalCount - positions->count) / 7 + 1), (totalCount / 7) + 1);
+      printPageNum(((totalCount - aPositions->count) / 7 + 1), (totalCount / 7) + 1);
       break;
     default:
       drawRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
@@ -263,38 +263,38 @@ public:
       setTextColor(TRADING21BLUE);
       print("Menu");
       setTextColor(oldColour);
-      printPageNum(((totalCount - positions->count) / 7 + 1), (totalCount / 7) + 1);
+      printPageNum(((totalCount - aPositions->count) / 7 + 1), (totalCount / 7) + 1);
       drawRect(1, firstPosY + 1 + (select * 17), 2, 13, ST7735_CYAN);
     }
   }
 
-  void printPosition(Position position, int positionCount, int totalCount, PositionSelection select)
+  void printPosition(Position aPosition, int positionCount, int totalCount, PositionSelection select)
   {
     uint16_t oldColour = textcolor;
     fillScreen(ST7735_BLACK);
     setCursor(5, 5);
-    printUnderlineDefaultFont(position.getName(), TRADING21BLUE);
+    printUnderlineDefaultFont(aPosition.getName(), TRADING21BLUE);
     int firstPosY = 20;
     printCentreLeftAlign("Paid per share:", firstPosY);
     setCursor(5, cursor_y + 1);
-    printMoney(currencySymbol(position.getInstrumentCurrency()), position.getPaidPerShare());
+    printMoney(currencySymbol(aPosition.getInstrumentCurrency()), aPosition.getPaidPerShare());
     printCentreLeftAlign("Current share value: ", firstPosY + 20);
     setCursor(42, cursor_y - 7);
-    if (position.getCurrShareVal() - position.getPaidPerShare() >= 0)
+    if (aPosition.getCurrShareVal() - aPosition.getPaidPerShare() >= 0)
       setTextColor(ST7735_GREEN);
     else
       setTextColor(ST7735_RED);
-    printMoney(currencySymbol(position.getInstrumentCurrency()), position.getCurrShareVal());
+    printMoney(currencySymbol(aPosition.getInstrumentCurrency()), aPosition.getCurrShareVal());
     setTextColor(oldColour);
     printCentreLeftAlign("Unrealised profit:", firstPosY + 40);
-    if (position.getUnrealisedProfit() >= 0)
+    if (aPosition.getUnrealisedProfit() >= 0)
       setTextColor(ST7735_GREEN);
     else
       setTextColor(ST7735_RED);
     setCursor(5, cursor_y + 1);
-    printMoney(currencySymbol(position.getWalletCurrency()), position.getUnrealisedProfit());
+    printMoney(currencySymbol(aPosition.getWalletCurrency()), aPosition.getUnrealisedProfit());
     setTextColor(oldColour);
-    printCentreLeftAlign("Shares available:" + String(position.getSharesAvail()), firstPosY + 60);
+    printCentreLeftAlign("Shares available:" + String(aPosition.getSharesAvail()), firstPosY + 60);
     drawRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
     setCursor(7, 147);
     setTextColor(TRADING21BLUE);

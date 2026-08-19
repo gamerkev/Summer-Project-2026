@@ -11,7 +11,7 @@ typedef enum
   UP = 1,
   RIGHT = 2,
   DOWN = 3
-} keyboardDirection;
+} KeyboardDirection;
 
 class Adafruit_ST7735Keyboard : public Adafruit_ST7735Ext
 {
@@ -763,7 +763,7 @@ public:
     setTextColor(oldColour);
   }
 
-  void changeLetter(keyboardDirection direction)
+  void changeLetter(KeyboardDirection direction)
   {
     deselectKey(currentLetter);
     switch (currentLetter)

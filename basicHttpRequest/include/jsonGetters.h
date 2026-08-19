@@ -6,9 +6,9 @@ typedef enum
   GBP = 0,
   EUR = 1,
   USD = 2
-} currency;
+} Currency;
 
-currency currencySymbol(String currCode)
+Currency currencySymbol(String currCode)
 {
   if (currCode == "GBP")
   {
