@@ -4,6 +4,9 @@
 #define SHIFT '/'
 #define BACKSPACE '*'
 #define ENTER '~'
+#define QUANTITY 'q'
+#define VALUE 'v'
+#define LIMIT 'l'
 
 typedef enum
 {
@@ -94,6 +97,12 @@ public:
   {
     drawLine(x, y, x + 3, y + 3, colour);
     drawLine(x + 3, y + 3, x + 9, y - 3, colour);
+  }
+
+  void drawTickSmall(int x, int y, uint16_t colour)
+  {
+    drawLine(x, y, x + 2, y + 2, colour);
+    drawLine(x + 2, y + 2, x + 7, y - 3, colour);
   }
 
   void drawCross(int x, int y, uint16_t colour)
@@ -256,13 +265,7 @@ public:
     print("shift");
     // spacebar
     drawLine(39, keyboardHeight + 41, 84, keyboardHeight + 41, ST7735_WHITE);
-    // backspace
     drawBackspace(6, keyboardHeight + 18, ST7735_WHITE);
-    // enter key
-    //  drawLine(122, keyboardHeight+6, 122, keyboardHeight+18, ST7735_WHITE);
-    //  drawLine(122, keyboardHeight+18, 112, keyboardHeight+18, ST7735_WHITE);
-    //  drawLine(112, keyboardHeight+18, 114, keyboardHeight+16, ST7735_WHITE);
-    //  drawLine(112, keyboardHeight+18, 114, keyboardHeight+20, ST7735_WHITE);
     drawEnter(112, keyboardHeight + 18, ST7735_WHITE);
     selectKey(currentLetter);
     setFont(oldFont);
@@ -1519,6 +1522,7 @@ public:
 
   void putKeypad(int height)
   {
+    GFXfont *oldFont = gfxFont;
     keypadHeight = height;
     fillRect(17, keypadHeight, 95, 42, ST7735_BLACK);
     drawLine(40, keypadHeight + 42, 40, keypadHeight, TRADING21BLUE);
@@ -1535,6 +1539,8 @@ public:
     print("2");
     setCursor(74, keypadHeight + 4);
     print("3");
+    setCursor(92, keypadHeight + 4);
+    print("DEL");
     setCursor(26, keypadHeight + 18);
     print("4");
     setCursor(50, keypadHeight + 18);
@@ -1551,8 +1557,22 @@ public:
     print("9");
     setCursor(98, keypadHeight + 32);
     print("0");
-    drawTick(96, keypadHeight + 7, ST7735_WHITE);
+    drawRect(99, keypadHeight - 12, 14, 13, TRADING21BLUE);
+    drawTick(101, keypadHeight - 6, ST7735_WHITE);
+
+    setCursor(42, keypadHeight - 44);
+    println("Quantity");
+    setCursor(42, keypadHeight - 36);
+    println("Value");
+    setCursor(42, keypadHeight - 28);
+    print("Limit");
+    drawCircle(35, keypadHeight - 42, 3, ST7735_WHITE);
+    drawCircle(35, keypadHeight - 33, 3, ST7735_WHITE);
+    drawRect(32, keypadHeight - 27, 7, 6, ST7735_WHITE);
     selectNum(currentNum);
+    quantity ? fillCircle(35, keypadHeight - 42, 1, ST7735_WHITE) : fillCircle(35, keypadHeight - 33, 1, ST7735_WHITE);
+    limit ? drawTickSmall(33, keypadHeight - 25, ST7735_WHITE) : drawTickSmall(33, keypadHeight - 25, ST7735_BLACK);
+    drawRect(32, keypadHeight - 27, 7, 6, ST7735_WHITE);
   }
 
   void selectNum(char num)
@@ -1606,10 +1626,28 @@ public:
       print("0");
       break;
     case ENTER:
-      drawTick(96, keypadHeight + 7, TRADING21BLUE);
+      fillRect(100, keypadHeight - 11, 12, 11, ST7735_GREEN);
+      drawTick(101, keypadHeight - 6, ST7735_BLACK);
+      break;
+    case QUANTITY:
+      setCursor(42, keypadHeight - 44);
+      println("Quantity");
+      break;
+    case VALUE:
+      setCursor(42, keypadHeight - 36);
+      println("Value");
+      break;
+    case LIMIT:
+      setCursor(42, keypadHeight - 28);
+      print("Limit");
       break;
     case 'x':
-      drawCross(104, keypadHeight - 75, ST7735_RED);
+      fillRect(102, keypadHeight - 77, 10, 10, ST7735_RED);
+      drawCross(104, keypadHeight - 75, ST7735_WHITE);
+      break;
+    case BACKSPACE:
+      setCursor(92, keypadHeight + 4);
+      print("DEL");
       break;
     }
     setTextColor(oldColour);
@@ -1666,10 +1704,28 @@ public:
       print("0");
       break;
     case ENTER:
-      drawTick(96, keypadHeight + 7, ST7735_WHITE);
+      fillRect(100, keypadHeight - 11, 12, 11, ST7735_BLACK);
+      drawTick(101, keypadHeight - 6, ST7735_WHITE);
+      break;
+    case QUANTITY:
+      setCursor(42, keypadHeight - 44);
+      println("Quantity");
+      break;
+    case VALUE:
+      setCursor(42, keypadHeight - 36);
+      println("Value");
+      break;
+    case LIMIT:
+      setCursor(42, keypadHeight - 28);
+      print("Limit");
       break;
     case 'x':
+      fillRect(102, keypadHeight - 77, 10, 10, ST7735_BLACK);
       drawCross(104, keypadHeight - 75, ST7735_WHITE);
+      break;
+    case BACKSPACE:
+      setCursor(92, keypadHeight + 4);
+      print("DEL");
       break;
     }
     setTextColor(oldColour);
@@ -1689,10 +1745,10 @@ public:
       switch (direction)
       {
       case LEFT:
-        currentNum = ENTER;
+        currentNum = BACKSPACE;
         break;
       case UP:
-        currentNum = 'x';
+        currentNum = LIMIT;
         break;
       case RIGHT:
         currentNum = '2';
@@ -1709,7 +1765,7 @@ public:
         currentNum = '1';
         break;
       case UP:
-        currentNum = 'x';
+        currentNum = LIMIT;
         break;
       case RIGHT:
         currentNum = '3';
@@ -1726,10 +1782,10 @@ public:
         currentNum = '2';
         break;
       case UP:
-        currentNum = 'x';
+        currentNum = LIMIT;
         break;
       case RIGHT:
-        currentNum = ENTER;
+        currentNum = BACKSPACE;
         break;
       case DOWN:
         currentNum = '6';
@@ -1740,16 +1796,13 @@ public:
       switch (direction)
       {
       case LEFT:
-        currentNum = '3';
+        currentNum = LIMIT;
         break;
       case UP:
         currentNum = 'x';
         break;
-      case RIGHT:
-        currentNum = '1';
-        break;
       case DOWN:
-        currentNum = '.';
+        currentNum = BACKSPACE;
         break;
       }
       break;
@@ -1811,7 +1864,7 @@ public:
         currentNum = '6';
         break;
       case UP:
-        currentNum = ENTER;
+        currentNum = BACKSPACE;
         break;
       case RIGHT:
         currentNum = '4';
@@ -1892,6 +1945,9 @@ public:
     case 'x':
       switch (direction)
       {
+      case LEFT:
+        currentNum = QUANTITY;
+        break;
       case UP:
         currentNum = '0';
         break;
@@ -1900,18 +1956,188 @@ public:
         break;
       }
       break;
+    case BACKSPACE:
+      switch (direction)
+      {
+      case LEFT:
+        currentNum = '3';
+        break;
+      case UP:
+        currentNum = ENTER;
+        break;
+      case RIGHT:
+        currentNum = '1';
+      case DOWN:
+        currentNum = '.';
+        break;
+      }
+      break;
+    case QUANTITY:
+      switch (direction)
+      {
+      case UP:
+        currentNum = 'x';
+        break;
+      case RIGHT:
+        currentNum = 'x';
+        break;
+      case DOWN:
+        currentNum = VALUE;
+        break;
+      }
+      break;
+    case VALUE:
+      switch (direction)
+      {
+      case UP:
+        currentNum = QUANTITY;
+        break;
+      case DOWN:
+        currentNum = LIMIT;
+        break;
+      }
+      break;
+    case LIMIT:
+      switch (direction)
+      {
+      case UP:
+        currentNum = VALUE;
+        break;
+      case RIGHT:
+        currentNum = ENTER;
+        break;
+      case DOWN:
+        currentNum = '1';
+        break;
+      }
+      break;
     }
     selectNum(currentNum);
   }
 
-  String takeKeypadInput(){
-
+  String inputNum(String currentDigits)
+  {
+    switch (currentNum)
+    {
+    case QUANTITY:
+      quantity = true;
+      return "";
+      break;
+    case VALUE:
+      quantity = false;
+      return "";
+      break;
+    case LIMIT:
+      limit = !limit;
+      return "";
+      break;
+    case BACKSPACE:
+      currentDigits.remove(currentDigits.length() - 1);
+      return currentDigits;
+      break;
+    case ENTER:
+      return currentDigits;
+    case 'x':
+      return "EXIT";
+    default:
+      
+      if (getCurrentNum() == '.' and currentDigits.indexOf('.') != -1)
+        return currentDigits;
+      else if (currentDigits == "0" and getCurrentNum() == '0')
+        return currentDigits;
+      else if (currentDigits.substring(currentDigits.indexOf('.')).length() >= 3)
+        return currentDigits;
+      else
+        return currentDigits + getCurrentNum();
+    }
   }
-  
+
+  String takeNumInput(int x, int y)
+  {
+    String in;
+    String tftReturn;
+    String toReturn;
+    bool done = false;
+    drawRect(x, y, 69, 12, TRADING21BLUE);
+    while (!done)
+    {
+      while (Serial.available())
+      {
+        in = Serial.readString();
+        if (in == "a")
+        {
+          changeNum(LEFT);
+        }
+        else if (in == "w")
+        {
+          changeNum(UP);
+        }
+        else if (in == "d")
+        {
+          changeNum(RIGHT);
+        }
+        else if (in == "s")
+        {
+          changeNum(DOWN);
+        }
+        else if (in == "l")
+        {
+          tftReturn = inputNum(toReturn);
+          if (!tftReturn.isEmpty() or getCurrentNum() == BACKSPACE)
+          {
+            toReturn = tftReturn;
+          }
+          setCursor(x + 3, y + 3);
+          fillRect(x + 1, y + 1, 67, 10, ST7735_BLACK);
+          if (toReturn != "EXIT")
+            if (quantity)
+              print(toReturn);
+            else
+              printMoney(GBP, toReturn.toFloat());
+          switch (getCurrentNum())
+          {
+          case QUANTITY:
+            fillCircle(35, keypadHeight - 42, 1, ST7735_BLACK);
+            fillCircle(35, keypadHeight - 33, 1, ST7735_BLACK);
+            if (quantity)
+              fillCircle(35, keypadHeight - 42, 1, ST7735_WHITE);
+            else
+              fillCircle(35, keypadHeight - 33, 1, ST7735_WHITE);
+            break;
+          case VALUE:
+            fillCircle(35, keypadHeight - 42, 1, ST7735_BLACK);
+            fillCircle(35, keypadHeight - 33, 1, ST7735_BLACK);
+            if (!quantity)
+              fillCircle(35, keypadHeight - 33, 1, ST7735_WHITE);
+            else
+              fillCircle(35, keypadHeight - 42, 1, ST7735_WHITE);
+            break;
+          case LIMIT:
+            if (limit)
+              drawTickSmall(33, keypadHeight - 25, ST7735_WHITE);
+            else
+              drawTickSmall(33, keypadHeight - 25, ST7735_BLACK);
+            drawRect(32, keypadHeight - 27, 7, 6, ST7735_WHITE);
+            break;
+          case 'x':
+            return "";
+          case ENTER:
+            return toReturn;
+          }
+          Serial.println("quantity: " + String(quantity));
+          Serial.println("limit " + String(limit));
+        }
+      }
+    }
+    return toReturn;
+  }
+
 private:
   int keyboardHeight;
   int keypadHeight;
   bool caps;
+  bool quantity = true;
+  bool limit = false;
   char currentLetter = '1';
-  char currentNum = '1';
+  char currentNum = QUANTITY;
 };

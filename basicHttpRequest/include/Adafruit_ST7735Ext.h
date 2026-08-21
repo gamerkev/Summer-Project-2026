@@ -367,11 +367,11 @@ public:
     }
   }
 
-  void printBuySellMenu(bool select)
+  void printBuySellMenu(bool buy)
   {
-    fillRect(16, 20, 97, 78, ST7735_BLACK);
+    fillRect(16, 20, 97, 121, ST7735_BLACK);
     drawRect(16, 20, 97, 121, TRADING21BLUE);
-    switch (select)
+    switch (buy)
     {
     case true:
       setCursor(20, 24);

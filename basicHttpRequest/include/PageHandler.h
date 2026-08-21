@@ -160,14 +160,13 @@ Positions *PositionsPageFlipRight(Positions *positions, Positions *currentPositi
 
 Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Position position, bool buy)
 {
+    float numInput;
     (*tft).printBuySellMenu(buy);
     (*tft).putKeypad(98);
-    while (true)
-    {
-        in = Serial.readString();
-        if (in == SELECT)
-            return POSITIONS_PAGE;
-    }
+    numInput = (*tft).takeNumInput(30, 40).toFloat();
+    if (numInput != 0)
+        Serial.println("Buy " + String(numInput) + " shares of " + position.getName());
+    return POSITIONS_PAGE;
 }
 
 Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Positions *currentPositions, int positionsSize)
