@@ -51,8 +51,9 @@ public:
         }
         else if (in == "l")
         {
-          tftReturn = inputKey(toReturn);
-          if (!tftReturn.isEmpty() or getCurrentLetter() == BACKSPACE)
+          tftReturn = inputKey(toReturn);                              // Adds the selected character or keeps the string the same if a non-character key is selected
+          if (!tftReturn.isEmpty() or getCurrentLetter() == BACKSPACE) // Need this since inputKey when shift is selected returns an empty string, but we still
+                                                                       // want the string to be emptied if backspace is selected
           {
             toReturn = tftReturn;
           }
@@ -61,11 +62,11 @@ public:
           fillRect(1, y - 12, 126, 12, ST7735_BLACK);
           if (toReturn.length() < 14)
           {
-            print(toReturn);
+            print(toReturn); // Display the current string that will be returned
           }
           else
           {
-            print(toReturn.substring(toReturn.length() - 14, toReturn.length() - 1));
+            print(toReturn.substring(toReturn.length() - 14, toReturn.length() - 1)); // If the string is 14 characters or longer, display only the last 13 characters
           }
           if (getCurrentLetter() == ENTER)
           {
@@ -1480,13 +1481,13 @@ public:
 
   char getCurrentLetter()
   {
-    if (currentLetter < 0x61)
+    if (currentLetter < 0x61) // If it's a non-alphabetic character, just return it
     {
       return currentLetter;
     }
     else
     {
-      if (caps)
+      if (caps) // If it's an alphabetic character and caps is true then capitalise the selected character, otherwise don't
         return currentLetter - 0x20;
       else
         return currentLetter;
@@ -1502,7 +1503,7 @@ public:
       return "";
       break;
     case BACKSPACE:
-      currentWord.remove(currentWord.length() - 1);
+      currentWord.remove(currentWord.length() - 1); // Remove the last character
       return currentWord;
       break;
     case ENTER:
@@ -2077,37 +2078,37 @@ public:
         else if (in == "l")
         {
           tftReturn = inputNum(toReturn);
-          if (!tftReturn.isEmpty() or getCurrentNum() == BACKSPACE)
+          if (!tftReturn.isEmpty() or getCurrentNum() == BACKSPACE) // Need this for the same reason it's needed on the keyboard
           {
             toReturn = tftReturn;
           }
           setCursor(x + 3, y + 3);
           fillRect(x + 1, y + 1, 67, 10, ST7735_BLACK);
           if (toReturn != "EXIT")
-            if (quantity)
+            if (quantity) // Check if the user is entering a number of shares or an amount of money
               print(toReturn);
             else
               printMoney(GBP, toReturn.toFloat());
           switch (getCurrentNum())
           {
-          case QUANTITY:
+          case QUANTITY: // If the quantity button is selected
             fillCircle(35, keypadHeight - 42, 1, ST7735_BLACK);
             fillCircle(35, keypadHeight - 33, 1, ST7735_BLACK);
-            if (quantity)
+            if (quantity) // Check if the user has selected to enter a quantity or value
               fillCircle(35, keypadHeight - 42, 1, ST7735_WHITE);
             else
               fillCircle(35, keypadHeight - 33, 1, ST7735_WHITE);
             break;
-          case VALUE:
+          case VALUE: // If the value button is selected
             fillCircle(35, keypadHeight - 42, 1, ST7735_BLACK);
             fillCircle(35, keypadHeight - 33, 1, ST7735_BLACK);
-            if (!quantity)
+            if (!quantity) // Check if the user has selected to enter a quantity or value
               fillCircle(35, keypadHeight - 33, 1, ST7735_WHITE);
             else
               fillCircle(35, keypadHeight - 42, 1, ST7735_WHITE);
             break;
-          case LIMIT:
-            if (limit)
+          case LIMIT:  // If the limit button is selected
+            if (limit) // Draw a tick in the box if the user has chosen that this will be a limit order
               drawTickSmall(33, keypadHeight - 25, ST7735_WHITE);
             else
               drawTickSmall(33, keypadHeight - 25, ST7735_BLACK);
@@ -2118,12 +2119,9 @@ public:
           case ENTER:
             return toReturn;
           }
-          Serial.println("quantity: " + String(quantity));
-          Serial.println("limit " + String(limit));
         }
       }
     }
-    Serial.println(toReturn);
     return toReturn;
   }
 

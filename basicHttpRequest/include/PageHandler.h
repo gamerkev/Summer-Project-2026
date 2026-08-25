@@ -14,17 +14,6 @@ typedef enum
     OTHER_PAGE = 100,
 } Page;
 
-struct BuySellConfig
-{
-    String name;
-    String ticker;
-    bool quantity;
-    bool longHours;
-    bool limitOrder;
-    float costPerShare;
-    float amount;
-};
-
 String in;
 
 void setCreds(Adafruit_ST7735Keyboard *tft, Preferences *preferences);
@@ -182,10 +171,10 @@ Positions *PositionsPageFlipRight(Positions *positions, Positions *currentPositi
 
 bool BuySellConfirmationHandler(Adafruit_ST7735Keyboard *tft, BuySellConfig *config, bool buy)
 {
-    BuySellConfirmationSelection select = LONG_HOURS;
-    config->longHours = false;
+    BuySellConfirmationSelection select = LONG_HOURS; // By default, select the long hours button
+    config->longHours = false;                        // By default, the long hours checkbox is not ticked
     (*tft).fillScreen(ST7735_BLACK);
-    (*tft).printBuySellConfirmation(config->name, buy, config->quantity, config->amount, select);
+    (*tft).printBuySellConfirmation(config->name, buy, config->quantity, config->amount, select); // Print the confirmation screen
     while (true)
     {
         in = Serial.readString();
@@ -240,22 +229,22 @@ Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Posit
 {
     bool longHours;
     bool confirm;
-    BuySellConfig config;
+    BuySellConfig config; // Data structure used to send buy requests
     (*tft).printBuySellMenu(buy);
     (*tft).putKeypad(98);
-    Serial.println(position.getTotalMarketVal());
     config.amount = (*tft).takeNumInput(30, 40).toFloat();
     config.name = position.getName();
-    config.costPerShare = position.getTotalMarketVal() / position.getSharesOwned();
+    config.costPerShare = position.getTotalMarketVal() / position.getSharesOwned(); // Used when an order is placed by value rather than quantity, as the API can
+                                                                                    // only do by quantity
     config.ticker = position.getTicker();
     config.limitOrder = tft->getLimit();
     config.quantity = tft->getQuantity();
     switch (buy)
     {
-    case true:
-        if (config.quantity)
+    case true:               // If the user is buying shares
+        if (config.quantity) // If the user is buying by quantity
         {
-            if (config.costPerShare * config.amount <= availToTrade)
+            if (config.costPerShare * config.amount <= availToTrade) // Check if the user has enough money
                 Serial.println("Valid trade");
             else
             {
@@ -264,9 +253,9 @@ Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Posit
                 return POSITIONS_PAGE;
             }
         }
-        else
+        else // If the user is buying by value
         {
-            if (config.amount <= availToTrade)
+            if (config.amount <= availToTrade) // Check if the user has enough money
                 Serial.println("Valid trade");
             else
             {
@@ -276,10 +265,10 @@ Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Posit
             }
         }
         break;
-    case false:
-        if (config.quantity)
+    case false:              // If the user is selling shares
+        if (config.quantity) // If the user is selling by quantity
         {
-            if (config.amount <= position.getSharesAvail())
+            if (config.amount <= position.getSharesAvail()) // Check if the user has enough shares
                 Serial.println("Valid trade");
             else
             {
@@ -288,9 +277,9 @@ Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Posit
                 return POSITIONS_PAGE;
             }
         }
-        else
+        else // If the user is selling by value
         {
-            if (config.amount / config.costPerShare <= position.getSharesAvail())
+            if (config.amount / config.costPerShare <= position.getSharesAvail()) // Check if the user has enough shares
                 Serial.println("Valid trade");
             else
             {
@@ -301,60 +290,11 @@ Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Posit
         }
     }
 
-    if (config.amount != 0)
+    if (config.amount != 0) // If the user didn't enter 0 in the keypad or exit it, allow them to confirm their trade
         confirm = BuySellConfirmationHandler(tft, &config, buy);
-    if (confirm)
+    if (confirm) // If the user confirmed their trade
     {
-        cJSON *body = cJSON_CreateObject();
-        cJSON_AddBoolToObject(body, "extendedHours", config.longHours);
-        cJSON_AddStringToObject(body, "ticker", config.ticker.c_str());
-        switch (buy)
-        {
-        case true:
-            switch (config.quantity)
-            {
-            case true:
-                cJSON_AddNumberToObject(body, "quantity", config.amount);
-                break;
-            case false:
-                cJSON_AddNumberToObject(body, "quantity", config.amount / config.costPerShare);
-                break;
-            }
-            break;
-        case false:
-            switch (config.quantity)
-            {
-            case true:
-            {
-                String helperString = "-" + String(config.amount); // Kept getting floating point errors when just multiplying config.amount by -1
-                cJSON_AddStringToObject(body, "quantity", helperString.c_str());
-                break;
-            }
-            case false:
-            {
-                int helperInt = round(config.amount / config.costPerShare * -100); // To round off to 2dp, otherwise we get error 400 from the request
-                cJSON_AddNumberToObject(body, "quantity", helperInt / 100.0);
-                break;
-            }
-            }
-            break;
-        }
-        if (WiFi->status() == WL_CONNECTED)
-        {
-            HTTPClient http;
-            http.setReuse(false);
-            http.begin("https://demo.trading212.com/api/v0/equity/orders/market");
-            http.addHeader("Authorization", "Basic " + encoded);
-            http.addHeader("Content-Type", "application/json");
-            Serial.println(cJSON_Print(body));
-            Serial.println(config.amount);
-            Serial.println(config.amount - config.amount);
-            int retVal = http.POST(cJSON_PrintUnformatted(body));
-            Serial.println(retVal);
-            http.end();
-        }
-        else
-            Serial.println("Wifi not connected");
+        placeOrder(WiFi, encoded, config, buy);
         return POSITIONS_PAGE;
     }
     else
@@ -363,7 +303,7 @@ Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Posit
 
 Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Positions *currentPositions, int positionsSize, float availToTrade, String encoded)
 {
-    PositionSelection positionSelection = BACK;
+    PositionSelection positionSelection = BACK; // By default, select the buy button
     (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
     while (true)
     {

@@ -43,39 +43,6 @@ class Adafruit_ST7735Ext : public Adafruit_ST7735
 public:
   Adafruit_ST7735Ext(int8_t cs, int8_t dc, int8_t mosi, int8_t sclk, int8_t rst) : Adafruit_ST7735(cs, dc, mosi, sclk, rst) {} // Same constructor as the class it's extending
 
-  void movingText(String toWrite, int y)
-  {
-    // int pixelLength = toWrite.length() * 6;                       // 6 pixels width each character
-    int extraChars = toWrite.length() - 16;
-    // int extraPixels = (ceil((pixelLength - 114)/6) * 6);    // chose the numbers from this line through trial and error
-    fillRect(1, y - 12, 126, 12, ST7735_BLACK); // black out the line where the text will be
-    setCursor(10, y);
-    print(toWrite);
-    fillRect(1, y - 12, 9, 12, ST7735_BLACK); // black out the edges of the text
-    fillRect(118, y - 12, 9, 12, ST7735_BLACK);
-    drawRect(0, 0, 128, 160, TRADING21BLUE);
-    Serial.println(toWrite.length() + " long, need" + String(extraChars * 8) + " more chars");
-    if (extraChars > 0)
-    {
-      delay(1000); // time to read the first part of the text
-    }
-    else
-    {
-      delay(500);
-    }
-    // THE MAX LENGTH OF TEXT THAT IS PADDED BY 9 PIXELS EITHER SIDE IS 18 CHARACTERS
-    for (int i = 0; i < (extraChars * 8) + 1; i = i + 2)
-    {
-      fillRect(1, y - 12, 128, 12, ST7735_BLACK);
-      setCursor(10 - i, y); // move 2 pixel to the left
-      print(toWrite);
-      fillRect(1, y - 12, 9, 12, ST7735_BLACK);
-      fillRect(118, y - 12, 9, 12, ST7735_BLACK);
-      drawRect(0, 0, 128, 160, TRADING21BLUE);
-      delay(50);
-    }
-  }
-
   void logo()
   {
     fillScreen(ST7735_BLACK);
@@ -135,28 +102,28 @@ public:
   void printCentreLeftAlign(String toPrint, int y)
   {
     String printing;
-    setCursor(5, y);
-    while (toPrint.length() > 19)
+    setCursor(5, y);              // Pad by 5 pixlels
+    while (toPrint.length() > 19) // Check that the text isn't too long to fit on one line
     {
-      printing = toPrint.substring(0, 19);
-      if (printing.endsWith(" ") or toPrint[19] == ' ')
+      printing = toPrint.substring(0, 19);              // Print as much text as can be printed on one line
+      if (printing.endsWith(" ") or toPrint[19] == ' ') // Don't print trailing spaces
       {
-        printing = printing.substring(0, 19);
-        toPrint = toPrint.substring(19);
+        printing = printing.substring(0, 19); // What will be printed now
+        toPrint = toPrint.substring(19);      // What is left to be printed
       }
-      else
+      else // To avoid splitting words onto different lines
       {
         toPrint = toPrint.substring(printing.lastIndexOf(' '));
         printing = printing.substring(0, printing.lastIndexOf(' '));
       }
-      if (printing[0] == ' ')
+      if (printing[0] == ' ') // Again to avoid printing trailing spaces
       {
         printing = printing.substring(1);
       }
       println(printing);
-      setCursor(5, cursor_y);
+      setCursor(5, cursor_y); // Again pad by 5 pixels
     }
-    if (!toPrint.isEmpty())
+    if (!toPrint.isEmpty()) // Print what is left of the string if it wasn't a perfect multiple
     {
       if (toPrint[0] == ' ')
         println(toPrint.substring(1));
@@ -197,13 +164,18 @@ public:
     printMoney(currencySymbol(aSummary.getCurr()), aSummary.getTotalCost());
     printCentreLeftAlign("Unrealised profit:", 95);
     setCursor(5, cursor_y + 1);
+    if (aSummary.getUnrealisedProfit() < 0)
+      setTextColor(ST7735_GREEN);
+    else
+      setTextColor(ST7735_RED);
     printMoney(currencySymbol(aSummary.getCurr()), aSummary.getUnrealisedProfit());
+    setTextColor(oldColour);
     printCentreLeftAlign("Reserved for orders:", 120);
     setCursor(47, cursor_y - 7);
     printMoney(currencySymbol(aSummary.getCurr()), aSummary.getReservedForOrders());
     switch (select)
     {
-    case MENU_SUMMARY:
+    case MENU_SUMMARY: // If the summary button is selected
       fillRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
       setCursor(7, 147);
       print("Menu");
@@ -213,7 +185,7 @@ public:
       print("Pies");
       setTextColor(oldColour);
       break;
-    case PIES:
+    case PIES: // If the pies button is selected
       drawRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
       setCursor(7, 147);
       setTextColor(TRADING21BLUE);
@@ -239,8 +211,8 @@ public:
     setCursor(5, 5);
     printUnderlineDefaultFont("Positions", TRADING21BLUE);
     int firstPosY = 20;
-    int count; // Will display count-positions
-    count = aPositions->count > 7 ? 7 : aPositions->count;
+    int count;
+    count = aPositions->count > 7 ? 7 : aPositions->count; // How many positions will be printed on the display
     Positions currentPosition = *aPositions;
     for (int i = 0; i < count - 1; i++)
     {
@@ -263,14 +235,14 @@ public:
     printMoney(currencySymbol(currentPosition.currentPos.getWalletCurrency()), currentPosition.currentPos.getUnrealisedProfit());
     switch (select)
     {
-    case 7:
+    case 7: // If the menu button is selected
       fillRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
       setTextColor(oldColour);
       setCursor(7, 147);
       print("Menu");
       printPageNum(((totalCount - aPositions->count) / 7 + 1), (totalCount / 7) + 1);
       break;
-    default:
+    default: // If any position is selected
       drawRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
       setCursor(7, 147);
       setTextColor(TRADING21BLUE);
@@ -322,19 +294,19 @@ public:
     print("Sell");
     switch (select)
     {
-    case BUY:
+    case BUY: // If the buy button is selected
       fillRoundRect(5, 105, 22, 12, 1, ST7735_GREEN);
       setTextColor(ST7735_BLACK);
       setCursor(7, 107);
       print("Buy");
       break;
-    case SELL:
+    case SELL: // If the sell button is selected
       fillRoundRect(5, 120, 28, 12, 1, ST7735_RED);
       setTextColor(oldColour);
       setCursor(7, 122);
       print("Sell");
       break;
-    case BACK:
+    case BACK: // If the back button is selected
       fillRoundRect(5, 145, 28, 12, 1, TRADING21BLUE);
       setCursor(7, 147);
       setTextColor(oldColour);
@@ -354,7 +326,7 @@ public:
     setTextSize(1);
     switch (select)
     {
-    case SUMMARY:
+    case SUMMARY: // If the summary button is selected
       fillRoundRect(40, 48, 46, 12, 2, TRADING21BLUE);
       setCursor(0, 50);
       printCentered("Summary");
@@ -362,7 +334,7 @@ public:
       setCursor(0, 70);
       printCentered("Positions");
       break;
-    case OPEN_POSITIONS:
+    case OPEN_POSITIONS: // If the open positions button is selected
       drawRoundRect(40, 48, 46, 12, 2, TRADING21BLUE);
       setCursor(0, 50);
       printCentered("Summary");
@@ -370,13 +342,6 @@ public:
       setCursor(0, 70);
       printCentered("Positions");
       break;
-    default:
-      drawRoundRect(40, 48, 46, 12, 2, TRADING21BLUE);
-      setCursor(0, 50);
-      printCentered("Summary");
-      drawRoundRect(34, 68, 58, 12, 2, TRADING21BLUE);
-      setCursor(0, 70);
-      printCentered("Positions");
     }
   }
 
@@ -386,11 +351,11 @@ public:
     drawRect(16, 20, 97, 121, TRADING21BLUE);
     switch (buy)
     {
-    case true:
+    case true: // If the user is in the buy menu
       setCursor(20, 24);
       printUnderlineDefaultFont("Buy", ST7735_GREEN);
       break;
-    case false:
+    case false: // If the user is in the sell menu
       setCursor(20, 24);
       printUnderlineDefaultFont("Sell", ST7735_RED);
       break;
@@ -400,29 +365,29 @@ public:
   void printBuySellConfirmation(String posName, bool buy, bool shares, float amount, BuySellConfirmationSelection select, bool longHours = false)
   {
     uint16_t oldColour = textcolor;
-    posName.toUpperCase();
+    posName.toUpperCase(); // Capitalise to draw attenntion to it
     switch (buy)
     {
-    case true:
+    case true: // If the user is buying
       drawRect(0, 0, 128, 160, ST7735_GREEN);
       switch (shares)
       {
-      case true:
+      case true: // If the user has placed their order as a quantity of shares
         printCentreLeftAlign("Are you sure that you want to BUY " + String(amount) + " shares of " + posName + "?", 10);
         break;
-      case false:
+      case false: // If the user has placed their order in terms of an amoount money
         printCentreLeftAlign("Are you sure that you want to BUY " + String(amount) + " GBP of " + posName + "?", 10);
         break;
       }
       break;
-    case false:
+    case false: // If the user is selling
       drawRect(0, 0, 128, 160, ST7735_RED);
       switch (shares)
       {
-      case true:
+      case true: // If the user has placed their order as a quantity of shares
         printCentreLeftAlign("Are you sure that you want to SELL " + String(amount) + " shares of " + posName + "?", 10);
         break;
-      case false:
+      case false: // If the user has placed their order in terms of an amoount money
         printCentreLeftAlign("Are you sure that you want to SELL " + String(amount) + " GBP of " + posName + "?", 10);
         break;
       }
@@ -431,7 +396,7 @@ public:
 
     switch (select)
     {
-    case LONG_HOURS:
+    case LONG_HOURS: // If the user has selected the long hours button
       setTextColor(TRADING21BLUE);
       setCursor(39, 120);
       print("Long hours");
@@ -450,7 +415,7 @@ public:
 
       break;
 
-    case CONFIRM_ORDER:
+    case CONFIRM_ORDER: // If the user has selected the confirm order button
       setTextColor(ST7735_WHITE);
       setCursor(39, 120);
       print("Long hours");
@@ -468,7 +433,7 @@ public:
 
       break;
 
-    case CANCEL_ORDER:
+    case CANCEL_ORDER: // If the user has selected the cancel order button
       setTextColor(ST7735_WHITE);
       setCursor(39, 120);
       print("Long hours");
@@ -486,12 +451,12 @@ public:
 
       break;
     }
-    if (longHours)
+    if (longHours) // If the long hours box has been ticked
     {
       drawTickSmall(31, 122, ST7735_WHITE);
       drawRect(30, 120, 7, 6, ST7735_WHITE);
     }
-    else
+    else // If it has not yet been ticked
     {
       drawTickSmall(31, 122, ST7735_BLACK);
       drawRect(30, 120, 7, 6, ST7735_WHITE);

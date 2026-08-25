@@ -2,6 +2,17 @@
 #include <HTTPClient.h>
 #include <jsonGetters.h>
 
+struct BuySellConfig // Data structure to buy/sell positions
+{
+    String name;
+    String ticker;
+    bool quantity;
+    bool longHours;
+    bool limitOrder;
+    float costPerShare;
+    float amount;
+};
+
 class Summary
 {
 public:
@@ -265,4 +276,58 @@ void freePositions(Positions **positions, bool *created)
     }
     delete currPos;
     *created = false;
+}
+
+void placeOrder(WiFiClass *WiFi, String encoded, BuySellConfig config, bool buy)
+{
+    cJSON *body = cJSON_CreateObject(); // Need to send a json body with the request
+    cJSON_AddBoolToObject(body, "extendedHours", config.longHours);
+    cJSON_AddStringToObject(body, "ticker", config.ticker.c_str());
+    switch (buy)
+    {
+    case true:
+        switch (config.quantity)
+        {
+        case true:
+            cJSON_AddNumberToObject(body, "quantity", config.amount);
+            break;
+        case false:
+            cJSON_AddNumberToObject(body, "quantity", config.amount / config.costPerShare);
+            break;
+        }
+        break;
+    case false:
+        switch (config.quantity)
+        {
+        case true:
+        {
+            String helperString = "-" + String(config.amount); // Kept getting floating point errors when just multiplying config.amount by -1
+            cJSON_AddStringToObject(body, "quantity", helperString.c_str());
+            break;
+        }
+        case false:
+        {
+            int helperInt = round(config.amount / config.costPerShare * -100); // To round off to 2dp, otherwise we get error 400 from the request
+            cJSON_AddNumberToObject(body, "quantity", helperInt / 100.0);
+            break;
+        }
+        }
+        break;
+    }
+    if (WiFi->status() == WL_CONNECTED)
+    {
+        HTTPClient http;
+        http.setReuse(false);
+        http.begin("https://demo.trading212.com/api/v0/equity/orders/market");
+        http.addHeader("Authorization", "Basic " + encoded);
+        http.addHeader("Content-Type", "application/json");
+        Serial.println(cJSON_Print(body));
+        Serial.println(config.amount);
+        Serial.println(config.amount - config.amount);
+        int retVal = http.POST(cJSON_PrintUnformatted(body));
+        Serial.println(retVal);
+        http.end();
+    }
+    else
+        Serial.println("Wifi not connected");
 }
