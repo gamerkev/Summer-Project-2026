@@ -372,3 +372,5 @@ I've been thinking about how to implement the in-depth position pages and I thin
 At the moment I have too many functions and objects, I'm going to write some proper documentation for my code in a README and rename this file to thoughts.md.
 
 I've completed the README documentation, but I have some naming inconsistencies dotted throughout my code. For example, my enum definitions names are camelcase but some begin with a capital and some don't. I need to keep these kind of things consistent so that my code is more maintainable in the future before I progress any further, as I can easily make more mistakes like this.
+
+Buying and selling finally works, it's time for another big refactor and I'll check the correctness of the code and begin coding the history pages.
