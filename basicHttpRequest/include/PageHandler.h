@@ -11,9 +11,31 @@ typedef enum
     MENU_PAGE = 0,
     SUMMARY_PAGE = 1,
     POSITIONS_PAGE = 2,
+    OTHER_PAGE = 100,
 } Page;
 
+struct BuySellConfig
+{
+    String name;
+    String ticker;
+    bool quantity;
+    bool longHours;
+    bool limitOrder;
+    float costPerShare;
+    float amount;
+};
+
 String in;
+
+void setCreds(Adafruit_ST7735Keyboard *tft, Preferences *preferences);
+Page MenuPageHandler(Adafruit_ST7735Keyboard *tft, Page *previousPage);
+Page SummaryPageHandler(Adafruit_ST7735Keyboard *tft, Page *previousPage, Summary summary);
+Positions *PositionsPageFlipLeft(Positions *positions, Positions *currentPositions);
+Positions *PositionsPageFlipRight(Positions *positions, Positions *currentPositions);
+bool BuySellConfirmationHandler(Adafruit_ST7735Keyboard *tft, Position position, bool buy, bool shares, float amount, bool *longHours);
+Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Position position, bool buy, String encoded);
+Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Positions *currentPositions, int positionsSize, String encoded);
+Page PositionsPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Page *previousPage, Positions *positions, String encoded);
 
 void setCreds(Adafruit_ST7735Keyboard *tft, Preferences *preferences)
 {
@@ -158,18 +180,188 @@ Positions *PositionsPageFlipRight(Positions *positions, Positions *currentPositi
     return currentPositions;
 }
 
-Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Position position, bool buy)
+bool BuySellConfirmationHandler(Adafruit_ST7735Keyboard *tft, BuySellConfig *config, bool buy)
 {
-    float numInput;
-    (*tft).printBuySellMenu(buy);
-    (*tft).putKeypad(98);
-    numInput = (*tft).takeNumInput(30, 40).toFloat();
-    if (numInput != 0)
-        Serial.println("Buy " + String(numInput) + " shares of " + position.getName());
-    return POSITIONS_PAGE;
+    BuySellConfirmationSelection select = LONG_HOURS;
+    config->longHours = false;
+    (*tft).fillScreen(ST7735_BLACK);
+    (*tft).printBuySellConfirmation(config->name, buy, config->quantity, config->amount, select);
+    while (true)
+    {
+        in = Serial.readString();
+        if (in == UP or in == DOWN)
+        {
+            if (select == LONG_HOURS)
+                select = CANCEL_ORDER;
+            else
+                select = LONG_HOURS;
+            (*tft).printBuySellConfirmation(config->name, buy, config->quantity, config->amount, select, config->longHours);
+        }
+        else if (in == LEFT)
+        {
+            if (select == LONG_HOURS)
+                select = CONFIRM_ORDER;
+            else if (select == CONFIRM_ORDER)
+                select = CANCEL_ORDER;
+            else if (select == CANCEL_ORDER)
+                select = CONFIRM_ORDER;
+            (*tft).printBuySellConfirmation(config->name, buy, config->quantity, config->amount, select, config->longHours);
+        }
+        else if (in == RIGHT)
+        {
+            if (select == LONG_HOURS)
+                select = CANCEL_ORDER;
+            else if (select == CONFIRM_ORDER)
+                select = CANCEL_ORDER;
+            else if (select == CANCEL_ORDER)
+                select = CONFIRM_ORDER;
+            (*tft).printBuySellConfirmation(config->name, buy, config->quantity, config->amount, select, config->longHours);
+        }
+        else if (in == SELECT)
+        {
+            switch (select)
+            {
+            case LONG_HOURS:
+                config->longHours = !(config->longHours);
+                (*tft).printBuySellConfirmation(config->name, buy, config->quantity, config->amount, select, config->longHours);
+                break;
+            case CONFIRM_ORDER:
+                return true;
+                break;
+            case CANCEL_ORDER:
+                return false;
+                break;
+            }
+        }
+    }
 }
 
-Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Positions *currentPositions, int positionsSize)
+Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Position position, bool buy, float availToTrade, String encoded)
+{
+    bool longHours;
+    bool confirm;
+    BuySellConfig config;
+    (*tft).printBuySellMenu(buy);
+    (*tft).putKeypad(98);
+    Serial.println(position.getTotalMarketVal());
+    config.amount = (*tft).takeNumInput(30, 40).toFloat();
+    config.name = position.getName();
+    config.costPerShare = position.getTotalMarketVal() / position.getSharesOwned();
+    config.ticker = position.getTicker();
+    config.limitOrder = tft->getLimit();
+    config.quantity = tft->getQuantity();
+    switch (buy)
+    {
+    case true:
+        if (config.quantity)
+        {
+            if (config.costPerShare * config.amount <= availToTrade)
+                Serial.println("Valid trade");
+            else
+            {
+                Serial.println("Not enough funds available to trade");
+                delay(500);
+                return POSITIONS_PAGE;
+            }
+        }
+        else
+        {
+            if (config.amount <= availToTrade)
+                Serial.println("Valid trade");
+            else
+            {
+                Serial.println("Not enough funds available to trade");
+                delay(500);
+                return POSITIONS_PAGE;
+            }
+        }
+        break;
+    case false:
+        if (config.quantity)
+        {
+            if (config.amount <= position.getSharesAvail())
+                Serial.println("Valid trade");
+            else
+            {
+                Serial.println("Not enough shares available to trade");
+                delay(500);
+                return POSITIONS_PAGE;
+            }
+        }
+        else
+        {
+            if (config.amount / config.costPerShare <= position.getSharesAvail())
+                Serial.println("Valid trade");
+            else
+            {
+                Serial.println("Not enough shares available to trade");
+                delay(500);
+                return POSITIONS_PAGE;
+            }
+        }
+    }
+
+    if (config.amount != 0)
+        confirm = BuySellConfirmationHandler(tft, &config, buy);
+    if (confirm)
+    {
+        cJSON *body = cJSON_CreateObject();
+        cJSON_AddBoolToObject(body, "extendedHours", config.longHours);
+        cJSON_AddStringToObject(body, "ticker", config.ticker.c_str());
+        switch (buy)
+        {
+        case true:
+            switch (config.quantity)
+            {
+            case true:
+                cJSON_AddNumberToObject(body, "quantity", config.amount);
+                break;
+            case false:
+                cJSON_AddNumberToObject(body, "quantity", config.amount / config.costPerShare);
+                break;
+            }
+            break;
+        case false:
+            switch (config.quantity)
+            {
+            case true:
+            {
+                String helperString = "-" + String(config.amount); // Kept getting floating point errors when just multiplying config.amount by -1
+                cJSON_AddStringToObject(body, "quantity", helperString.c_str());
+                break;
+            }
+            case false:
+            {
+                int helperInt = round(config.amount / config.costPerShare * -100); // To round off to 2dp, otherwise we get error 400 from the request
+                cJSON_AddNumberToObject(body, "quantity", helperInt / 100.0);
+                break;
+            }
+            }
+            break;
+        }
+        if (WiFi->status() == WL_CONNECTED)
+        {
+            HTTPClient http;
+            http.setReuse(false);
+            http.begin("https://demo.trading212.com/api/v0/equity/orders/market");
+            http.addHeader("Authorization", "Basic " + encoded);
+            http.addHeader("Content-Type", "application/json");
+            Serial.println(cJSON_Print(body));
+            Serial.println(config.amount);
+            Serial.println(config.amount - config.amount);
+            int retVal = http.POST(cJSON_PrintUnformatted(body));
+            Serial.println(retVal);
+            http.end();
+        }
+        else
+            Serial.println("Wifi not connected");
+        return POSITIONS_PAGE;
+    }
+    else
+        return POSITIONS_PAGE;
+}
+
+Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Positions *currentPositions, int positionsSize, float availToTrade, String encoded)
 {
     PositionSelection positionSelection = BACK;
     (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
@@ -217,11 +409,11 @@ Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Position
             case BACK:
                 return POSITIONS_PAGE;
             case BUY:
-                BuySellPositionHandler(tft, WiFi, currentPositions->currentPos, true);
+                return BuySellPositionHandler(tft, WiFi, currentPositions->currentPos, true, availToTrade, encoded);
                 (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
                 break;
             case SELL:
-                BuySellPositionHandler(tft, WiFi, currentPositions->currentPos, false);
+                return BuySellPositionHandler(tft, WiFi, currentPositions->currentPos, false, availToTrade, encoded);
                 (*tft).printPosition(currentPositions->currentPos, currentPositions->count, positionsSize, positionSelection);
                 break;
             }
@@ -229,7 +421,7 @@ Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Position
     }
 }
 
-Page PositionsPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Page *previousPage, Positions *positions)
+Page PositionsPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Page *previousPage, Positions *positions, float availToTrade, String encoded)
 {
     *previousPage = POSITIONS_PAGE;
     int positionsSelection = 0;
@@ -293,7 +485,8 @@ Page PositionsPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Page *p
                 // Move to the highlighted position
                 for (int i = 0; i < positionsSelection; i++)
                     currentPositions = currentPositions->nextPos;
-                PositionPageHandler(tft, WiFi, currentPositions, positions->count);
+                *previousPage = OTHER_PAGE;
+                return PositionPageHandler(tft, WiFi, currentPositions, positions->count, availToTrade, encoded);
                 // Move back to one of the positions that would be at the start of a page
                 int moveBy = positions->count - (((positions->count - currentPositions->count) / 7) * 7) - currentPositions->count;
                 positionsSelection = 0;

@@ -31,6 +31,13 @@ typedef enum
   BACK = 2,
 } PositionSelection;
 
+typedef enum
+{
+  LONG_HOURS = 0,
+  CANCEL_ORDER = 1,
+  CONFIRM_ORDER = 2,
+} BuySellConfirmationSelection;
+
 class Adafruit_ST7735Ext : public Adafruit_ST7735
 { // Extend the display library to be able to cleanly add functionality
 public:
@@ -89,6 +96,12 @@ public:
     println("Trading212");
     setTextSize(1);
     delay(3000);
+  }
+
+  void drawTickSmall(int x, int y, uint16_t colour)
+  {
+    drawLine(x, y, x + 2, y + 2, colour);
+    drawLine(x + 2, y + 2, x + 7, y - 3, colour);
   }
 
   void setFontKeepSize(const GFXfont *f)
@@ -382,5 +395,119 @@ public:
       printUnderlineDefaultFont("Sell", ST7735_RED);
       break;
     }
+  }
+
+  void printBuySellConfirmation(String posName, bool buy, bool shares, float amount, BuySellConfirmationSelection select, bool longHours = false)
+  {
+    uint16_t oldColour = textcolor;
+    posName.toUpperCase();
+    switch (buy)
+    {
+    case true:
+      drawRect(0, 0, 128, 160, ST7735_GREEN);
+      switch (shares)
+      {
+      case true:
+        printCentreLeftAlign("Are you sure that you want to BUY " + String(amount) + " shares of " + posName + "?", 10);
+        break;
+      case false:
+        printCentreLeftAlign("Are you sure that you want to BUY " + String(amount) + " GBP of " + posName + "?", 10);
+        break;
+      }
+      break;
+    case false:
+      drawRect(0, 0, 128, 160, ST7735_RED);
+      switch (shares)
+      {
+      case true:
+        printCentreLeftAlign("Are you sure that you want to SELL " + String(amount) + " shares of " + posName + "?", 10);
+        break;
+      case false:
+        printCentreLeftAlign("Are you sure that you want to SELL " + String(amount) + " GBP of " + posName + "?", 10);
+        break;
+      }
+      break;
+    }
+
+    switch (select)
+    {
+    case LONG_HOURS:
+      setTextColor(TRADING21BLUE);
+      setCursor(39, 120);
+      print("Long hours");
+
+      fillRoundRect(13, 133, 45, 11, 1, ST7735_BLACK);
+      setTextColor(ST7735_GREEN);
+      setCursor(15, 135);
+      print("CONFIRM");
+      drawRoundRect(13, 133, 45, 11, 1, ST7735_GREEN);
+
+      fillRoundRect(75, 133, 39, 11, 1, ST7735_BLACK);
+      setTextColor(ST7735_RED);
+      setCursor(77, 135);
+      print("CANCEL");
+      drawRoundRect(75, 133, 39, 11, 1, ST7735_RED);
+
+      break;
+
+    case CONFIRM_ORDER:
+      setTextColor(ST7735_WHITE);
+      setCursor(39, 120);
+      print("Long hours");
+
+      fillRoundRect(13, 133, 45, 11, 1, ST7735_GREEN);
+      setTextColor(ST7735_BLACK);
+      setCursor(15, 135);
+      print("CONFIRM");
+
+      fillRoundRect(75, 133, 39, 11, 1, ST7735_BLACK);
+      setTextColor(ST7735_RED);
+      setCursor(77, 135);
+      print("CANCEL");
+      drawRoundRect(75, 133, 39, 11, 1, ST7735_RED);
+
+      break;
+
+    case CANCEL_ORDER:
+      setTextColor(ST7735_WHITE);
+      setCursor(39, 120);
+      print("Long hours");
+
+      fillRoundRect(13, 133, 45, 11, 1, ST7735_BLACK);
+      setTextColor(ST7735_GREEN);
+      setCursor(15, 135);
+      print("CONFIRM");
+      drawRoundRect(13, 133, 45, 11, 1, ST7735_GREEN);
+
+      fillRoundRect(75, 133, 39, 11, 1, ST7735_RED);
+      setTextColor(ST7735_WHITE);
+      setCursor(77, 135);
+      print("CANCEL");
+
+      break;
+    }
+    if (longHours)
+    {
+      drawTickSmall(31, 122, ST7735_WHITE);
+      drawRect(30, 120, 7, 6, ST7735_WHITE);
+    }
+    else
+    {
+      drawTickSmall(31, 122, ST7735_BLACK);
+      drawRect(30, 120, 7, 6, ST7735_WHITE);
+    }
+    setTextColor(oldColour);
+  }
+
+  void printConnectionRefused()
+  {
+    fillRoundRect(14, 50, 100, 34, 3, ST7735_BLACK);
+    drawRoundRect(14, 50, 100, 34, 3, TRADING21BLUE);
+    setCursor(34, 55);
+    println("Connection");
+    cursor_x = 19;
+    println("refused, please");
+    cursor_x = 34;
+    print("try again.");
   }
 };

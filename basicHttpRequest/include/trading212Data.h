@@ -10,6 +10,7 @@ public:
         if ((*WiFi).status() == WL_CONNECTED)
         {
             HTTPClient http;
+            http.setReuse(false);
             http.begin("https://demo.trading212.com/api/v0/equity/account/summary");
             http.addHeader("Authorization", "Basic " + encoded);
             httpCode = http.GET();
@@ -87,16 +88,27 @@ private:
 class Position // One for each position owned
 {
 public:
-    Position(String aName, String aWalletCurr, String aInstrumentCurrency, float aPaidPerShare, float aCurrShareVal, float aTotalMarketVal, float aUnrealisedProfit, float aSharesAvail)
+    Position(String aName,
+             String aWalletCurr,
+             String aInstrumentCurrency,
+             String aTicker,
+             float aPaidPerShare,
+             float aCurrShareVal,
+             float aTotalMarketVal,
+             float aUnrealisedProfit,
+             float aSharesAvail,
+             float aSharesOwned)
     {
         name = aName;
         walletCurr = aWalletCurr;
         instrumentCurrency = aInstrumentCurrency;
+        ticker = aTicker;
         paidPerShare = aPaidPerShare;
         currShareVal = aCurrShareVal;
         totalMarketVal = aTotalMarketVal;
         unrealisedProfit = aUnrealisedProfit;
         sharesAvail = aSharesAvail;
+        sharesOwned = aSharesOwned;
     }
 
     Position()
@@ -114,6 +126,10 @@ public:
     String getInstrumentCurrency()
     {
         return instrumentCurrency;
+    }
+    String getTicker()
+    {
+        return ticker;
     }
     float getPaidPerShare()
     {
@@ -135,16 +151,22 @@ public:
     {
         return sharesAvail;
     }
+    float getSharesOwned()
+    {
+        return sharesOwned;
+    }
 
 private:
     String name;
     String walletCurr;
     String instrumentCurrency;
+    String ticker;
     float paidPerShare;
     float currShareVal;
     float totalMarketVal;
     float unrealisedProfit;
     float sharesAvail;
+    float sharesOwned;
 };
 
 struct Positions // Linked list structure to store positions dynamically
@@ -174,11 +196,13 @@ Positions *makePositions(cJSON *payloadJson, bool *created) // Creates entire po
     (*retVal).currentPos = Position(currPos.getPositionName(),             // Create first position
                                     currPos.getPositionWalletCurrency(),
                                     currPos.getPositionCurr(),
+                                    currPos.getPositionTicker(),
                                     currPos.getPositionAvgPricePaid(),
                                     currPos.getPositionCurrentPrice(),
                                     currPos.getPositionWalletCurrentValue(),
                                     currPos.getPositionWalletUnrealisedProfit(),
-                                    currPos.getPositionQuantityAvailable());
+                                    currPos.getPositionQuantityAvailable(),
+                                    currPos.getPositionQuantity());
     Positions *prev = retVal; // Pointer to the previous position, used in creating the linked list
     for (int i = 1; i < numPositions; i++)
     {
@@ -186,11 +210,13 @@ Positions *makePositions(cJSON *payloadJson, bool *created) // Creates entire po
         prev->nextPos = new Positions(Position(currPos.getPositionName(), // Create link to the current position from the previous one
                                                currPos.getPositionWalletCurrency(),
                                                currPos.getPositionCurr(),
+                                               currPos.getPositionTicker(),
                                                currPos.getPositionAvgPricePaid(),
                                                currPos.getPositionCurrentPrice(),
                                                currPos.getPositionWalletCurrentValue(),
                                                currPos.getPositionWalletUnrealisedProfit(),
-                                               currPos.getPositionQuantityAvailable()),
+                                               currPos.getPositionQuantityAvailable(),
+                                               currPos.getPositionQuantity()),
                                       prev, (*retVal).count - i); // Create link to the previous position from the current one, doubly linked list
         prev = prev->nextPos;                                     // Iterate to the next item in the list
     }
@@ -205,23 +231,32 @@ cJSON *getPositions(String encoded, WiFiClass *WiFi)
     {
         HTTPClient http;
         http.begin("https://demo.trading212.com/api/v0/equity/positions");
+        http.setReuse(false);
         http.addHeader("Authorization", "Basic " + encoded);
         int httpCode = http.GET();
+        Serial.println(httpCode);
         if (httpCode > 0)
         {
             String payload = http.getString();
             http.end();
             payloadJson = cJSON_Parse(payload.c_str());
         }
+        else
+        {
+            http.end();
+            return cJSON_Parse("{}");
+        }
     }
+    else
+        return cJSON_Parse("{}");
     return payloadJson;
 }
 
-void freePositions(Positions *positions, bool *created)
+void freePositions(Positions **positions, bool *created)
 {
-    Positions *currPos = positions;
-    Positions *nextPos = positions->nextPos;
-    int count = positions->count;
+    Positions *currPos = *positions;
+    Positions *nextPos = currPos->nextPos;
+    int count = (*positions)->count;
     for (int i = 0; i < count - 1; i++)
     {
         nextPos = currPos->nextPos;

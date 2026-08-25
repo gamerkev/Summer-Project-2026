@@ -26,7 +26,7 @@ void setup()
   tft.initR(INITR_BLACKTAB);    // Initialise the display object
   tft.setRotation(2);           // The screen is portrait
   tft.fillScreen(ST77XX_BLACK); // Black out the screen
-  tft.setTextWrap(false);       // This is so that we can use the moving text
+  // tft.setTextWrap(false);       // This is so that we can use the moving text
   tft.fillScreen(ST7735_BLACK);
 
   preferences.begin("netCreds", false); // Starts preferences, which handles storing in non-volatile memory
@@ -59,10 +59,22 @@ void setup()
   tft.fillScreen(ST7735_BLACK);
   currentPage = MENU_PAGE;
   previousPage = SUMMARY_PAGE;
+  tft.setCursor(5, 10);
+  tft.println("Fetching details...");
+  summary = Summary(encodedPair, &WiFi);
+  positionsJson = getPositions(encodedPair, &WiFi);
+  while (positionsJson->type != 32)
+  {
+    delay(200);
+    positionsJson = getPositions(encodedPair, &WiFi);
+  }
+  positions = makePositions(positionsJson, &positionsExists);
+  positionsExists = true;
 }
 
 void loop()
 {
+
   if (previousPage != currentPage)
   {
     switch (currentPage)
@@ -71,19 +83,37 @@ void loop()
       currentPage = MenuPageHandler(&tft, &previousPage);
       break;
     case SUMMARY_PAGE:
-      summary = Summary(encodedPair, &WiFi);
       currentPage = SummaryPageHandler(&tft, &previousPage, summary);
       break;
     case POSITIONS_PAGE:
       // REMEMBER TO DEREFERENCE THE POSITIONS LINKED LIST WHEN EXITING THIS PAGE
+      Serial.println("Entering positions case");
       if (!positionsExists)
       {
         positionsJson = getPositions(encodedPair, &WiFi);
-        positions = makePositions(positionsJson, &positionsExists);
+        if (!cJSON_IsArray(positionsJson))
+        {
+          Serial.print(positionsJson->type);
+          Serial.print(cJSON_Print(positionsJson));
+          previousPage = POSITIONS_PAGE;
+          currentPage = MENU_PAGE;
+          WiFi.reconnect();
+          tft.printConnectionRefused();
+          while (Serial.readString() != "exit")
+          {
+          }
+        }
+        else
+        {
+          positions = makePositions(positionsJson, &positionsExists);
+          currentPage = PositionsPageHandler(&tft, &WiFi, &previousPage, positions, summary.getAvailableToTrade(), encodedPair);
+        }
       }
-      currentPage = PositionsPageHandler(&tft, &WiFi, &previousPage, positions);
+      else
+        currentPage = PositionsPageHandler(&tft, &WiFi, &previousPage, positions, summary.getAvailableToTrade(), encodedPair);
       if (positionsExists)
-        freePositions(positions, &positionsExists);
+        freePositions(&positions, &positionsExists);
+      Serial.println("Leaving positions case");
       break;
     }
   }

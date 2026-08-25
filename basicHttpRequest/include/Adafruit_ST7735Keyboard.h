@@ -99,12 +99,6 @@ public:
     drawLine(x + 3, y + 3, x + 9, y - 3, colour);
   }
 
-  void drawTickSmall(int x, int y, uint16_t colour)
-  {
-    drawLine(x, y, x + 2, y + 2, colour);
-    drawLine(x + 2, y + 2, x + 7, y - 3, colour);
-  }
-
   void drawCross(int x, int y, uint16_t colour)
   {
     drawLine(x, y, x + 5, y + 5, colour);
@@ -2040,7 +2034,7 @@ public:
     case 'x':
       return "EXIT";
     default:
-      
+
       if (getCurrentNum() == '.' and currentDigits.indexOf('.') != -1)
         return currentDigits;
       else if (currentDigits == "0" and getCurrentNum() == '0')
@@ -2129,7 +2123,18 @@ public:
         }
       }
     }
+    Serial.println(toReturn);
     return toReturn;
+  }
+
+  bool getQuantity()
+  {
+    return quantity;
+  }
+
+  bool getLimit()
+  {
+    return limit;
   }
 
 private:
