@@ -362,7 +362,7 @@ public:
     }
   }
 
-  void printBuySellConfirmation(String posName, bool buy, bool shares, float amount, BuySellConfirmationSelection select, bool longHours = false)
+  void printBuySellConfirmation(String posName, bool buy, bool quantity, float amount, BuySellConfirmationSelection select, bool longHours = false)
   {
     uint16_t oldColour = textcolor;
     posName.toUpperCase(); // Capitalise to draw attenntion to it
@@ -370,7 +370,7 @@ public:
     {
     case true: // If the user is buying
       drawRect(0, 0, 128, 160, ST7735_GREEN);
-      switch (shares)
+      switch (quantity)
       {
       case true: // If the user has placed their order as a quantity of shares
         printCentreLeftAlign("Are you sure that you want to BUY " + String(amount) + " shares of " + posName + "?", 10);
@@ -382,7 +382,7 @@ public:
       break;
     case false: // If the user is selling
       drawRect(0, 0, 128, 160, ST7735_RED);
-      switch (shares)
+      switch (quantity)
       {
       case true: // If the user has placed their order as a quantity of shares
         printCentreLeftAlign("Are you sure that you want to SELL " + String(amount) + " shares of " + posName + "?", 10);

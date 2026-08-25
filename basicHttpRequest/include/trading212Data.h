@@ -245,7 +245,6 @@ cJSON *getPositions(String encoded, WiFiClass *WiFi)
         http.setReuse(false);
         http.addHeader("Authorization", "Basic " + encoded);
         int httpCode = http.GET();
-        Serial.println(httpCode);
         if (httpCode > 0)
         {
             String payload = http.getString();
@@ -321,11 +320,7 @@ void placeOrder(WiFiClass *WiFi, String encoded, BuySellConfig config, bool buy)
         http.begin("https://demo.trading212.com/api/v0/equity/orders/market");
         http.addHeader("Authorization", "Basic " + encoded);
         http.addHeader("Content-Type", "application/json");
-        Serial.println(cJSON_Print(body));
-        Serial.println(config.amount);
-        Serial.println(config.amount - config.amount);
         int retVal = http.POST(cJSON_PrintUnformatted(body));
-        Serial.println(retVal);
         http.end();
     }
     else

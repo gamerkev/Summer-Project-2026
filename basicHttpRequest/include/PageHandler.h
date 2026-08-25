@@ -16,16 +16,6 @@ typedef enum
 
 String in;
 
-void setCreds(Adafruit_ST7735Keyboard *tft, Preferences *preferences);
-Page MenuPageHandler(Adafruit_ST7735Keyboard *tft, Page *previousPage);
-Page SummaryPageHandler(Adafruit_ST7735Keyboard *tft, Page *previousPage, Summary summary);
-Positions *PositionsPageFlipLeft(Positions *positions, Positions *currentPositions);
-Positions *PositionsPageFlipRight(Positions *positions, Positions *currentPositions);
-bool BuySellConfirmationHandler(Adafruit_ST7735Keyboard *tft, Position position, bool buy, bool shares, float amount, bool *longHours);
-Page BuySellPositionHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Position position, bool buy, String encoded);
-Page PositionPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Positions *currentPositions, int positionsSize, String encoded);
-Page PositionsPageHandler(Adafruit_ST7735Keyboard *tft, WiFiClass *WiFi, Page *previousPage, Positions *positions, String encoded);
-
 void setCreds(Adafruit_ST7735Keyboard *tft, Preferences *preferences)
 {
     if ((*preferences).getString("ssid").isEmpty() or (*preferences).getString("pass").isEmpty())

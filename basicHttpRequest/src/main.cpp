@@ -62,14 +62,6 @@ void setup()
   tft.setCursor(5, 10);
   tft.println("Fetching details...");
   summary = Summary(encodedPair, &WiFi);
-  positionsJson = getPositions(encodedPair, &WiFi);
-  while (positionsJson->type != 32)
-  {
-    delay(200);
-    positionsJson = getPositions(encodedPair, &WiFi);
-  }
-  positions = makePositions(positionsJson, &positionsExists);
-  positionsExists = true;
 }
 
 void loop()
@@ -87,14 +79,11 @@ void loop()
       break;
     case POSITIONS_PAGE:
       // REMEMBER TO DEREFERENCE THE POSITIONS LINKED LIST WHEN EXITING THIS PAGE
-      Serial.println("Entering positions case");
       if (!positionsExists)
       {
         positionsJson = getPositions(encodedPair, &WiFi);
         if (!cJSON_IsArray(positionsJson))
         {
-          Serial.print(positionsJson->type);
-          Serial.print(cJSON_Print(positionsJson));
           previousPage = POSITIONS_PAGE;
           currentPage = MENU_PAGE;
           WiFi.reconnect();
@@ -113,7 +102,7 @@ void loop()
         currentPage = PositionsPageHandler(&tft, &WiFi, &previousPage, positions, summary.getAvailableToTrade(), encodedPair);
       if (positionsExists)
         freePositions(&positions, &positionsExists);
-      Serial.println("Leaving positions case");
+      summary = Summary(encodedPair, &WiFi);  // Refresh the summary in case any orders are placed
       break;
     }
   }

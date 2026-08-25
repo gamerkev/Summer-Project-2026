@@ -50,6 +50,33 @@ This header contains functions/classes that call the Trading212 API and format t
 
 - jsonGetters.h
 
+### BuySellConfig struct:
+
+- This struct is used to hold data used to place buy/sell orders in a structured way.
+
+- Fields:
+    - name
+        - String
+        - The name of the stock
+    - ticker
+        - String
+        - The ticker of the stock
+    - quantity
+        - bool
+        - True if the order will be placed by quantity, false if the order will be placed by value
+    - longHours
+        - bool
+        - True if the order is allowed to be executed outside of normal hours, false otherwise
+    - limitOrder
+        - bool
+        - True if this is a limit order, false otherwise
+    - costPerShare
+        - float
+        - How much each share of this stock is worth right now, used to check if the user has enough stocks when placing a sell order by value
+    - amount
+        - float
+        - How many stocks to buy/sell or how much value to buy/sell (depends on the value of quantity)
+
 ### Classes:
 
 - Summary
@@ -110,6 +137,10 @@ This header contains functions/classes that call the Trading212 API and format t
     - This function frees the memory that is taken up by the Positions linked list since that memory is assigned using the *new* keyword.
     - Receives: a pointer to the positions linked list, and a boolean that tells the function whether the linked list exists or not
     - Outputs: nothing.
+- placeOrder(WiFi, encoded, config, buy)
+    - This function places an order for a certain BuySellConfig
+    - Receives: a WiFiClass pointer, WiFi, the base64 encoded API credentials of the user as a String, encoded, the BuySellConfig, config, and a boolean flag for whether the order is a buy order or a sell order, buy.
+    - Outputs: nothing.
 
 ## keyboardFont.h
 
@@ -141,19 +172,21 @@ This header extends the Adafruit_ST7735 class, adding more specific methods whic
     - This is used to keep track of which button is selected in the summary page
 - PositionSelection
     - This is used to keep track of which button is selected in the individual position page
+- BuySellConfirmationSelection
+    - This is used to keep track of which button is selected in the buy/sell confirmation page
 
 ### Classes:
 
 - Adafruit_ST7735Ext
     - This is an extention of the Adafruit_ST7735 class by Adafruit and adds methods to print pages from this project, among other things like the Trading212 logo
     - Public:
-        - movingText(toWrite, y)
-            - This prints some text at a certain y-level on the display, it's padded by 10 pixels on the left and right and if it's too long, the text wipes across the display. This function may not be used due to the slow refresh rate of the display.
-            - Receives: a String which is to be written, and an integer for the y-level at which to write the String.
-            - Outputs: nothing.
         - logo()
             - This draws the Trading212 logo with triangles on the display and writes Trading212 in large font below on the display.
             - Receives: nothing.
+            - Outputs: nothing.
+        - drawTickSmall(x, y, colour)
+            - This draws a small tick where specified in a specified colour, it's used to show when an option is selected on certain pages.
+            - Receives: ints x and y, for its position, and a uint16_t colour which the tick will be.
             - Outputs: nothing.
         - setFontKeepSize()
             - This changes the font without changing the y-level of the cursor, which the regular Adafruit_ST7735 setFont function cannot do. This is used when printing a currency symbol followed by an amount of money without having to setCursor as well as setFont between each print.
@@ -196,8 +229,16 @@ This header extends the Adafruit_ST7735 class, adding more specific methods whic
             - Receives: a MenuSelect to tell which button is selected
             - Outputs: nothing.
         - printBuySellMenu(select)
-            - Prints the buy/sell menu popup
+            - Prints a rectange with a green border for buy, or red border for sell. The menu will be inside of this rectangle.
             - Receives: a boolean to say whether to buy or sell
+            - Outputs: nothing.
+        - printBuySellConfirmation(posName, buy, quantity, amount, select, longHours)
+            - Prints the buy/sell confirmation menu
+            - Receives: the name of the position as a String, posName, a boolean for whether the user is buying or selling, buy, a boolean for whether it's an order by quantity or by value, a float for the amount of shares or money to trade, amount, a BuySellConfirmationSelection to highlight the selected button, select, and a boolean for whether the order is to be executed outside of normal trading hours, longHours, which is false by default.
+            - Outputs: nothing.
+        - printConnectionRefused()
+            - Draws a rounded rectangle with a connection refused message inside.
+            - Receives: nothing.
             - Outputs: nothing.
 
 ## Adafruit_ST7735Keyboard.h
@@ -214,11 +255,14 @@ This header extends the previously-defined Adafruit_ST7735Ext class in order to 
 
 ### Defines
 
-These are all characters that are unused in the keyboard so they can be safely used to represent special buttons on the keyboard. This allows things such as switch cases to be used for characters returned from the keyboard.
+These are all characters that are unused in the keyboard so they can be safely used to represent special buttons on the keyboard. This allows things such as switch cases to be used for characters returned from the keyboard. QUANTITY, VALUE, and LIMIT are only used for the keypad as it has to display and allow the user to navigate to things other than just the keypad itself.
 
 - SHIFT: **/**
 - BACKSPACE: __*__
 - ENTER: **~**
+- QUANTITY: **q**
+- VALUE: **v**
+- LIMIT: **l**
 
 ### keyboardDirection enum
 
@@ -246,6 +290,14 @@ This is used to make switching based on the keyboard direction more natural to w
         - drawEnter(x, y, colour)
             - This prints an enter key (right-angled arrow pointing left with tail pointing upwards) to the display
             - Receives: integers x and y, and uint16_t colour, which dictate where the enter key should be drawn and in which colour
+            - Outputs: nothing.
+        - drawTick(x, y, colour)
+            - This prints a tick to the display, it replaces the enter key in the numpad.
+            - Receives: integers x and y, and a uint16_t colour, which dictate where the tick should be drawn and in which colour
+            - Outputs: nothing.
+        - drawCross(x, y, colour)
+            - This prints a cross to the display, it's used as an exit button for the buy/sell menu
+            - Receives: integers x and y, and a uint16_t colour, which dictate where the cross should be drawn and in which colour
             - Outputs: nothing.
         - putKeyboard(height, capital)
             - This prints a keyboard to the display
@@ -290,6 +342,24 @@ This is used to make switching based on the keyboard direction more natural to w
             - Similar to changeLetter but for the numpad
             - Receives: a KeyboardDirection
             - Outputs: nothing.
+        - inputNum(currentDigits)
+            - Similar to inputKey for the keyboard. May be replaced by inputKey in the future but not for now as the keypad uses alphabetic characters that appear in the keyboard as special buttons.
+            - Receives: a String of the current digits that have been entered
+            - Outputs: the input String modified depending on which character is currently selected
+        - takeNumInput(x, y)
+            - This calls upon other methods in order to:
+                - Print the numpad to the display
+                - Print what the user has entered so far
+                - Change the highlighted key based on user input
+                - String that the user has entered once the user is done
+            - Receives: integers x and y for where to print the preview of the user input
+            - Outputs: the String that the user has entered.
+        - getQuantity()
+            - Receives: nothing.
+            - Outputs: the value of the quantity flag of the keypad
+        - getLimit()
+            - Receives: nothing.
+            - Outputs: the value of the limit flag of the keypad
     - Private:
         - keyboardHeight
             - An integer that represents the y-level of the keyboard, used when highlighting letters
@@ -297,6 +367,10 @@ This is used to make switching based on the keyboard direction more natural to w
             - An integer that represents the y-level of the keypad
         - caps
             - A boolean that represents whether or not the keyboard is capitalised, used when printing the keyboard and getting the current letter
+        - quantity
+            - A boolean for whether the order is by quantity or by value
+        - limit
+            - A boolean for whether the order is a limit order or not
         - currentLetter
             - A character, the letter that is currently selected in the keyboard. Initialised to 1 so that the cursor is in the top-right of the keyboard.
         - currentNum
@@ -354,8 +428,12 @@ This is temporarily used for taking Serial monitor input before soldering button
     - Moves down the positions linked list until it reaches the top position of the page on the right of the current page
     - Receives: a Positions pointer to the whole positions linked list, and a Positions pointer to the position that is at the top of the current page
     - Outputs: a Positions pointer to the position at the top of the page on the right of the current page
+- BuySellConfirmationHandler(tft, config, buy)
+    - Handles the confirmation page when buying or selling a stock
+    - Receives: a pointer to the display object, tft, a BuySellConfig pointer, config, and a boolean to represent whether the user is buying or selling the stock, buy
+    - Outputs: true if the user confirms the order, false if not.
 - BuySellPositionHandler(tft, WiFi, position, buy)
-    - Handles the buy/sell popup on a detailed position page
+    - Handles the buy/sell popup on a detailed position page, also calls the function to place an order if the order is confirmed
     - Receives: an Adafruit_ST7735Keyboard pointer to the display object, a WiFiClass pointer to the WiFi object, the Position to be bought or sold, a boolean that represents whether the user wishes to buy more of this position or sell some quantity
     - Outputs: the next Page to be displayed
 - PositionPageHandler(tft, WiFi, currentPositions, positionsSize)
@@ -410,6 +488,7 @@ This is temporarily used for taking Serial monitor input before soldering button
 - Initialises the display object and the preferences object.
 - Encodes the Trading 212 API credentials
 - Intiates a connection with the WiFi network using the credentials in flash memory
+- Creates the summary so that there is no delay when that menu is opened and the summmary details are also available for the positions page handler
 
 ### Loop
 

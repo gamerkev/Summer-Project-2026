@@ -2142,5 +2142,5 @@ private:
   bool quantity = true;
   bool limit = false;
   char currentLetter = '1';
-  char currentNum = QUANTITY;
+  char currentNum = '1';
 };
