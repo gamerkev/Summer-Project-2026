@@ -376,3 +376,5 @@ I've completed the README documentation, but I have some naming inconsistencies 
 Buying and selling finally works, it's time for another big refactor and I'll check the correctness of the code and begin coding the history pages.
 
 The refactor is complete, I'm going to test it now and then write documentation for any new code. I've also set the reuse flag for all of the HTTP clients to be false as I would sometimes get a -1 or error from the positions endpoint after selling stocks in testing. I hope this will fix it. If that doesn't work then I'll try passing the WiFi client explcitly every time that I create a HTTP client object.
+
+I've created a new branch that I'll be working on from now on, I removed the old and irrelevant projects that I had created while learning how to program an ESP32. In the future I may merge this branch with main, but I'm reluctant to do so as this file refers to a few of those folders and files.
